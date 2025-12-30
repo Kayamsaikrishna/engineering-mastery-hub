@@ -1,0 +1,1853 @@
+# 2. Create bit masks
+mask = 1 << 5  # 100000 (bit 5 is set)
+print(mask)  # 32
+
+# 3. Power of 2
+def power_of_2(n):
+    return 1 << n
+
+print(power_of_2(4))  # 16 (2^4)</div>
+
+            <h3>6. Right Shift (>>)</h3>
+
+            <div class="concept-box">
+                <p><strong>Rule:</strong> Shift bits to the right, discard rightmost bits</p>
+                <p><strong>Effect:</strong> Divides by 2 for each shift (integer division)</p>
+            </div>
+
+            <div class="code-label">Python - Right Shift</div>
+            <div class="code-block"># Example: 10 >> 1
+# 10   = 1010
+# 10>>1= 0101 = 5 (divide by 2)
+
+num = 10
+result = num >> 1
+print(result)  # 5
+
+# Multiple shifts
+print(20 >> 2)  # 5 (divide by 4)
+print(40 >> 3)  # 5 (divide by 8)
+
+# Formula: n >> k = n // 2^k (integer division)
+
+# Common uses:
+# 1. Fast division by powers of 2
+def divide_by_power_of_2(n, power):
+    return n >> power
+
+print(divide_by_power_of_2(100, 2))  # 100 // 4 = 25
+
+# 2. Extract bits one by one
+def print_binary(n):
+    bits = []
+    while n:
+        bits.append(n & 1)  # Get rightmost bit
+        n >>= 1  # Shift right
+    return ''.join(map(str, reversed(bits)))
+
+print(print_binary(13))  # "1101"</div>
+
+            <div class="key-point">
+                <strong>⚠️ Operator Precedence:</strong>
+                <ul>
+                    <li>NOT (~) - Highest priority</li>
+                    <li>Shifts (<<, >>)</li>
+                    <li>AND (&)</li>
+                    <li>XOR (^)</li>
+                    <li>OR (|) - Lowest priority</li>
+                    <li>Use parentheses to be clear: <code>(a & b) | c</code></li>
+                </ul>
+            </div>
+
+            <h3>Operator Summary Table</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operator</th>
+                    <th>Symbol</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                    <th>Result</th>
+                </tr>
+                <tr>
+                    <td>AND</td>
+                    <td>&</td>
+                    <td>1 if both bits are 1</td>
+                    <td>12 & 10</td>
+                    <td>8</td>
+                </tr>
+                <tr>
+                    <td>OR</td>
+                    <td>|</td>
+                    <td>1 if either bit is 1</td>
+                    <td>12 | 10</td>
+                    <td>14</td>
+                </tr>
+                <tr>
+                    <td>XOR</td>
+                    <td>^</td>
+                    <td>1 if bits are different</td>
+                    <td>12 ^ 10</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>NOT</td>
+                    <td>~</td>
+                    <td>Flip all bits</td>
+                    <td>~5</td>
+                    <td>-6</td>
+                </tr>
+                <tr>
+                    <td>Left Shift</td>
+                    <td><<</td>
+                    <td>Shift left, multiply by 2</td>
+                    <td>5 << 1</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>Right Shift</td>
+                    <td>>></td>
+                    <td>Shift right, divide by 2</td>
+                    <td>10 >> 1</td>
+                    <td>5</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- TECHNIQUES SECTION -->
+        <div id="techniques" class="section">
+            <h2>🎯 Common Bit Manipulation Techniques</h2>
+
+            <h3>1. Check if Bit is Set</h3>
+
+            <div class="code-label">Python - Check Bit</div>
+            <div class="code-block">def is_bit_set(num, pos):
+    """Check if bit at position pos is 1"""
+    return (num & (1 << pos)) != 0
+
+# Example
+num = 13  # 1101
+print(is_bit_set(num, 0))  # True (bit 0 = 1)
+print(is_bit_set(num, 1))  # False (bit 1 = 0)
+print(is_bit_set(num, 2))  # True (bit 2 = 1)
+print(is_bit_set(num, 3))  # True (bit 3 = 1)</div>
+
+            <div class="pseudocode">PSEUDOCODE: Check Bit
+
+FUNCTION isBitSet(num, pos):
+    mask = 1 << pos
+    RETURN (num AND mask) != 0
+END FUNCTION</div>
+
+            <h3>2. Set a Bit (Make it 1)</h3>
+
+            <div class="code-label">Python - Set Bit</div>
+            <div class="code-block">def set_bit(num, pos):
+    """Set bit at position pos to 1"""
+    return num | (1 << pos)
+
+# Example
+num = 12  # 1100
+result = set_bit(num, 1)  # Set bit 1
+print(result)  # 14 (1110)
+print(bin(result))  # 0b1110</div>
+
+            <div class="pseudocode">PSEUDOCODE: Set Bit
+
+FUNCTION setBit(num, pos):
+    mask = 1 << pos
+    RETURN num OR mask
+END FUNCTION</div>
+
+            <h3>3. Clear a Bit (Make it 0)</h3>
+
+            <div class="code-label">Python - Clear Bit</div>
+            <div class="code-block">def clear_bit(num, pos):
+    """Clear bit at position pos (set to 0)"""
+    mask = ~(1 << pos)
+    return num & mask
+
+# Example
+num = 14  # 1110
+result = clear_bit(num, 1)  # Clear bit 1
+print(result)  # 12 (1100)
+print(bin(result))  # 0b1100</div>
+
+            <div class="pseudocode">PSEUDOCODE: Clear Bit
+
+FUNCTION clearBit(num, pos):
+    mask = NOT (1 << pos)
+    RETURN num AND mask
+END FUNCTION</div>
+
+            <h3>4. Toggle a Bit (Flip 0↔1)</h3>
+
+            <div class="code-label">Python - Toggle Bit</div>
+            <div class="code-block">def toggle_bit(num, pos):
+    """Toggle bit at position pos"""
+    return num ^ (1 << pos)
+
+# Example
+num = 12  # 1100
+result = toggle_bit(num, 0)  # Toggle bit 0: 0→1
+print(result)  # 13 (1101)
+
+result = toggle_bit(result, 0)  # Toggle bit 0 again: 1→0
+print(result)  # 12 (1100) - back to original</div>
+
+            <h3>5. Check if Power of 2</h3>
+
+            <div class="trick-box">
+                <strong>🎯 Trick:</strong> A number is a power of 2 if it has exactly ONE bit set
+                <br><strong>Formula:</strong> <code>n & (n-1) == 0</code>
+            </div>
+
+            <div class="code-label">Python - Power of 2</div>
+            <div class="code-block">def is_power_of_2(n):
+    """Check if n is a power of 2"""
+    if n <= 0:
+        return False
+    return (n & (n - 1)) == 0
+
+# Why does this work?
+# Power of 2:     8 = 1000
+# Minus 1:        7 = 0111
+# AND them:           0000 ✓
+
+# Not power of 2: 6 = 0110
+# Minus 1:        5 = 0101
+# AND them:           0100 ✗
+
+print(is_power_of_2(8))   # True
+print(is_power_of_2(16))  # True
+print(is_power_of_2(6))   # False
+print(is_power_of_2(0))   # False</div>
+
+            <h3>6. Count Set Bits (1s)</h3>
+
+            <div class="trick-box">
+                <strong>🎯 Brian Kernighan's Algorithm:</strong>
+                <br><code>n & (n-1)</code> removes the rightmost set bit
+            </div>
+
+            <div class="code-label">Python - Count Set Bits</div>
+            <div class="code-block">def count_set_bits(n):
+    """Count number of 1s in binary"""
+    count = 0
+    while n:
+        n &= n - 1  # Remove rightmost set bit
+        count += 1
+    return count
+
+# How it works:
+# 13    = 1101
+# 13-1  = 1100
+# 13&12 = 1100 (removed rightmost 1)
+# 
+# 12    = 1100
+# 12-1  = 1011
+# 12&11 = 1000 (removed rightmost 1)
+# 
+# Continue until 0...
+
+print(count_set_bits(13))  # 3
+print(count_set_bits(15))  # 4
+print(count_set_bits(7))   # 3</div>
+
+            <h3>7. Get Rightmost Set Bit</h3>
+
+            <div class="code-label">Python - Rightmost Set Bit</div>
+            <div class="code-block">def get_rightmost_set_bit(n):
+    """Get position of rightmost set bit"""
+    if n == 0:
+        return -1
+    
+    # Isolate rightmost set bit
+    rightmost = n & (-n)
+    
+    # Find its position
+    pos = 0
+    while rightmost > 1:
+        rightmost >>= 1
+        pos += 1
+    
+    return pos
+
+# Why n & (-n) works?
+# n     = 12 = 1100
+# -n    = -12 = ...11110100 (two's complement)
+# n & -n =      0100 = 4 (isolated rightmost bit)
+
+print(get_rightmost_set_bit(12))  # 2
+print(get_rightmost_set_bit(10))  # 1
+print(get_rightmost_set_bit(8))   # 3</div>
+
+            <h3>8. Clear All Bits from MSB to Position</h3>
+
+            <div class="code-label">Python - Clear Bits Range</div>
+            <div class="code-block">def clear_bits_MSB_to_pos(num, pos):
+    """Clear all bits from Most Significant Bit down to position pos"""
+    mask = (1 << pos) - 1  # All 1s up to position
+    return num & mask
+
+# Example
+num = 31  # 11111
+result = clear_bits_MSB_to_pos(num, 3)  # Keep only 3 rightmost bits
+print(result)  # 7 (00111)
+
+def clear_bits_pos_to_LSB(num, pos):
+    """Clear all bits from position to Least Significant Bit"""
+    mask = ~((1 << (pos + 1)) - 1)
+    return num & mask
+
+num = 31  # 11111
+result = clear_bits_pos_to_LSB(num, 2)  # Clear bits 0,1,2
+print(result)  # 24 (11000)</div>
+
+            <h3>9. Swap Two Numbers (No Temp Variable)</h3>
+
+            <div class="code-label">Python - XOR Swap</div>
+            <div class="code-block">def swap_xor(a, b):
+    """Swap using XOR"""
+    print(f"Before: a={a}, b={b}")
+    
+    a = a ^ b  # a now has XOR of both
+    b = a ^ b  # b = (a^b)^b = a (original a)
+    a = a ^ b  # a = (a^b)^a = b (original b)
+    
+    print(f"After: a={a}, b={b}")
+    return a, b
+
+swap_xor(5, 10)
+
+# Or in one line (Python specific)
+a, b = 5, 10
+a, b = b, a  # Pythonic way
+print(a, b)  # 10, 5</div>
+
+            <h3>10. Reverse Bits</h3>
+
+            <div class="code-label">Python - Reverse Bits</div>
+            <div class="code-block">def reverse_bits(n, num_bits=32):
+    """Reverse all bits in a number"""
+    result = 0
+    for i in range(num_bits):
+        # Get bit at position i from right
+        bit = (n >> i) & 1
+        # Set it at position (num_bits-1-i) in result
+        result |= (bit << (num_bits - 1 - i))
+    return result
+
+# Example with 8 bits
+num = 5  # 00000101
+result = reverse_bits(num, 8)
+print(result)  # 160 (10100000)
+print(bin(result))  # 0b10100000</div>
+
+            <div class="memory-tip">
+                <strong>💡 Essential Bit Tricks - Memorize These:</strong>
+                <ul>
+                    <li><strong>Set bit:</strong> <code>n | (1 << pos)</code></li>
+                    <li><strong>Clear bit:</strong> <code>n & ~(1 << pos)</code></li>
+                    <li><strong>Toggle bit:</strong> <code>n ^ (1 << pos)</code></li>
+                    <li><strong>Check bit:</strong> <code>(n & (1 << pos)) != 0</code></li>
+                    <li><strong>Remove rightmost 1:</strong> <code>n & (n-1)</code></li>
+                    <li><strong>Isolate rightmost 1:</strong> <code>n & (-n)</code></li>
+                    <li><strong>Power of 2:</strong> <code>n & (n-1) == 0</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PATTERNS SECTION -->
+        <div id="patterns" class="section">
+            <h2>🎨 Common Problem Patterns</h2>
+
+            <h3>Pattern 1: Single Number (Find Unique)</h3>
+
+            <div class="concept-box">
+                <p><strong>Problem:</strong> Array where every element appears twice except one. Find the unique element.</p>
+                <p><strong>Key Insight:</strong> XOR of two same numbers is 0, XOR with 0 gives the number itself</p>
+            </div>
+
+            <div class="code-label">Python - Single Number</div>
+            <div class="code-block">def find_single_number(nums):
+    """Find the number that appears only once"""
+    result = 0
+    for num in nums:
+        result ^= num  # XOR all numbers
+    return result
+
+# How it works:
+# [4, 1, 2, 1, 2]
+# 4 ^ 1 ^ 2 ^ 1 ^ 2
+# = 4 ^ (1 ^ 1) ^ (2 ^ 2)
+# = 4 ^ 0 ^ 0
+# = 4
+
+nums = [4, 1, 2, 1, 2]
+print(find_single_number(nums))  # 4
+
+nums = [2, 2, 1]
+print(find_single_number(nums))  # 1</div>
+
+            <div class="pseudocode">PSEUDOCODE: Find Single Number
+
+FUNCTION findSingleNumber(nums):
+    result = 0
+    FOR each num IN nums:
+        result = result XOR num
+    END FOR
+    RETURN result
+END FUNCTION
+
+Time Complexity: O(n)
+Space Complexity: O(1)</div>
+
+            <h3>Pattern 2: Missing Number</h3>
+
+            <div class="code-label">Python - Missing Number</div>
+            <div class="code-block">def find_missing_number(nums):
+    """Find missing number in array [0, n]"""
+    n = len(nums)
+    result = 0
+    
+    # XOR all indices and all numbers
+    for i in range(n + 1):
+        result ^= i
+    
+    for num in nums:
+        result ^= num
+    
+    return result
+
+# How it works:
+# nums = [3, 0, 1]  (missing 2)
+# XOR: 0^1^2^3 ^ 3^0^1 = 2
+
+nums = [3, 0, 1]
+print(find_missing_number(nums))  # 2
+
+# Alternative using sum
+def find_missing_v2(nums):
+    n = len(nums)
+    expected_sum = n * (n + 1) // 2
+    actual_sum = sum(nums)
+    return expected_sum - actual_sum
+
+print(find_missing_v2([3, 0, 1]))  # 2</div>
+
+            <h3>Pattern 3: Two Numbers Appearing Once</h3>
+
+            <div class="code-label">Python - Two Unique Numbers</div>
+            <div class="code-block">def find_two_unique(nums):
+    """Find two numbers that appear only once"""
+    # Step 1: XOR all numbers
+    xor = 0
+    for num in nums:
+        xor ^= num
+    # xor now contains a ^ b (the two unique numbers)
+    
+    # Step 2: Find rightmost set bit (where a and b differ)
+    rightmost_bit = xor & (-xor)
+    
+    # Step 3: Divide numbers into two groups
+    group1, group2 = 0, 0
+    for num in nums:
+        if num & rightmost_bit:
+            group1 ^= num
+        else:
+            group2 ^= num
+    
+    return [group1, group2]
+
+nums = [1, 2, 1, 3, 2, 5]
+print(find_two_unique(nums))  # [3, 5]</div>
+
+            <h3>Pattern 4: Power of 4 Check</h3>
+
+            <div class="code-label">Python - Power of 4</div>
+            <div class="code-block">def is_power_of_4(n):
+    """Check if n is a power of 4"""
+    if n <= 0:
+        return False
+    
+    # 1. Must be power of 2
+    if (n & (n - 1)) != 0:
+        return False
+    
+    # 2. Set bit must be at even position
+    # Powers of 4: 1(0), 4(2), 16(4), 64(6), 256(8)...
+    # Pattern: 0x55555555 = 01010101... (bits at even positions)
+    return (n & 0x55555555) != 0
+
+print(is_power_of_4(16))  # True
+print(is_power_of_4(8))   # False
+print(is_power_of_4(64))  # True</div>
+
+            <h3>Pattern 5: Hamming Distance</h3>
+
+            <div class="concept-box">
+                <p><strong>Hamming Distance:</strong> Number of positions at which bits are different</p>
+            </div>
+
+            <div class="code-label">Python - Hamming Distance</div>
+            <div class="code-block">def hamming_distance(x, y):
+    """Count differing bits between x and y"""
+    # XOR gives 1 where bits differ
+    xor = x ^ y
+    
+    # Count set bits in XOR result
+    count = 0
+    while xor:
+        count += xor & 1
+        xor >>= 1
+    
+    return count
+
+# Or using Brian Kernighan's
+def hamming_distance_v2(x, y):
+    xor = x ^ y
+    count = 0
+    while xor:
+        xor &= xor - 1
+        count += 1
+    return count
+
+print(hamming_distance(1, 4))  # 2
+# 1 = 001
+# 4 = 100
+# XOR = 101 (2 bits different)
+
+print(hamming_distance(3, 1))  # 1
+# 3 = 011
+# 1 = 001
+# XOR = 010 (1 bit different)</div>
+
+            <h3>Pattern 6: Reverse Integer Bits</h3>
+
+            <div class="code-label">Python - Reverse Integer</div>
+            <div class="code-block">def reverse_integer(n):
+    """Reverse digits of an integer (not bits)"""
+    result = 0
+    sign = 1 if n >= 0 else -1
+    n = abs(n)
+    
+    while n:
+        result = result * 10 + n % 10
+        n //= 10
+    
+    return result * sign
+
+print(reverse_integer(123))   # 321
+print(reverse_integer(-123))  # -321</div>
+
+            <h3>Pattern 7: Subsets (Power Set)</h3>
+
+            <div class="code-label">Python - Generate All Subsets</div>
+            <div class="code-block">def get_all_subsets(nums):
+    """Generate all subsets using bit manipulation"""
+    n = len(nums)
+    total_subsets = 1 << n  # 2^n subsets
+    result = []
+    
+    for i in range(total_subsets):
+        subset = []
+        for j in range(n):
+            # Check if jth bit is set in i
+            if i & (1 << j):
+                subset.append(nums[j])
+        result.append(subset)
+    
+    return result
+
+# How it works for [1,2,3]:
+# 000 = []
+# 001 = [1]
+# 010 = [2]
+# 011 = [1,2]
+# 100 = [3]
+# 101 = [1,3]
+# 110 = [2,3]
+# 111 = [1,2,3]
+
+nums = [1, 2, 3]
+subsets = get_all_subsets(nums)
+for subset in subsets:
+    print(subset)</div>
+
+            <h3>Pattern 8: Count Bits (0 to N)</h3>
+
+            <div class="code-label">Python - Count Bits for Range</div>
+            <div class="code-block">def count_bits_range(n):
+    """Count set bits for all numbers from 0 to n"""
+    result = [0] * (n + 1)
+    
+    for i in range(1, n + 1):
+        # Key insight: bits[i] = bits[i >> 1] + (i & 1)
+        # Remove last bit and add 1 if last bit was 1
+        result[i] = result[i >> 1] + (i & 1)
+    
+    return result
+
+print(count_bits_range(5))
+# [0, 1, 1, 2, 1, 2]
+# 0 = 000 → 0 bits
+# 1 = 001 → 1 bit
+# 2 = 010 → 1 bit
+# 3 = 011 → 2 bits
+# 4 = 100 → 1 bit
+# 5 = 101 → 2 bits</div>
+
+            <div class="trick-box">
+                <strong>🎯 Common Problem Types:</strong>
+                <ul>
+                    <li><strong>Find unique:</strong> Use XOR (cancels duplicates)</li>
+                    <li><strong>Count bits:</strong> Use n & (n-1) or built-in</li>
+                    <li><strong>Power of 2/4:</strong> Use n & (n-1) == 0</li>
+                    <li><strong>Subsets:</strong> Use bit masks (2^n combinations)</li>
+                    <li><strong>Missing number:</strong> XOR all expected and actual</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Interactive Bit Manipulation Practice</h2>
+
+            <div class="interactive-demo">
+                <h3>Bit Visualizer & Calculator</h3>
+                <input type="number" id="num1Input" placeholder="Number 1" value="12">
+                <input type="number" id="num2Input" placeholder="Number 2" value="10">
+                
+                <div class="demo-controls">
+                    <button class="demo-btn" onclick="showBinary()">Show Binary</button>
+                    <button class="demo-btn" onclick="doAND()">AND (&)</button>
+                    <button class="demo-btn" onclick="doOR()">OR (|)</button>
+                    <button class="demo-btn" onclick="doXOR()">XOR (^)</button>
+                    <button class="demo-btn" onclick="doNOT()">NOT (~)</button>
+                    <button class="demo-btn" onclick="doLeftShift()">Left Shift (<<)</button>
+                    <button class="demo-btn" onclick="doRightShift()">Right Shift (>>)</button>
+                    <button class="demo-btn" onclick="checkPowerOf2()">Power of 2?</button>
+                    <button class="demo-btn" onclick="countBits()">Count Bits</button>
+                </div>
+                
+                <div id="output"></div>
+            </div>
+
+            <h3>🏋️ Practice Problems</h3>
+
+            <div class="key-point">
+                <strong>Problem 1: Check if Kth Bit is Set</strong>
+                <div class="pseudocode">FUNCTION isKthBitSet(n, k):
+    mask = 1 << k
+    RETURN (n AND mask) != 0
+END FUNCTION</div>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def is_kth_bit_set(n, k):
+    return (n & (1 << k)) != 0
+
+print(is_kth_bit_set(5, 0))  # True (101, bit 0 is 1)
+print(is_kth_bit_set(5, 1))  # False (101, bit 1 is 0)
+print(is_kth_bit_set(5, 2))  # True (101, bit 2 is 1)</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 2: Toggle Kth Bit</strong>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def toggle_kth_bit(n, k):
+    return n ^ (1 << k)
+
+print(toggle_kth_bit(5, 0))  # 4 (101 → 100)
+print(toggle_kth_bit(5, 1))  # 7 (101 → 111)</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 3: Count Trailing Zeros</strong>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def count_trailing_zeros(n):
+    if n == 0:
+        return 32  # or number of bits
+    
+    count = 0
+    while (n & 1) == 0:
+        count += 1
+        n >>= 1
+    return count
+
+print(count_trailing_zeros(8))   # 3 (1000)
+print(count_trailing_zeros(12))  # 2 (1100)</div>
+            </div>
+
+            <h3>🎯 Key Takeaways to Remember Forever</h3>
+
+            <div class="memory-tip">
+                <strong>The 10 Commandments of Bit Manipulation:</strong>
+                <ol>
+                    <li><strong>XOR cancels duplicates:</strong> a ^ a = 0, a ^ 0 = a</li>
+                    <li><strong>Power of 2 check:</strong> n & (n-1) == 0</li>
+                    <li><strong>Remove rightmost 1:</strong> n & (n-1)</li>
+                    <li><strong>Isolate rightmost 1:</strong> n & (-n)</li>
+                    <li><strong>Set bit k:</strong> n | (1 << k)</li>
+                    <li><strong>Clear bit k:</strong> n & ~(1 << k)</li>
+                    <li><strong>Toggle bit k:</strong> n ^ (1 << k)</li>
+                    <li><strong>Check bit k:</strong> (n & (1 << k)) != 0</li>
+                    <li><strong>Left shift multiplies:</strong> n << k = n * 2^k</li>
+                    <li><strong>Right shift divides:</strong> n >> k = n // 2^k</li>
+                </ol>
+            </div>
+
+            <h3>📊 Time Complexity</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operation</th>
+                    <th>Time Complexity</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>AND, OR, XOR, NOT</td>
+                    <td>O(1)</td>
+                    <td>Single CPU instruction</td>
+                </tr>
+                <tr>
+                    <td>Left/Right Shift</td>
+                    <td>O(1)</td>
+                    <td>Single CPU instruction</td>
+                </tr>
+                <tr>
+                    <td>Count Set Bits</td>
+                    <td>O(k)</td>
+                    <td>k = number of set bits</td>
+                </tr>
+                <tr>
+                    <td>Check Power of 2</td>
+                    <td>O(1)</td>
+                    <td>Using n & (n-1)</td>
+                </tr>
+                <tr>
+                    <td>Find Single Number</td>
+                    <td>O(n)</td>
+                    <td>XOR all elements</td>
+                </tr>
+            </table>
+
+            <h3>🔥 Common Interview Questions</h3>
+
+            <div class="concept-box">
+                <h4>Must Practice:</h4>
+                <ol>
+                    <li>Single Number (find unique in array of duplicates)</li>
+                    <li>Power of Two</li>
+                    <li>Counting Bits (0 to n)</li>
+                    <li>Reverse Bits</li>
+                    <li>Hamming Distance</li>
+                    <li>Missing Number</li>
+                    <li>Sum of Two Integers (without + operator)</li>
+                    <li>Number of 1 Bits</li>
+                    <li>Binary Watch</li>
+                    <li>Maximum XOR of Two Numbers</li>
+                </ol>
+            </div>
+
+            <h3>💡 Bit Manipulation Cheat Sheet</h3>
+
+            <div class="operation-box">
+                <h4>Quick Reference:</h4>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Task</th>
+                        <th>Operation</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td>Get bit at position i</td>
+                        <td><code>(n >> i) & 1</code></td>
+                        <td><code>(5 >> 0) & 1 = 1</code></td>
+                    </tr>
+                    <tr>
+                        <td>Set bit at position i</td>
+                        <td><code>n | (1 << i)</code></td>
+                        <td><code>4 | (1 << 0) = 5</code></td>
+                    </tr>
+                    <tr>
+                        <td>Clear bit at position i</td>
+                        <td><code>n & ~(1 << i)</code></td>
+                        <td><code>5 & ~(1 << 0) = 4</code></td>
+                    </tr>
+                    <tr>
+                        <td>Toggle bit at position i</td>
+                        <td><code>n ^ (1 << i)</code></td>
+                        <td><code>4 ^ (1 << 0) = 5</code></td>
+                    </tr>
+                    <tr>
+                        <td>Remove rightmost 1</td>
+                        <td><code>n & (n-1)</code></td>
+                        <td><code>12 & 11 = 8</code></td>
+                    </tr>
+                    <tr>
+                        <td>Isolate rightmost 1</td>
+                        <td><code>n & -n</code></td>
+                        <td><code>12 & -12 = 4</code></td>
+                    </tr>
+                    <tr>
+                        <td>Check if power of 2</td>
+                        <td><code>n & (n-1) == 0</code></td>
+                        <td><code>8 & 7 == 0</code></td>
+                    </tr>
+                    <tr>
+                        <td>Multiply by 2^k</td>
+                        <td><code>n << k</code></td>
+                        <td><code>3 << 2 = 12</code></td>
+                    </tr>
+                    <tr>
+                        <td>Divide by 2^k</td>
+                        <td><code>n >> k</code></td>
+                        <td><code>12 >> 2 = 3</code></td>
+                    </tr>
+                    <tr>
+                        <td>Check if odd</td>
+                        <td><code>n & 1 == 1</code></td>
+                        <td><code>5 & 1 == 1</code></td>
+                    </tr>
+                    <tr>
+                        <td>Check if even</td>
+                        <td><code>n & 1 == 0</code></td>
+                        <td><code>4 & 1 == 0</code></td>
+                    </tr>
+                    <tr>
+                        <td>Swap two numbers</td>
+                        <td><code>a^=b; b^=a; a^=b;</code></td>
+                        <td>No temp variable</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>🧮 Advanced Bit Problems</h3>
+
+            <div class="key-point">
+                <strong>Problem 4: Add Two Numbers Without + Operator</strong>
+                <div class="concept-box">
+                    <p><strong>Key Insight:</strong> Use XOR for sum without carry, AND + shift for carry</p>
+                </div>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def add_without_plus(a, b):
+    """Add two numbers using only bitwise operations"""
+    # Python has unlimited integer size, need mask
+    mask = 0xFFFFFFFF
+    
+    while b != 0:
+        # XOR gives sum without carry
+        sum_without_carry = (a ^ b) & mask
+        
+        # AND and shift gives carry
+        carry = ((a & b) << 1) & mask
+        
+        a = sum_without_carry
+        b = carry
+    
+    # Handle negative numbers
+    return a if a <= 0x7FFFFFFF else ~(a ^ mask)
+
+# How it works for 5 + 3:
+# 5 = 101
+# 3 = 011
+# 
+# Step 1:
+# Sum = 5 ^ 3 = 110 (6)
+# Carry = (5 & 3) << 1 = 001 << 1 = 010 (2)
+# 
+# Step 2:
+# Sum = 6 ^ 2 = 100 (4)
+# Carry = (6 & 2) << 1 = 010 << 1 = 100 (4)
+# 
+# Step 3:
+# Sum = 4 ^ 4 = 000 (0)
+# Carry = (4 & 4) << 1 = 100 << 1 = 1000 (8)
+# 
+# Result = 8
+
+print(add_without_plus(5, 3))  # 8
+print(add_without_plus(10, 20))  # 30</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 5: Find XOR of All Numbers from 1 to N</strong>
+                <div class="concept-box">
+                    <p><strong>Pattern:</strong> XOR from 1 to n follows a cycle of 4</p>
+                </div>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def xor_from_1_to_n(n):
+    """Find XOR of all numbers from 1 to n in O(1)"""
+    # Pattern repeats every 4 numbers:
+    # n % 4 == 0: XOR = n
+    # n % 4 == 1: XOR = 1
+    # n % 4 == 2: XOR = n + 1
+    # n % 4 == 3: XOR = 0
+    
+    remainder = n % 4
+    
+    if remainder == 0:
+        return n
+    elif remainder == 1:
+        return 1
+    elif remainder == 2:
+        return n + 1
+    else:  # remainder == 3
+        return 0
+
+# Verify the pattern:
+# 1 = 1
+# 1^2 = 3
+# 1^2^3 = 0
+# 1^2^3^4 = 4
+# 1^2^3^4^5 = 1
+# 1^2^3^4^5^6 = 7
+# 1^2^3^4^5^6^7 = 0
+# 1^2^3^4^5^6^7^8 = 8
+
+print(xor_from_1_to_n(5))  # 1
+print(xor_from_1_to_n(8))  # 8</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 6: Maximize XOR</strong>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def find_maximum_xor(nums):
+    """Find maximum XOR of two numbers in array"""
+    max_xor = 0
+    mask = 0
+    
+    # Build result bit by bit from left to right
+    for i in range(31, -1, -1):
+        mask |= (1 << i)
+        prefixes = set()
+        
+        # Store all prefixes
+        for num in nums:
+            prefixes.add(num & mask)
+        
+        # Try to set current bit in result
+        temp = max_xor | (1 << i)
+        
+        # Check if temp is achievable
+        for prefix in prefixes:
+            if temp ^ prefix in prefixes:
+                max_xor = temp
+                break
+    
+    return max_xor
+
+nums = [3, 10, 5, 25, 2, 8]
+print(find_maximum_xor(nums))  # 28 (5 ^ 25)</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function displayOutput(msg) {
+            document.getElementById('output').innerHTML = msg;
+        }
+
+        function toBinary(n, bits = 8) {
+            return n.toString(2).padStart(bits, '0');
+        }
+
+        function showBinary() {
+            const num1 = parseInt(document.getElementById('num1Input').value) || 0;
+            const num2 = parseInt(document.getElementById('num2Input').value) || 0;
+            
+            let output = `<strong>Binary Representation:</strong><br>`;
+            output += `Number 1: ${num1} = ${toBinary(num1)}<br>`;
+            output += `Number 2: ${num2} = ${toBinary(num2)}<br>`;
+            
+            displayOutput(output);
+        }
+
+        function doAND() {
+            const num1 = parseInt(document.getElementById('num1Input').value) || 0;
+            const num2 = parseInt(document.getElementById('num2Input').value) || 0;
+            const result = num1 & num2;
+            
+            let output = `<strong>AND Operation (&):</strong><br>`;
+            output += `${num1} (${toBinary(num1)})<br>`;
+            output += `& ${num2} (${toBinary(num2)})<br>`;
+            output += `= ${result} (${toBinary(result)})<br>`;
+            
+            displayOutput(output);
+        }
+
+        function doOR() {
+            const num1 = parseInt(document.getElementById('num1Input').value) || 0;
+            const num2 = parseInt(document.getElementById('num2Input').value) || 0;
+            const result = num1 | num2;
+            
+            let output = `<strong>OR Operation (|):</strong><br>`;
+            output += `${num1} (${toBinary(num1)})<br>`;
+            output += `| ${num2} (${toBinary(num2)})<br>`;
+            output += `= ${result} (${toBinary(result)})<br>`;
+            
+            displayOutput(output);
+        }
+
+        function doXOR() {
+            const num1 = parseInt(document.getElementById('num1Input').value) || 0;
+            const num2 = parseInt(document.getElementById('num2Input').value) || 0;
+            const result = num1 ^ num2;
+            
+            let output = `<strong>XOR Operation (^):</strong><br>`;
+            output += `${num1} (${toBinary(num1)})<br>`;
+            output += `^ ${num2} (${toBinary(num2)})<br>`;
+            output += `= ${result} (${toBinary(result)})<br>`;
+            
+            displayOutput(output);
+        }
+
+        function doNOT() {
+            const num1 = parseInt(document.getElementById('num1Input').value) || 0;
+            const result = ~num1;
+            
+            let output = `<strong>NOT Operation (~):</strong><br>`;
+            output += `~${num1} = ${result}<br>`;
+            output += `Note: In Python, ~n = -(n+1) due to two's complement<br>`;
+            
+            displayOutput(output);
+        }
+
+        function doLeftShift() {
+            const num1 = parseInt(document.getElementById('num1Input').value) || 0;
+            const num2 = parseInt(document.getElementById('num2Input').value) || 1;
+            const result = num1 << num2;
+            
+            let output = `<strong>Left Shift (<<):</strong><br>`;
+            output += `${num1} << ${num2} = ${result}<br>`;
+            output += `${num1} (${toBinary(num1)})<br>`;
+            output += `Shifted left by ${num2} = ${toBinary(result)}<br>`;
+            output += `Effect: Multiply by 2^${num2} = ${num1} * ${Math.pow(2, num2)} = ${result}<br>`;
+            
+            displayOutput(output);
+        }
+
+        function doRightShift() {
+            const num1 = parseInt(document.getElementById('num1Input').value) || 0;
+            const num2 = parseInt(document.getElementById('num2Input').value) || 1;
+            const result = num1 >> num2;
+            
+            let output = `<strong>Right Shift (>>):</strong><br>`;
+            output += `${num1} >> ${num2} = ${result}<br>`;
+            output += `${num1} (${toBinary(num1)})<br>`;
+            output += `Shifted right by ${num2} = ${toBinary(result)}<br>`;
+            output += `Effect: Divide by 2^${num2} = ${num1} / ${Math.pow(2, num2)} = ${result}<br>`;
+            
+            displayOutput(output);
+        }
+
+        function checkPowerOf2() {
+            const num1 = parseInt(document.getElementById('num1Input').value) || 0;
+            const isPower = num1 > 0 && (num1 & (num1 - 1)) === 0;
+            
+            let output = `<strong>Power of 2 Check:</strong><br>`;
+            output += `Number: ${num1} (${toBinary(num1)})<br>`;
+            output += `${num1} - 1 = ${num1 - 1} (${toBinary(num1 - 1)})<br>`;
+            output += `${num1} & ${num1 - 1} = ${num1 & (num1 - 1)}<br>`;
+            output += `<br><strong>Result: ${isPower ? '✅ YES' : '❌ NO'}</strong><br>`;
+            
+            if (isPower) {
+                const power = Math.log2(num1);
+                output += `${num1} = 2^${power}<br>`;
+            }
+            
+            displayOutput(output);
+        }
+
+        function countBits() {
+            const num1 = parseInt(document.getElementById('num1Input').value) || 0;
+            
+            // Count using Brian Kernighan's algorithm
+            let count = 0;
+            let temp = num1;
+            let steps = [];
+            
+            while (temp) {
+                steps.push(`${temp} (${toBinary(temp)})`);
+                temp &= temp - 1;
+                count++;
+            }
+            
+            let output = `<strong>Count Set Bits (1s):</strong><br>`;
+            output += `Number: ${num1} (${toBinary(num1)})<br>`;
+            output += `<br><strong>Brian Kernighan's Algorithm:</strong><br>`;
+            
+            if (steps.length > 0) {
+                output += `Steps:<br>`;
+                steps.forEach((step, i) => {
+                    output += `${i + 1}. ${step}<br>`;
+                });
+            }
+            
+            output += `<br><strong>Total 1-bits: ${count}</strong><br>`;
+            
+            displayOutput(output);
+        }
+
+        // Initialize with sample output
+        showBinary();
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bit Manipulation Fundamentals - Master the Basics</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #11998e; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #11998e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #38ef7d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #38ef7d;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #11998e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #11998e;
+        }
+        h3 { color: #38ef7d; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box {
+            background: #e8fff8;
+            padding: 20px;
+            border-left: 5px solid #11998e;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #11998e;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .binary-visual {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+            font-family: 'Courier New', monospace;
+        }
+        .bit-cell {
+            width: 50px;
+            height: 70px;
+            border: 2px solid #11998e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            background: white;
+            transition: all 0.3s;
+        }
+        .bit-cell:hover {
+            background: #e8fff8;
+            transform: scale(1.1);
+        }
+        .bit-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #11998e;
+        }
+        .bit-position {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .bit-cell.highlight {
+            background: #ffeb3b;
+            border-color: #ff9800;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #11998e;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #e8fff8;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        input[type="number"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            min-width: 150px;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #11998e; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+            font-family: 'Courier New', monospace;
+        }
+        .operation-box {
+            background: white;
+            border: 2px solid #11998e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .bit-row {
+            display: flex;
+            gap: 5px;
+            margin: 10px 0;
+            align-items: center;
+        }
+        .bit-label {
+            min-width: 80px;
+            font-weight: bold;
+            color: #11998e;
+        }
+        .trick-box {
+            background: #e3f2fd;
+            padding: 20px;
+            border-left: 5px solid #2196f3;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ Bit Manipulation Fundamentals</h1>
+            <p class="subtitle">Master Binary Operations & Bitwise Magic</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('basics')">Binary Basics</button>
+                <button class="nav-btn" onclick="showSection('operators')">Bitwise Operators</button>
+                <button class="nav-btn" onclick="showSection('techniques')">Common Techniques</button>
+                <button class="nav-btn" onclick="showSection('patterns')">Problem Patterns</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive Practice</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 What is Bit Manipulation?</h2>
+            
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p><strong>Bit Manipulation</strong> is the act of working with individual bits (0s and 1s) - the smallest unit of data in computing. It's working directly at the binary level to perform operations faster and more efficiently.</p>
+            </div>
+
+            <div class="binary-visual">
+                <div class="bit-cell"><div class="bit-value">1</div><div class="bit-position">Bit 7</div></div>
+                <div class="bit-cell"><div class="bit-value">0</div><div class="bit-position">Bit 6</div></div>
+                <div class="bit-cell"><div class="bit-value">1</div><div class="bit-position">Bit 5</div></div>
+                <div class="bit-cell"><div class="bit-value">0</div><div class="bit-position">Bit 4</div></div>
+                <div class="bit-cell"><div class="bit-value">1</div><div class="bit-position">Bit 3</div></div>
+                <div class="bit-cell"><div class="bit-value">1</div><div class="bit-position">Bit 2</div></div>
+                <div class="bit-cell"><div class="bit-value">0</div><div class="bit-position">Bit 1</div></div>
+                <div class="bit-cell"><div class="bit-value">1</div><div class="bit-position">Bit 0</div></div>
+            </div>
+            <p style="text-align: center; color: #666; margin-top: 10px;">
+                Binary: 10101101 = Decimal: 173
+            </p>
+
+            <div class="key-point">
+                <strong>🔑 Critical Insight:</strong> Bit manipulation is <span class="highlight">EXTREMELY FAST</span> - operations happen at CPU level, often in a single instruction!
+            </div>
+
+            <h3>Why Learn Bit Manipulation?</h3>
+            <ul>
+                <li><strong>Speed:</strong> Fastest operations possible - hardware level</li>
+                <li><strong>Memory Efficient:</strong> Store multiple boolean flags in one integer</li>
+                <li><strong>Interview Essential:</strong> Common in coding interviews (Google, Facebook)</li>
+                <li><strong>Elegant Solutions:</strong> Solve complex problems with simple bit tricks</li>
+                <li><strong>Real-World:</strong> Cryptography, graphics, compression, networking</li>
+            </ul>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> Bits = Light Switches
+                <ul>
+                    <li>Each bit is like a light switch: ON (1) or OFF (0)</li>
+                    <li>8 bits = 8 switches in a row</li>
+                    <li>You can flip them individually or in groups</li>
+                    <li>Different switch combinations = different numbers</li>
+                </ul>
+            </div>
+
+            <h3>Binary Number System Basics</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Decimal</th>
+                    <th>Binary (8-bit)</th>
+                    <th>Explanation</th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>00000000</td>
+                    <td>All bits OFF</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>00000001</td>
+                    <td>Rightmost bit ON</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>00000010</td>
+                    <td>Second bit from right ON</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>00000101</td>
+                    <td>Bits 0 and 2 ON (1 + 4)</td>
+                </tr>
+                <tr>
+                    <td>15</td>
+                    <td>00001111</td>
+                    <td>First 4 bits ON (1+2+4+8)</td>
+                </tr>
+                <tr>
+                    <td>255</td>
+                    <td>11111111</td>
+                    <td>All 8 bits ON (max for 8-bit)</td>
+                </tr>
+            </table>
+
+            <h3>Place Values in Binary</h3>
+
+            <div class="operation-box">
+                <div class="bit-row">
+                    <div class="bit-label">Position:</div>
+                    <div class="binary-visual">
+                        <div class="bit-cell"><div class="bit-value">7</div></div>
+                        <div class="bit-cell"><div class="bit-value">6</div></div>
+                        <div class="bit-cell"><div class="bit-value">5</div></div>
+                        <div class="bit-cell"><div class="bit-value">4</div></div>
+                        <div class="bit-cell"><div class="bit-value">3</div></div>
+                        <div class="bit-cell"><div class="bit-value">2</div></div>
+                        <div class="bit-cell"><div class="bit-value">1</div></div>
+                        <div class="bit-cell"><div class="bit-value">0</div></div>
+                    </div>
+                </div>
+                <div class="bit-row">
+                    <div class="bit-label">Power of 2:</div>
+                    <div class="binary-visual">
+                        <div class="bit-cell"><div class="bit-value">128</div></div>
+                        <div class="bit-cell"><div class="bit-value">64</div></div>
+                        <div class="bit-cell"><div class="bit-value">32</div></div>
+                        <div class="bit-cell"><div class="bit-value">16</div></div>
+                        <div class="bit-cell"><div class="bit-value">8</div></div>
+                        <div class="bit-cell"><div class="bit-value">4</div></div>
+                        <div class="bit-cell"><div class="bit-value">2</div></div>
+                        <div class="bit-cell"><div class="bit-value">1</div></div>
+                    </div>
+                </div>
+                <div class="bit-row">
+                    <div class="bit-label">Example (173):</div>
+                    <div class="binary-visual">
+                        <div class="bit-cell highlight"><div class="bit-value">1</div></div>
+                        <div class="bit-cell"><div class="bit-value">0</div></div>
+                        <div class="bit-cell highlight"><div class="bit-value">1</div></div>
+                        <div class="bit-cell"><div class="bit-value">0</div></div>
+                        <div class="bit-cell highlight"><div class="bit-value">1</div></div>
+                        <div class="bit-cell highlight"><div class="bit-value">1</div></div>
+                        <div class="bit-cell"><div class="bit-value">0</div></div>
+                        <div class="bit-cell highlight"><div class="bit-value">1</div></div>
+                    </div>
+                </div>
+                <p style="margin-top: 15px; color: #666;">
+                    173 = 128 + 32 + 8 + 4 + 1 = 2⁷ + 2⁵ + 2³ + 2² + 2⁰
+                </p>
+            </div>
+        </div>
+
+        <!-- BASICS SECTION -->
+        <div id="basics" class="section">
+            <h2>📚 Binary Number Basics</h2>
+
+            <h3>1. Converting Decimal to Binary</h3>
+
+            <div class="code-label">Python - Decimal to Binary</div>
+            <div class="code-block"># Method 1: Using bin() function
+num = 10
+binary = bin(num)  # '0b1010' (0b prefix indicates binary)
+print(binary)
+
+# Remove '0b' prefix
+binary_clean = bin(num)[2:]  # '1010'
+print(binary_clean)
+
+# Method 2: Manual conversion
+def decimal_to_binary(n):
+    if n == 0:
+        return "0"
+    
+    binary = ""
+    while n > 0:
+        remainder = n % 2
+        binary = str(remainder) + binary
+        n = n // 2
+    
+    return binary
+
+print(decimal_to_binary(10))  # '1010'
+
+# Method 3: Format string
+num = 10
+binary = format(num, 'b')  # '1010'
+print(binary)
+
+# With leading zeros (8-bit)
+binary_8bit = format(num, '08b')  # '00001010'
+print(binary_8bit)</div>
+
+            <div class="pseudocode">PSEUDOCODE: Decimal to Binary
+
+FUNCTION decimalToBinary(n):
+    IF n == 0:
+        RETURN "0"
+    END IF
+    
+    binary = ""
+    WHILE n > 0:
+        remainder = n MOD 2
+        binary = remainder + binary
+        n = n DIV 2
+    END WHILE
+    
+    RETURN binary
+END FUNCTION</div>
+
+            <h3>2. Converting Binary to Decimal</h3>
+
+            <div class="code-label">Python - Binary to Decimal</div>
+            <div class="code-block"># Method 1: Using int() function
+binary = "1010"
+decimal = int(binary, 2)  # 10
+print(decimal)
+
+# Method 2: Manual conversion
+def binary_to_decimal(binary_str):
+    decimal = 0
+    power = 0
+    
+    # Process from right to left
+    for i in range(len(binary_str) - 1, -1, -1):
+        bit = int(binary_str[i])
+        decimal += bit * (2 ** power)
+        power += 1
+    
+    return decimal
+
+print(binary_to_decimal("1010"))  # 10
+
+# Method 3: Using enumerate
+def binary_to_decimal_v2(binary_str):
+    decimal = 0
+    for i, bit in enumerate(reversed(binary_str)):
+        decimal += int(bit) * (2 ** i)
+    return decimal
+
+print(binary_to_decimal_v2("1010"))  # 10</div>
+
+            <div class="pseudocode">PSEUDOCODE: Binary to Decimal
+
+FUNCTION binaryToDecimal(binary_str):
+    decimal = 0
+    power = 0
+    length = LENGTH(binary_str)
+    
+    FOR i = length - 1 DOWN TO 0:
+        bit = binary_str[i]
+        IF bit == '1':
+            decimal = decimal + 2^power
+        END IF
+        power = power + 1
+    END FOR
+    
+    RETURN decimal
+END FUNCTION</div>
+
+            <h3>3. Counting Bits</h3>
+
+            <div class="code-label">Python - Count Set Bits (1s)</div>
+            <div class="code-block"># Method 1: Using bin() and count()
+def count_set_bits(n):
+    return bin(n).count('1')
+
+print(count_set_bits(7))   # 3 (binary: 111)
+print(count_set_bits(10))  # 2 (binary: 1010)
+
+# Method 2: Brian Kernighan's Algorithm (efficient!)
+def count_set_bits_v2(n):
+    count = 0
+    while n:
+        n &= n - 1  # Remove rightmost set bit
+        count += 1
+    return count
+
+print(count_set_bits_v2(7))   # 3
+print(count_set_bits_v2(10))  # 2
+
+# Method 3: Manual bit checking
+def count_set_bits_v3(n):
+    count = 0
+    while n:
+        if n & 1:  # Check if rightmost bit is 1
+            count += 1
+        n >>= 1  # Right shift
+    return count
+
+print(count_set_bits_v3(7))  # 3</div>
+
+            <div class="memory-tip">
+                <strong>💡 Powers of 2 - Remember These:</strong>
+                <ul>
+                    <li>2⁰ = 1, 2¹ = 2, 2² = 4, 2³ = 8</li>
+                    <li>2⁴ = 16, 2⁵ = 32, 2⁶ = 64, 2⁷ = 128</li>
+                    <li>2⁸ = 256, 2⁹ = 512, 2¹⁰ = 1024</li>
+                    <li>2¹⁶ = 65,536, 2³² = 4,294,967,296</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- OPERATORS SECTION -->
+        <div id="operators" class="section">
+            <h2>⚙️ Bitwise Operators</h2>
+
+            <h3>1. AND Operator (&)</h3>
+
+            <div class="concept-box">
+                <p><strong>Rule:</strong> Result is 1 only if BOTH bits are 1</p>
+                <table class="comparison-table">
+                    <tr><th>A</th><th>B</th><th>A & B</th></tr>
+                    <tr><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>0</td><td>0</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td></tr>
+                </table>
+            </div>
+
+            <div class="code-label">Python - AND Operator</div>
+            <div class="code-block"># Example: 12 & 10
+# 12 = 1100
+# 10 = 1010
+#    & ----
+#      1000 = 8
+
+a = 12
+b = 10
+result = a & b
+print(result)  # 8
+
+# Common uses:
+# 1. Check if number is even/odd
+def is_even(n):
+    return (n & 1) == 0  # Last bit is 0 for even
+
+print(is_even(4))  # True
+print(is_even(5))  # False
+
+# 2. Extract specific bits (masking)
+def get_bit(n, pos):
+    return (n & (1 << pos)) != 0
+
+num = 13  # 1101
+print(get_bit(num, 0))  # True (bit 0 is 1)
+print(get_bit(num, 1))  # False (bit 1 is 0)</div>
+
+            <h3>2. OR Operator (|)</h3>
+
+            <div class="concept-box">
+                <p><strong>Rule:</strong> Result is 1 if EITHER bit is 1</p>
+                <table class="comparison-table">
+                    <tr><th>A</th><th>B</th><th>A | B</th></tr>
+                    <tr><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>1</td><td>1</td></tr>
+                    <tr><td>1</td><td>0</td><td>1</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td></tr>
+                </table>
+            </div>
+
+            <div class="code-label">Python - OR Operator</div>
+            <div class="code-block"># Example: 12 | 10
+# 12 = 1100
+# 10 = 1010
+#    | ----
+#      1110 = 14
+
+a = 12
+b = 10
+result = a | b
+print(result)  # 14
+
+# Common use: Set a specific bit to 1
+def set_bit(n, pos):
+    return n | (1 << pos)
+
+num = 12  # 1100
+result = set_bit(num, 1)  # Set bit 1 to 1
+print(result)  # 14 (1110)
+
+# Combine multiple flags
+READ = 1    # 001
+WRITE = 2   # 010
+EXECUTE = 4 # 100
+
+permissions = READ | WRITE  # 011 (3)
+print(permissions)  # 3</div>
+
+            <h3>3. XOR Operator (^)</h3>
+
+            <div class="concept-box">
+                <p><strong>Rule:</strong> Result is 1 if bits are DIFFERENT</p>
+                <table class="comparison-table">
+                    <tr><th>A</th><th>B</th><th>A ^ B</th></tr>
+                    <tr><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>1</td><td>1</td></tr>
+                    <tr><td>1</td><td>0</td><td>1</td></tr>
+                    <tr><td>1</td><td>1</td><td>0</td></tr>
+                </table>
+            </div>
+
+            <div class="code-label">Python - XOR Operator</div>
+            <div class="code-block"># Example: 12 ^ 10
+# 12 = 1100
+# 10 = 1010
+#    ^ ----
+#      0110 = 6
+
+a = 12
+b = 10
+result = a ^ b
+print(result)  # 6
+
+# XOR Properties (VERY IMPORTANT!):
+# 1. a ^ a = 0 (same numbers cancel out)
+print(5 ^ 5)  # 0
+
+# 2. a ^ 0 = a (XOR with 0 gives original)
+print(5 ^ 0)  # 5
+
+# 3. a ^ b ^ a = b (order doesn't matter)
+print(3 ^ 7 ^ 3)  # 7
+
+# Common uses:
+# 1. Swap two numbers without temp variable
+a, b = 5, 10
+a = a ^ b
+b = a ^ b  # b = (a ^ b) ^ b = a
+a = a ^ b  # a = (a ^ b) ^ a = b
+print(a, b)  # 10, 5
+
+# 2. Toggle a bit
+def toggle_bit(n, pos):
+    return n ^ (1 << pos)
+
+num = 12  # 1100
+result = toggle_bit(num, 1)  # Toggle bit 1
+print(result)  # 14 (1110)</div>
+
+            <h3>4. NOT Operator (~)</h3>
+
+            <div class="concept-box">
+                <p><strong>Rule:</strong> Flips all bits (0→1, 1→0)</p>
+                <p><strong>Note:</strong> In Python, uses two's complement (negative numbers)</p>
+            </div>
+
+            <div class="code-label">Python - NOT Operator</div>
+            <div class="code-block"># NOT operator flips all bits
+# Result: ~n = -(n + 1)
+
+num = 5   # 00000101
+result = ~num
+print(result)  # -6
+
+# Why? Two's complement representation
+# ~5 = 11111010 (in two's complement) = -6
+
+# To flip specific bits (use XOR with mask)
+def flip_bits(n, num_bits):
+    mask = (1 << num_bits) - 1  # All 1s for num_bits
+    return n ^ mask
+
+num = 5   # 101
+result = flip_bits(num, 3)  # Flip 3 bits
+print(result)  # 2 (010)</div>
+
+            <h3>5. Left Shift (<<)</h3>
+
+            <div class="concept-box">
+                <p><strong>Rule:</strong> Shift bits to the left, fill right with 0s</p>
+                <p><strong>Effect:</strong> Multiplies by 2 for each shift</p>
+            </div>
+
+            <div class="code-label">Python - Left Shift</div>
+            <div class="code-block"># Example: 5 << 1
+# 5    = 0101
+# 5<<1 = 1010 = 10 (multiply by 2)
+
+num = 5
+result = num << 1
+print(result)  # 10
+
+# Multiple shifts
+print(5 << 2)  # 20 (multiply by 4)
+print(5 << 3)  # 40 (multiply by 8)
+
+# Formula: n << k = n * 2^k
+
+# Common uses:
+# 1. Fast multiplication by powers of 2
+def multiply_by_power_of_2(n, power):
+    return n << power
+
+print(multiply_by_power_of_2(3, 3))  # 3 * 8 = 24
+
+# 2. Create bit masks
+mask = 1 << 5  

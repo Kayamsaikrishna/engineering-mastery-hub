@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree Data Structures Masterclass</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #2e7d32; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 20px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #66bb6a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #66bb6a;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #2e7d32;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2e7d32;
+        }
+        h3 { color: #66bb6a; margin-top: 25px; margin-bottom: 15px; }
+        h4 { color: #2e7d32; margin-top: 20px; margin-bottom: 10px; }
+        .concept-box {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #2e7d32;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .warning-box {
+            background: #ffebee;
+            padding: 15px;
+            border-left: 5px solid #f44336;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #2e7d32;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #2e7d32;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #e8f5e9;
+        }
+        .visualization {
+            background: white;
+            border: 2px solid #2e7d32;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .tree-visual {
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            line-height: 2;
+            font-size: 0.9em;
+            margin: 20px 0;
+        }
+        .node-visual {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #2e7d32;
+            border-radius: 50%;
+            background: #66bb6a;
+            color: white;
+            line-height: 36px;
+            text-align: center;
+            font-weight: bold;
+            margin: 5px;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        .demo-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .demo-btn.danger {
+            background: #f44336;
+        }
+        .demo-btn.danger:hover {
+            background: #da190b;
+        }
+        input[type="number"], input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            width: 120px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #2e7d32; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+            border: 2px solid #2e7d32;
+            font-family: 'Courier New', monospace;
+        }
+        .complexity-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .complexity-badge.good {
+            background: #4caf50;
+            color: white;
+        }
+        .complexity-badge.medium {
+            background: #ff9800;
+            color: white;
+        }
+        .complexity-badge.bad {
+            background: #f44336;
+            color: white;
+        }
+        .tree-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .tree-node {
+            position: relative;
+            text-align: center;
+            margin: 0 10px;
+        }
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌳 Tree Data Structures Masterclass</h1>
+            <p class="subtitle">Master Hierarchical Data Organization</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('binary')">Binary Tree</button>
+                <button class="nav-btn" onclick="showSection('bst')">BST</button>
+                <button class="nav-btn" onclick="showSection('avl')">AVL Tree</button>
+                <button class="nav-btn" onclick="showSection('trie')">Trie</button>
+                <button class="nav-btn" onclick="showSection('heap')">Heap</button>
+                <button class="nav-btn" onclick="showSection('nary')">N-ary Tree</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 Introduction to Trees</h2>
+            
+            <div class="concept-box">
+                <h3>What is a Tree?</h3>
+                <p>A <strong>Tree</strong> is a hierarchical data structure consisting of <span class="highlight">nodes</span> connected by <span class="highlight">edges</span>. It has a root node at the top and branches down to child nodes. Unlike linear data structures (arrays, linked lists), trees organize data in a parent-child hierarchy.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Basic Tree Structure</h4>
+                <div class="tree-visual">
+<pre>
+           1  ← Root
+          /|\
+         / | \
+        2  3  4  ← Children of 1
+       /\     |
+      5  6    7  ← Leaf nodes (no children)
+</pre>
+                </div>
+            </div>
+
+            <h3>Tree Terminology</h3>
+
+            <div class="concept-box">
+                <ul>
+                    <li><strong>Root:</strong> Top node with no parent</li>
+                    <li><strong>Parent:</strong> Node with children below it</li>
+                    <li><strong>Child:</strong> Node with a parent above it</li>
+                    <li><strong>Leaf:</strong> Node with no children</li>
+                    <li><strong>Edge:</strong> Connection between two nodes</li>
+                    <li><strong>Path:</strong> Sequence of nodes from one node to another</li>
+                    <li><strong>Height:</strong> Longest path from root to leaf</li>
+                    <li><strong>Depth/Level:</strong> Distance from root to node</li>
+                    <li><strong>Subtree:</strong> Tree formed by a node and its descendants</li>
+                    <li><strong>Siblings:</strong> Nodes with same parent</li>
+                </ul>
+            </div>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> Tree = Family Tree
+                <ul>
+                    <li>Root = Ancestor at top</li>
+                    <li>Parent/Child = Family relationships</li>
+                    <li>Leaf = People with no children</li>
+                    <li>Siblings = Brothers/sisters</li>
+                    <li>Height = Generations deep</li>
+                </ul>
+            </div>
+
+            <h3>Why Use Trees?</h3>
+
+            <ul>
+                <li><strong>Hierarchical Data:</strong> File systems, organization charts, DOM</li>
+                <li><strong>Fast Search:</strong> BST provides O(log n) search</li>
+                <li><strong>Sorted Data:</strong> In-order traversal of BST gives sorted output</li>
+                <li><strong>Priority Handling:</strong> Heaps for priority queues</li>
+                <li><strong>Efficient Insertions:</strong> Better than sorted arrays</li>
+                <li><strong>Database Indexing:</strong> B-trees in databases</li>
+                <li><strong>Autocomplete:</strong> Tries for prefix matching</li>
+            </ul>
+
+            <h3>Types of Trees</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Tree Type</th>
+                    <th>Key Property</th>
+                    <th>Use Case</th>
+                </tr>
+                <tr>
+                    <td><strong>Binary Tree</strong></td>
+                    <td>Max 2 children per node</td>
+                    <td>Expression trees, decision trees</td>
+                </tr>
+                <tr>
+                    <td><strong>Binary Search Tree</strong></td>
+                    <td>Left < Root < Right (ordered)</td>
+                    <td>Fast search, sorted data</td>
+                </tr>
+                <tr>
+                    <td><strong>AVL Tree</strong></td>
+                    <td>Self-balancing BST</td>
+                    <td>When balance is critical</td>
+                </tr>
+                <tr>
+                    <td><strong>Trie</strong></td>
+                    <td>Prefix tree for strings</td>
+                    <td>Autocomplete, dictionary</td>
+                </tr>
+                <tr>
+                    <td><strong>Heap</strong></td>
+                    <td>Complete tree, parent ≥/≤ children</td>
+                    <td>Priority queue, heap sort</td>
+                </tr>
+                <tr>
+                    <td><strong>N-ary Tree</strong></td>
+                    <td>N children per node</td>
+                    <td>File systems, org charts</td>
+                </tr>
+            </table>
+
+            <h3>Tree Properties</h3>
+
+            <div class="concept-box">
+                <ul>
+                    <li><strong>Number of nodes:</strong> n</li>
+                    <li><strong>Number of edges:</strong> n - 1 (always one less than nodes)</li>
+                    <li><strong>Max nodes at level L:</strong> 2^L (for binary tree)</li>
+                    <li><strong>Max nodes with height H:</strong> 2^(H+1) - 1</li>
+                    <li><strong>Min height for n nodes:</strong> log₂(n+1) - 1</li>
+                </ul>
+            </div>
+
+            <h3>Tree Traversals</h3>
+
+            <div class="concept-box">
+                <h4>Depth-First Search (DFS):</h4>
+                <ul>
+                    <li><strong>Inorder (Left-Root-Right):</strong> Gets sorted order in BST</li>
+                    <li><strong>Preorder (Root-Left-Right):</strong> Good for copying tree</li>
+                    <li><strong>Postorder (Left-Right-Root):</strong> Good for deleting tree</li>
+                </ul>
+                
+                <h4>Breadth-First Search (BFS):</h4>
+                <ul>
+                    <li><strong>Level-order:</strong> Visit nodes level by level (use queue)</li>
+                </ul>
+            </div>
+
+            <div class="visualization">
+                <h4>Example Tree for Traversals</h4>
+                <div class="tree-visual">
+<pre>
+       1
+      / \
+     2   3
+    / \
+   4   5
+
+Inorder:   4, 2, 5, 1, 3
+Preorder:  1, 2, 4, 5, 3
+Postorder: 4, 5, 2, 3, 1
+Level-order: 1, 2, 3, 4, 5
+</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- BINARY TREE SECTION -->
+        <div id="binary" class="section">
+            <h2>🌲 Binary Tree</h2>
+
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>A <strong>Binary Tree</strong> is a tree where each node has <span class="highlight">at most 2 children</span>: left child and right child. No ordering constraint - values can be anywhere.</p>
+            </div>
+
+            <h3>Types of Binary Trees</h3>
+
+            <div class="concept-box">
+                <ol>
+                    <li><strong>Full Binary Tree:</strong> Every node has 0 or 2 children</li>
+                    <li><strong>Complete Binary Tree:</strong> All levels filled except possibly last, which is filled left-to-right</li>
+                    <li><strong>Perfect Binary Tree:</strong> All internal nodes have 2 children, all leaves at same level</li>
+                    <li><strong>Balanced Binary Tree:</strong> Height difference of left and right subtrees ≤ 1</li>
+                    <li><strong>Degenerate/Skewed Tree:</strong> Each node has only one child (essentially a linked list)</li>
+                </ol>
+            </div>
+
+            <h3>Implementation</h3>
+
+            <div class="code-label">Python - Binary Tree Node</div>
+            <div class="code-block">class TreeNode:
+    """Node for binary tree"""
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+# Creating a binary tree:
+#       1
+#      / \
+#     2   3
+#    / \
+#   4   5
+
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)</div>
+
+            <h3>Tree Traversals</h3>
+
+            <div class="code-label">Python - DFS Traversals</div>
+            <div class="code-block">def inorder(root):
+    """
+    Left -> Root -> Right
+    Time: O(n), Space: O(h) where h is height
+    """
+    if not root:
+        return []
+    
+    result = []
+    result.extend(inorder(root.left))
+    result.append(root.val)
+    result.extend(inorder(root.right))
+    return result
+
+def preorder(root):
+    """
+    Root -> Left -> Right
+    """
+    if not root:
+        return []
+    
+    result = [root.val]
+    result.extend(preorder(root.left))
+    result.extend(preorder(root.right))
+    return result
+
+def postorder(root):
+    """
+    Left -> Right -> Root
+    """
+    if not root:
+        return []
+    
+    result = []
+    result.extend(postorder(root.left))
+    result.extend(postorder(root.right))
+    result.append(root.val)
+    return result
+
+# Example usage
+print(inorder(root))    # [4, 2, 5, 1, 3]
+print(preorder(root))   # [1, 2, 4, 5, 3]
+print(postorder(root))  # [4, 5, 2, 3, 1]</div>
+
+            <div class="code-label">Python - BFS (Level Order)</div>
+            <div class="code-block">from collections import deque
+
+def level_order(root):
+    """
+    BFS traversal - visit level by level
+    Time: O(n), Space: O(w) where w is max width
+    """
+    if not root:
+        return []
+    
+    result = []
+    queue = deque([root])
+    
+    while queue:
+        node = queue.popleft()
+        result.append(node.val)
+        
+        if node.left:
+            queue.append(node.left)
+        if node.right:
+            queue.append(node.right)
+    
+    return result
+
+print(level_order(root))  # [1, 2, 3, 4, 5]</div>
+
+            <h3>Common Operations</h3>
+
+            <div class="code-label">Python - Binary Tree Operations</div>
+            <div class="code-block">def height(root):
+    """Height of tree"""
+    if not root:
+        return -1
+    return 1 + max(height(root.left), height(root.right))
+
+def count_nodes(root):
+    """Count total nodes"""
+    if not root:
+        return 0
+    return 1 + count_nodes(root.left) + count_nodes(root.right)
+
+def max_value(root):
+    """Find maximum value in tree"""
+    if not root:
+        return float('-inf')
+    
+    return max(root.val, 
+              max_value(root.left), 
+              max_value(root.right))
+
+def is_balanced(root):
+    """Check if tree is balanced"""
+    def check_height(node):
+        if not node:
+            return 0
+        
+        left_height = check_height(node.left)
+        if left_height == -1:
+            return -1
+        
+        right_height = check_height(node.right)
+        if right_height == -1:
+            return -1
+        
+        if abs(left_height - right_height) > 1:
+            return -1
+        
+        return 1 + max(left_height, right_height)
+    
+    return check_height(root) != -1
+
+# Usage
+print(f"Height: {height(root)}")           # 2
+print(f"Node count: {count_nodes(root)}")  # 5
+print(f"Max value: {max_value(root)}")     # 5
+print(f"Balanced: {is_balanced(root)}")    # True</div>
+
+            <div class="key-point">
+                <strong>Binary Tree Time Complexities:</strong>
+                <ul>
+                    <li><strong>Traversal:</strong> O(n) - visit all nodes</li>
+                    <li><strong>Search:</strong> O(n) - may need to check all nodes</li>
+                    <li><strong>Insert/Delete:</strong> O(n) - may need to find location</li>
+                    <li><strong>Height:</strong> O(n) - calculate recursively</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- BST SECTION -->
+        <div id="bst" class="section">
+            <h2>🔍 Binary Search Tree (BST)</h2>
+
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>A <strong>Binary Search Tree</strong> is a binary tree with ordering property:</p>
+                <ul>
+                    <li>Left subtree contains values <strong>less than</strong> root</li>
+                    <li>Right subtree contains values <strong>greater than</strong> root</li>
+                    <li>Both subtrees are also BSTs (recursive property)</li>
+                </ul>
+            </div>
+
+            <div class="visualization">
+                <h4>Valid BST Example</h4>
+                <div class="tree-visual">
+<pre>
+       8
+      / \
+     3   10
+    / \    \
+   1   6   14
+      / \  /
+     4  7 13
+
+Left subtree (3,1,6,4,7) < 8
+Right subtree (10,14,13) > 8
+</pre>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Key Advantage:</strong> BST enables <span class="highlight">O(log n)</span> search in balanced tree! Like binary search on sorted array, but with efficient insertions.
+            </div>
+
+            <h3>BST Operations</h3>
+
+            <div class="code-label">Python - BST Implementation</div>
+            <div class="code-block">class BST:
+    """Binary Search Tree"""
+    def __init__(self):
+        self.root = None
+    
+    def insert(self, val):
+        """Insert value - O(h) where h is height"""
+        self.root = self._insert_recursive(self.root, val)
+    
+    def _insert_recursive(self, node, val):
+        if not node:
+            return TreeNode(val)
+        
+        if val < node.val:
+            node.left = self._insert_recursive(node.left, val)
+        elif val > node.val:
+            node.right = self._insert_recursive(node.right, val)
+        # If equal, don't insert (or handle duplicates as needed)
+        
+        return node
+    
+    def search(self, val):
+        """Search for value - O(h)"""
+        return self._search_recursive(self.root, val)
+    
+    def _search_recursive(self, node, val):
+        if not node or node.val == val:
+            return node
+        
+        if val < node.val:
+            return self._search_recursive(node.left, val)
+        else:
+            return self._search_recursive(node.right, val)
+    
+    def delete(self, val):
+        """Delete value - O(h)"""
+        self.root = self._delete_recursive(self.root, val)
+    
+    def _delete_recursive(self, node, val):
+        if not node:
+            return None
+        
+        if val < node.val:
+            node.left = self._delete_recursive(node.left, val)
+        elif val > node.val:
+            node.right = self._delete_recursive(node.right, val)
+        else:
+            # Found node to delete
+            
+            # Case 1: No children (leaf)
+            if not node.left and not node.right:
+                return None
+            
+            # Case 2: One child
+            if not node.left:
+                return node.right
+            if not node.right:
+                return node.left
+            
+            # Case 3: Two children
+            # Find inorder successor (min in right subtree)
+            min_node = self._find_min(node.right)
+            node.val = min_node.val
+            node.right = self._delete_recursive(node.right, min_node.val)
+        
+        return node
+    
+    def _find_min(self, node):
+        """Find minimum value node"""
+        while node.left:
+            node = node.left
+        return node
+    
+    def inorder(self):
+        """Inorder gives sorted output"""
+        result = []
+        self._inorder_recursive(self.root, result)
+        return result
+    
+    def _inorder_recursive(self, node, result):
+        if node:
+            self._inorder_recursive(node.left, result)
+            result.append(node.val)
+            self._inorder_recursive(node.right, result)
+
+# Example usage
+bst = BST()
+values = [8, 3, 10, 1, 6, 14, 4, 7, 13]
+for val in values:
+    bst.insert(val)
+
+print(bst.inorder())  # [1, 3, 4, 6, 7, 8, 10, 13, 14] - sorted!
+print(bst.search(6))  # Found
+bst.delete(3)
+print(bst.inorder())  # [1, 4, 6, 7, 8, 10, 13, 14]</div>
+
+            <h3>BST Validation</h3>
+
+            <div class="code-label">Python - Validate BST</div>
+            <div class="code-block">def is_valid_bst(root, min_val=float('-inf'), max_val=float('inf')):
+    """
+    Check if tree is valid BST
+    All nodes in left subtree must be < root
+    All nodes in right subtree must be > root
+    """
+    if not root:
+        return True
+    
+    # Check current node's value range
+    if root.val <= min_val or root.val >= max_val:
+        return False
+    
+    # Check left and right subtrees
+    return (is_valid_bst(root.left, min_val, root.val) and
+            is_valid_bst(root.right, root.val, max_val))
+
+# This catches subtle errors like:
+#     5
+#    / \
+#   1   6
+#      / \
+#     4   7  <- 4 < 5, invalid!</div>
+
+            <h3>Common BST Problems</h3>
+
+            <div class="code-label">Python - BST Problems</div>
+            <div class="code-block">def find_kth_smallest(root, k):
+    """Find kth smallest element (inorder traversal)"""
+    result = [0]
+    count = [0]
+    
+    def inorder(node):
+        if not node or result[0]:
+            return
+        
+        inorder(node.left)
+        
+        count[0] += 1
+        if count[0] == k:
+            result[0] = node.val
+            return
+        
+        inorder(node.right)
+    
+    inorder(root)
+    return result[0]
+
+def lowest_common_ancestor(root, p, q):
+    """
+    Find LCA in BST
+    Use BST property for efficient solution
+    """
+    if not root:
+        return None
+    
+    # If both p and q are smaller, LCA is in left
+    if p.val < root.val and q.val < root.val:
+        return lowest_common_ancestor(root.left, p, q)
+    
+    # If both p and q are greater, LCA is in right
+    if p.val > root.val and q.val > root.val:
+        return lowest_common_ancestor(root.right, p, q)
+    
+    # We found the split point
+    return root
+
+def bst_to_sorted_array(root):
+    """Convert BST to sorted array (inorder)"""
+    result = []
+    
+    def inorder(node):
+        if node:
+            inorder(node.left)
+            result.append(node.val)
+            inorder(node.right)
+    
+    inorder(root)
+    return result</div>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operation</th>
+                    <th>Average Case</th>
+                    <th>Worst Case</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td><strong>Search</strong></td>
+                    <td>O(log n)</td>
+                    <td>O(n)</td>
+                    <td>Worst when tree is skewed</td>
+                </tr>
+                <tr>
+                    <td><strong>Insert</strong></td>
+                    <td>O(log n)</td>
+                    <td>O(n)</td>
+                    <td>Worst when tree is skewed</td>
+                </tr>
+                <tr>
+                    <td><strong>Delete</strong></td>
+                    <td>O(log n)</td>
+                    <td>O(n)</td>
+                    <td>Need to find node first</td>
+                </tr>
+                <tr>
+                    <td><strong>Inorder</strong></td>
+                    <td>O(n)</td>
+                    <td>O(n)</td>
+                    <td>Gives sorted output</td>
+                </tr>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ BST Degenerates:</strong> If we insert sorted data (1,2,3,4,5...), BST becomes a linked list! All operations become O(n). Solution: Use self-balancing trees like AVL.
+            </div>
+        </div>
+
+        <!-- AVL TREE SECTION -->
+        <div id="avl" class="section">
+            <h2>⚖️ AVL Tree (Self-Balancing BST)</h2>
+
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>An <strong>AVL Tree</strong> is a self-balancing BST where the heights of left and right subtrees differ by at most 1 for every node. Named after inventors Adelson-Velsky and Landis.</p>
+            </div>
+
+            <div class="key-point">
+                <strong>Balance Factor:</strong> BF = Height(Left Subtree) - Height(Right Subtree)<br>
+                For AVL tree: BF ∈ {-1, 0, 1} for all nodes
+            </div>
+
+            <h3>Rotations</h3>
+
+            <div class="concept-box">
+                <p>AVL maintains balance through <strong>rotations</strong>:</p>
+                <ul>
+                    <li><strong>Left Rotation (LL):</strong> Right subtree too heavy</li>
+                    <li><strong>Right Rotation (RR):</strong> Left subtree too heavy</li>
+                    <li><strong>Left-Right Rotation (LR):</strong> Left then right</li>
+                    <li><strong>Right-Left Rotation (RL):</strong> Right then left</li>
+                </ul>
+            </div>
+
+            <div class="code-label">Python - AVL Tree Implementation</div>
+            <div class="code-block">class AVLNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+        self.height = 1  # Height of node
+
+class AVLTree:
+    def __init__(self):
+        self.root = None
+    
+    def height(self, node):
+        """Get height of node"""
+        if not node:
+            return 0
+        return node.height
+    
+    def balance_factor(self, node):
+        """Calculate balance factor"""
+        if not node:
+            return 0
+        return self.height(node.left) - self.height(node.right)
+    
+    def update_height(self, node):
+        """Update height of node"""
+        if node:
+            node.height = 1 + max(self.height(node.left), 
+                                 self.height(node.right))
+    
+    def rotate_right(self, z):
+        """
+        Right rotation
+             z                y
+            / \              / \
+           y   T4   -->    x   z
+          / \                 / \
+         x  T3              T3  T4
+        """
+        y = z.left
+        T3 = y.right
+        
+        # Perform rotation
+        y.right = z
+        z.left = T3
+        
+        # Update heights
+        self.update_height(z)
+        self.update_height(y)
+        
+        return y
+    
+    def rotate_left(self, z):
+        """
+        Left rotation
+           z                  y
+          / \                / \
+        T1   y      -->     z   x
+            / \            / \
+           T2  x          T1 T2
+        """
+        y = z.right
+        T2 = y.left
+        
+        # Perform rotation
+        y.left = z
+        z.right = T2
+        
+        # Update heights
+        self.update_height(z)
+        self.update_height(y)
+        
+        return y
+    
+    def insert(self, val):
+        """Insert value and rebalance"""
+        self.root = self._insert(self.root, val)
+    
+    def _insert(self, node, val):
+        # Standard BST insert
+        if not node:
+            return AVLNode(val)
+        
+        if val < node.val:
+            node.left = self._insert(node.left, val)
+        elif val > node.val:
+            node.right = self._insert(node.right, val)
+        else:
+            return node  # Duplicate
+        
+        # Update height
+        self.update_height(node)
+        
+        # Get balance factor
+        bf = self.balance_factor(node)
+        
+        # Left-Left Case
+        if bf > 1 and val < node.left.val:
+            return self.rotate_right(node)
+        
+        # Right-Right Case
+        if bf < -1 and val > node.right.val:
+            return self.rotate_left(node)
+        
+        # Left-Right Case
+        if bf > 1 and val > node.left.val:
+            node.left = self.rotate_left(node.left)
+            return self.rotate_right(node)
+        
+        # Right-Left Case
+        if bf < -1 and val < node.right.val:
+            node.right = self.rotate_right(node.right)
+            return self.rotate_left(node)
+        
+        return node
+    
+    def inorder(self):
+        """Inorder traversal"""
+        result = []
+        self._inorder(self.root, result)
+        return result
+    
+    def _inorder(self, node, result):
+        if node:
+            self._inorder(node.left, result)
+            result.append(node.val)
+            self._inorder(node.right, result)
+
+# Example - insert sorted data (would break regular BST)
+avl = AVLTree()
+for i in range(1, 8):
+    avl.insert(i)
+
+print(avl.inorder())  # Still balanced!
+print(f"Height: {avl.height(avl.root)}")  # Only 3 (vs 7 for skewed BST)</div>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operation</th>
+                    <th>AVL Tree</th>
+                    <th>Regular BST</th>
+                </tr>
+                <tr>
+                    <td><strong>Search</strong></td>
+                    <td>O(log n) guaranteed</td>
+                    <td>O(n) worst case</td>
+                </tr>
+                <tr>
+                    <td><strong>Insert</strong></td>
+                    <td>O(log n) guaranteed</td>
+                    <td>O(n) worst case</td>
+                </tr>
+                <tr>
+                    <td><strong>Delete</strong></td>
+                    <td>O(log n) guaranteed</td>
+                    <td>O(n) worst case</td>
+                </tr>
+                <tr>
+                    <td><strong>Height</strong></td>
+                    <td>Always O(log n)</td>
+                    <td>Can be O(n)</td>
+                </tr>
+            </table>
+
+            <div class="key-point">
+                <strong>When to use AVL:</strong>
+                <ul>
+                    <li>✅ Need guaranteed O(log n) operations</li>
+                    <li>✅ Search-heavy applications</li>
+                    <li>✅ Cannot tolerate worst-case O(n)</li>
+                    <li>❌ Frequent insertions/deletions (rotations add overhead)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TRIE SECTION -->
+        <div id="trie" class="section">
+            <h2>📝 Trie (Prefix Tree)</h2>
+
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>A <strong>Trie</strong> is a tree data structure for storing strings where each node represents a character. Common prefixes share the same path. Excellent for prefix matching and autocomplete.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Trie Structure for ["cat", "car", "card", "dog"]</h4>
+                <div class="tree-visual">
+<pre>
+         root
+        /    \
+       c      d
+       |      |
+       a      o
+      / \     |
+     t   r    g*
+    *    |
+         d*
+</pre>
+                <p>* marks end of word</p>
+                </div>
+            </div>
+
+            <div class="code-label">Python - Trie Implementation</div>
+            <div class="code-block">class TrieNode:
+    def __init__(self):
+        self.children = {}  # Map char -> TrieNode
+        self.is_end_of_word = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word):
+        """
+        Insert word into trie
+        Time: O(m) where m is word length
+        """
+        node = self.root
+        
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        
+        node.is_end_of_word = True
+    
+    def search(self, word):
+        """
+        Search for exact word
+        Time: O(m)
+        """
+        node = self.root
+        
+        for char in word:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        
+        return node.is_end_of_word
+    
+    def starts_with(self, prefix):
+        """
+        Check if any word starts with prefix
+        Time: O(m)
+        """
+        node = self.root
+        
+        for char in prefix:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        
+        return True
+    
+    def get_all_words_with_prefix(self, prefix):
+        """
+        Get all words starting with prefix (autocomplete)
+        """
+        node = self.root
+        
+        # Navigate to prefix
+        for char in prefix:
+            if char not in node.children:
+                return []
+            node = node.children[char]
+        
+        # Collect all words from this point
+        words = []
+        self._collect_words(node, prefix, words)
+        return words
+    
+    def _collect_words(self, node, current_word, words):
+        """Helper to collect words recursively"""
+        if node.is_end_of_word:
+            words.append(current_word)
+        
+        for char, child_node in node.children.items():
+            self._collect_words(child_node, current_word + char, words)
+    
+    def delete(self, word):
+        """Delete word from trie"""
+        def _delete(node, word, index):
+            if index == len(word):
+                if not node.is_end_of_word:
+                    return False
+                node.is_end_of_word = False
+                return len(node.children) == 0
+            
+            char = word[index]
+            if char not in node.children:
+                return False
+            
+            child = node.children[char]
+            should_delete_child = _delete(child, word, index + 1)
+            
+            if should_delete_child:
+                del node.children[char]
+                return len(node.children) == 0 and not node.is_end_of_word
+            
+            return False
+        
+        _delete(self.root, word, 0)
+
+# Example usage
+trie = Trie()
+words = ["apple", "app", "apricot", "banana", "band"]
+
+for word in words:
+    trie.insert(word)
+
+print(trie.search("app"))          # True
+print(trie.search("appl"))         # False
+print(trie.starts_with("app"))     # True
+print(trie.get_all_words_with_prefix("ap"))  # ['app', 'apple', 'apricot']
+print(trie.get_all_words_with_prefix("ban")) # ['banana', 'band']</div>
+
+            <h3>Trie Applications</h3>
+
+            <div class="concept-box">
+                <ul>
+                    <li><strong>Autocomplete:</strong> Type "ap" → suggest "apple", "app", "apricot"</li>
+                    <li><strong>Spell Checker:</strong> Check if word exists in dictionary</li>
+                    <li><strong>IP Routing:</strong> Longest prefix matching</li>
+                    <li><strong>T9 Predictive Text:</strong> Phone keyboards</li>
+                    <li><strong>Genome Analysis:</strong> DNA sequence matching</li>
+                    <li><strong>Search Engines:</strong> Query suggestions</li>
+                </ul>
+            </div>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operation</th>
+                    <th>Time Complexity</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td><strong>Insert</strong></td>
+                    <td>O(m)</td>
+                    <td>m = word length</td>
+                </tr>
+                <tr>
+                    <td><strong>Search</strong></td>
+                    <td>O(m)</td>
+                    <td>Faster than hash for prefix queries</td>
+                </tr>
+                <tr>
+                    <td><strong>Prefix Search</strong></td>
+                    <td>O(m)</td>
+                    <td>Key advantage over hash table</td>
+                </tr>
+                <tr>
+                    <td><strong>Space</strong></td>
+                    <td>O(ALPHABET_SIZE × m × n)</td>
+                    <td>n = number of words</td>
+                </tr>
+            </table>
+
+            <div class="key-point">
+                <strong>Trie vs Hash Table:</strong>
+                <ul>
+                    <li><strong>Trie wins:</strong> Prefix searches, sorted order, memory efficiency for common prefixes</li>
+                    <li><strong>Hash wins:</strong> Simple lookups, less memory overhead</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HEAP SECTION -->
+        <div id="heap" class="section">
+            <h2>📊 Heap & Priority Queue</h2>
+
+            <div class="concept-box">
+                <h3>What is a Heap?</h3>
+                <p>A <strong>Heap</strong> is a complete binary tree that satisfies the heap property:</p>
+                <ul>
+                    <li><strong>Max Heap:</strong> Parent ≥ all children (root is maximum)</li>
+                    <li><strong>Min Heap:</strong> Parent ≤ all children (root is minimum)</li>
+                </ul>
+            </div>
+
+            <div class="visualization">
+                <h4>Max Heap Example</h4>
+                <div class="tree-visual">
+<pre>
+       100
+       / \
+     50   30
+    / \   /
+   20 10 5
+
+Parent always ≥ children
+Root = maximum element
+</pre>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Key Properties:</strong>
+                <ul>
+                    <li>Complete binary tree (filled left-to-right)</li>
+                    <li>Can be efficiently stored in array</li>
+                    <li>Parent at index i, children at 2i+1 and 2i+2</li>
+                    <li>O(1) access to min/max element</li>
+                </ul>
+            </div>
+
+            <h3>Heap as Array</h3>
+
+            <div class="concept-box">
+                <p>Heap [100, 50, 30, 20, 10, 5]</p>
+                <ul>
+                    <li>Parent(i) = (i-1) // 2</li>
+                    <li>Left Child(i) = 2*i + 1</li>
+                    <li>Right Child(i) = 2*i + 2</li>
+                </ul>
+            </div>
+
+            <div class="code-label">Python - Min Heap Implementation</div>
+            <div class="code-block">class MinHeap:
+    def __init__(self):
+        self.heap = []
+    
+    def parent(self, i):
+        return (i - 1) // 2
+    
+    def left_child(self, i):
+        return 2 * i + 1
+    
+    def right_child(self, i):
+        return 2 * i + 2
+    
+    def swap(self, i, j):
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+    
+    def insert(self, val):
+        """
+        Insert and bubble up
+        Time: O(log n)
+        """
+        self.heap.append(val)
+        self._bubble_up(len(self.heap) - 1)
+    
+    def _bubble_up(self, i):
+        """Move element up to maintain heap property"""
+        parent = self.parent(i)
+        
+        if i > 0 and self.heap[i] < self.heap[parent]:
+            self.swap(i, parent)
+            self._bubble_up(parent)
+    
+    def extract_min(self):
+        """
+        Remove and return minimum (root)
+        Time: O(log n)
+        """
+        if not self.heap:
+            return None
+        
+        if len(self.heap) == 1:
+            return self.heap.pop()
+        
+        # Store root
+        min_val = self.heap[0]
+        
+        # Move last element to root
+        self.heap[0] = self.heap.pop()
+        
+        # Bubble down
+        self._bubble_down(0)
+        
+        return min_val
+    
+    def _bubble_down(self, i):
+        """Move element down to maintain heap property"""
+        min_index = i
+        left = self.left_child(i)
+        right = self.right_child(i)
+        
+        # Find smallest among node and children
+        if left < len(self.heap) and self.heap[left] < self.heap[min_index]:
+            min_index = left
+        
+        if right < len(self.heap) and self.heap[right] < self.heap[min_index]:
+            min_index = right
+        
+        # Swap if needed and continue
+        if min_index != i:
+            self.swap(i, min_index)
+            self._bubble_down(min_index)
+    
+    def peek(self):
+        """Get minimum without removing"""
+        return self.heap[0] if self.heap else None
+    
+    def size(self):
+        return len(self.heap)
+    
+    def is_empty(self):
+        return len(self.heap) == 0
+
+# Example usage
+min_heap = MinHeap()
+values = [5, 3, 7, 1, 9, 2]
+
+for val in values:
+    min_heap.insert(val)
+
+print("Extracting in sorted order:")
+while not min_heap.is_empty():
+    print(min_heap.extract_min(), end=" ")  # 1 2 3 5 7 9</div>
+
+            <h3>Priority Queue using Heap</h3>
+
+            <div class="code-label">Python - Priority Queue</div>
+            <div class="code-block">import heapq
+
+class PriorityQueue:
+    """
+    Priority Queue using heapq (min heap)
+    Lower number = higher priority
+    """
+    def __init__(self):
+        self.heap = []
+        self.counter = 0  # For tie-breaking
+    
+    def push(self, item, priority):
+        """Add item with priority"""
+        # Use counter to break ties (FIFO for same priority)
+        heapq.heappush(self.heap, (priority, self.counter, item))
+        self.counter += 1
+    
+    def pop(self):
+        """Remove and return highest priority item"""
+        if self.heap:
+            return heapq.heappop(self.heap)[2]
+        return None
+    
+    def peek(self):
+        """View highest priority item"""
+        if self.heap:
+            return self.heap[0][2]
+        return None
+    
+    def is_empty(self):
+        return len(self.heap) == 0
+
+# Example - Task scheduler
+pq = PriorityQueue()
+
+pq.push("Critical bug fix", 1)
+pq.push("Feature request", 3)
+pq.push("Security patch", 1)
+pq.push("Documentation", 5)
+
+print("Processing tasks by priority:")
+while not pq.is_empty():
+    print(pq.pop())
+# Output: Critical bug fix, Security patch, Feature request, Documentation</div>
+
+            <h3>Heap Applications</h3>
+
+            <div class="concept-box">
+                <ul>
+                    <li><strong>Heap Sort:</strong> O(n log n) sorting algorithm</li>
+                    <li><strong>Priority Queue:</strong> Task scheduling, Dijkstra's algorithm</li>
+                    <li><strong>K Largest/Smallest:</strong> Find k largest elements efficiently</li>
+                    <li><strong>Median Maintenance:</strong> Running median using two heaps</li>
+                    <li><strong>Merge K Sorted Lists:</strong> Efficient merging</li>
+                    <li><strong>Event-Driven Simulation:</strong> Next event scheduling</li>
+                </ul>
+            </div>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operation</th>
+                    <th>Time Complexity</th>
+                </tr>
+                <tr>
+                    <td><strong>Get Min/Max</strong></td>
+                    <td>O(1)</td>
+                </tr>
+                <tr>
+                    <td><strong>Insert</strong></td>
+                    <td>O(log n)</td>
+                </tr>
+                <tr>
+                    <td><strong>Extract Min/Max</strong></td>
+                    <td>O(log n)</td>
+                </tr>
+                <tr>
+                    <td><strong>Build Heap</strong></td>
+                    <td>O(n)</td>
+                </tr>
+                <tr>
+                    <td><strong>Heapify</strong></td>
+                    <td>O(log n)</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- N-ARY TREE SECTION -->
+        <div id="nary" class="section">
+            <h2>🌴 N-ary Tree</h2>
+
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>An <strong>N-ary Tree</strong> is a tree where each node can have <span class="highlight">up to N children</span>. Unlike binary trees (max 2 children), N-ary trees are more flexible.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>N-ary Tree Example (N=3)</h4>
+                <div class="tree-visual">
+<pre>
+         1
+      / | \
+     2  3  4
+    /|  |  |\
+   5 6  7  8 9
+</pre>
+                </div>
+            </div>
+
+            <div class="code-label">Python - N-ary Tree Implementation</div>
+            <div class="code-block">class NaryNode:
+    def __init__(self, val):
+        self.val = val
+        self.children = []  # List of children
+
+class NaryTree:
+    def __init__(self, root=None):
+        self.root = root
+    
+    def preorder(self, node):
+        """
+        Preorder: Root -> Children
+        Time: O(n)
+        """
+        if not node:
+            return []
+        
+        result = [node.val]
+        for child in node.children:
+            result.extend(self.preorder(child))
+        
+        return result
+    
+    def postorder(self, node):
+        """
+        Postorder: Children -> Root
+        """
+        if not node:
+            return []
+        
+        result = []
+        for child in node.children:
+            result.extend(self.postorder(child))
+        result.append(node.val)
+        
+        return result
+    
+    def level_order(self, root):
+        """BFS traversal"""
+        if not root:
+            return []
+        
+        from collections import deque
+        result = []
+        queue = deque([root])
+        
+        while queue:
+            node = queue.popleft()
+            result.append(node.val)
+            
+            for child in node.children:
+                queue.append(child)
+        
+        return result
+    
+    def max_depth(self, node):
+        """Find maximum depth"""
+        if not node:
+            return 0
+        
+        if not node.children:
+            return 1
+        
+        max_child_depth = max(self.max_depth(child) 
+                             for child in node.children)
+        return 1 + max_child_depth
+
+# Build tree
+root = NaryNode(1)
+root.children = [NaryNode(2), NaryNode(3), NaryNode(4)]
+root.children[0].children = [NaryNode(5), NaryNode(6)]
+root.children[1].children = [NaryNode(7)]
+root.children[2].children = [NaryNode(8), NaryNode(9)]
+
+tree = NaryTree(root)
+print("Preorder:", tree.preorder(root))      # [1,2,5,6,3,7,4,8,9]
+print("Postorder:", tree.postorder(root))    # [5,6,2,7,3,8,9,4,1]
+print("Level order:", tree.level_order(root)) # [1,2,3,4,5,6,7,8,9]
+print("Max depth:", tree.max_depth(root))    # 3</div>
+
+            <h3>N-ary Tree Applications</h3>
+
+            <div class="concept-box">
+                <ul>
+                    <li><strong>File Systems:</strong> Directories can have multiple files/subdirectories</li>
+                    <li><strong>Organization Charts:</strong> Manager with multiple direct reports</li>
+                    <li><strong>DOM Tree:</strong> HTML elements with multiple children</li>
+                    <li><strong>Game Trees:</strong> Move possibilities in games</li>
+                    <li><strong>XML/JSON Parsing:</strong> Nested structures</li>
+                    <li><strong>Compiler AST:</strong> Abstract syntax trees</li>
+                </ul>
+            </div>
+
+            <div class="code-label">Python - N-ary Tree Problems</div>
+            <div class="code-block">def diameter(root):
+    """
+    Find diameter (longest path between any two nodes)
+    """
+    max_diameter = [0]
+    
+    def height(node):
+        if not node:
+            return 0
+        
+        # Get heights of all children
+        heights = [height(child) for child in node.children]
+        
+        # Diameter through this node
+        if len(heights) >= 2:
+            # Two tallest subtrees
+            heights.sort(reverse=True)
+            diameter_through_node = heights[0] + heights[1]
+            max_diameter[0] = max(max_diameter[0], diameter_through_node)
+        
+        return 1 + (max(heights) if heights else 0)
+    
+    height(root)
+    return max_diameter[0]
+
+def serialize(root):
+    """Serialize N-ary tree to string"""
+    if not root:
+        return ""
+    
+    result = [str(root.val)]
+    result.append(str(len(root.children)))
+    
+    for child in root.children:
+        result.append(serialize(child))
+    
+    return ",".join(result)
+
+def count_nodes(root):
+    """Count total nodes in N-ary tree"""
+    if not root:
+        return 0
+    
+    count = 1
+    for child in root.children:
+        count += count_nodes(child)
+    
+    return count</div>
+        </div>
+
+        <!-- INTERACTIVE PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Interactive Tree Visualizer</h2>
+
+            <div class="interactive-demo">
+                <h3>Binary Search Tree Builder</h3>
+                <p>Build your own BST and see it visualized!</p>
+
+                <div class="demo-controls">
+                    <input type="number" id="bstValue" placeholder="Value" min="1" max="99">
+                    <button class="demo-btn" onclick="insertBST()">Insert</button>
+                    <button class="demo-btn" onclick="searchBST()">Search</button>
+                    <button class="demo-btn" onclick="deleteBST()">Delete</button>
+                    <button class="demo-btn danger" onclick="clearBST()">Clear</button>
+                </div>
+
+                <div class="canvas-container">
+                    <canvas id="bstCanvas" width="600" height="400"></canvas>
+                </div>
+
+                <div id="output">Enter a value and click Insert to build your BST!</div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3>Heap Operations</h3>
+
+                <div class="demo-controls">
+                    <input type="number" id="heapValue" placeholder="Value" min="1" max="99">
+                    <button class="demo-btn" onclick="insertHeap()">Insert (Min Heap)</button>
+                    <button class="demo-btn" onclick="extractMin()">Extract Min</button>
+                    <button class="demo-btn danger" onclick="clearHeap()">Clear</button>
+                </div>
+
+                <div id="heapOutput">Heap: []</div>
+            </div>
+
+            <h3>Key Takeaways</h3>
+
+            <div class="key-point">
+                <strong>Remember:</strong>
+                <ul>
+                    <li><strong>Binary Tree:</strong> Max 2 children, no ordering</li>
+                    <li><strong>BST:</strong> Ordered (left < root < right), O(log n) in balanced tree</li>
+                    <li><strong>AVL:</strong> Self-balancing BST, guaranteed O(log n)</li>
+                    <li><strong>Trie:</strong> Prefix tree for strings, O(m) operations</li>
+                    <li><strong>Heap:</strong> Complete tree, O(1) min/max access, priority queue</li>
+                    <li><strong>N-ary:</strong> N children per node, file systems</li>
+                </ul>
+            </div>
+
+            <div class="concept-box">
+                <h4>Practice Problems:</h4>
+                <ul>
+                    <li>✅ Implement all tree traversals (inorder, preorder, postorder, level-order)</li>
+                    <li>✅ Validate BST</li>
+                    <li>✅ Find lowest common ancestor</li>
+                    <li>✅ Check if tree is balanced</li>
+                    <li>✅ Serialize and deserialize tree</li>
+                    <li>✅ Build tree from traversals</li>
+                    <li>✅ Find kth smallest in BST</li>
+                    <li>✅ Implement trie with prefix search</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            const buttons = document.querySelectorAll('.nav-btn');
+            
+            sections.forEach(section => section.classList.remove('active'));
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // BST Implementation
+        class TreeNode {
+            constructor(val) {
+                this.val = val;
+                this.left = null;
+                this.right = null;
+            }
+        }
+
+        let bstRoot = null;
+
+        function insertBST() {
+            const val = parseInt(document.getElementById('bstValue').value);
+            if (isNaN(val)) {
+                updateOutput('Please enter a valid number!');
+                return;
+            }
+
+            if (!bstRoot) {
+                bstRoot = new TreeNode(val);
+            } else {
+                insertNode(bstRoot, val);
+            }
+
+            drawBST();
+            updateOutput(`Inserted ${val} into BST`);
+            document.getElementById('bstValue').value = '';
+        }
+
+        function insertNode(node, val) {
+            if (val < node.val) {
+                if (!node.left) {
+                    node.left = new TreeNode(val);
+                } else {
+                    insertNode(node.left, val);
+                }
+            } else if (val > node.val) {
+                if (!node.right) {
+                    node.right = new TreeNode(val);
+                } else {
+                    insertNode(node.right, val);
+                }
+            }
+        }
+
+        function searchBST() {
+            const val = parseInt(document.getElementById('bstValue').value);
+            if (isNaN(val)) {
+                updateOutput('Please enter a valid number!');
+                return;
+            }
+
+            const found = search(bstRoot, val);
+            updateOutput(found ? `Found ${val} in BST!` : `${val} not found in BST`);
+        }
+
+        function search(node, val) {
+            if (!node) return false;
+            if (node.val === val) return true;
+            if (val < node.val) return search(node.left, val);
+            return search(node.right, val);
+        }
+
+        function deleteBST() {
+            const val = parseInt(document.getElementById('bstValue').value);
+            if (isNaN(val)) {
+                updateOutput('Please enter a valid number!');
+                return;
+            }
+
+            bstRoot = deleteNode(bstRoot, val);
+            drawBST();
+            updateOutput(`Deleted ${val} from BST (if it existed)`);
+        }
+
+        function deleteNode(node, val) {
+            if (!node) return null;
+
+            if (val < node.val) {
+                node.left = deleteNode(node.left, val);
+            } else if (val > node.val) {
+                node.right = deleteNode(node.right, val);
+            } else {
+                if (!node.left) return node.right;
+                if (!node.right) return node.left;
+
+                let minNode = findMin(node.right);
+                node.val = minNode.val;
+                node.right = deleteNode(node.right, minNode.val);
+            }
+            return node;
+        }
+
+        function findMin(node) {
+            while (node.left) node = node.left;
+            return node;
+        }
+
+        function clearBST() {
+            bstRoot = null;
+            drawBST();
+            updateOutput('BST cleared!');
+        }
+
+        function drawBST() {
+            const canvas = document.getElementById('bstCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!bstRoot) {
+                ctx.fillStyle = '#999';
+                ctx.font = '16px Arial';
+                ctx.fillText('Empty BST - Insert nodes to see tree', 180, 200);
+                return;
+            }
+
+            drawNode(ctx, bstRoot, canvas.width / 2, 30, canvas.width / 4);
+        }
+
+        function drawNode(ctx, node, x, y, offsetX) {
+            if (!node) return;
+
+            // Draw edges first
+            if (node.left) {
+                ctx.strokeStyle = '#2e7d32';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x - offsetX, y + 60);
+                ctx.stroke();
+                drawNode(ctx, node.left, x - offsetX, y + 60, offsetX / 2);
+            }
+
+            if (node.right) {
+                ctx.strokeStyle = '#2e7d32';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + offsetX, y + 60);
+                ctx.stroke();
+                drawNode(ctx, node.right, x + offsetX, y + 60, offsetX / 2);
+            }
+
+            // Draw node
+            ctx.fillStyle = '#66bb6a';
+            ctx.beginPath();
+            ctx.arc(x, y, 20, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.strokeStyle = '#2e7d32';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw value
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(node.val, x, y);
+        }
+
+        function updateOutput(message) {
+            document.getElementById('output').innerHTML = `<strong>Status:</strong> ${message}`;
+        }
+
+        // Heap Implementation
+        let heap = [];
+
+        function insertHeap() {
+            const val = parseInt(document.getElementById('heapValue').value);
+            if (isNaN(val)) {
+                document.getElementById('heapOutput').innerHTML = 
+                    '<span style="color: #f44336;">Please enter a valid number!</span>';
+                return;
+            }
+
+            heap.push(val);
+            bubbleUp(heap.length - 1);
+            displayHeap();
+            document.getElementById('heapValue').value = '';
+        }
+
+        function bubbleUp(index) {
+            if (index === 0) return;
+
+            const parentIndex = Math.floor((index - 1) / 2);
+            if (heap[index] < heap[parentIndex]) {
+                [heap[index], heap[parentIndex]] = [heap[parentIndex], heap[index]];
+                bubbleUp(parentIndex);
+            }
+        }
+
+        function extractMin() {
+            if (heap.length === 0) {
+                document.getElementById('heapOutput').innerHTML = 
+                    '<span style="color: #f44336;">Heap is empty!</span>';
+                return;
+            }
+
+            const min = heap[0];
+            heap[0] = heap[heap.length - 1];
+            heap.pop();
+            if (heap.length > 0) {
+                bubbleDown(0);
+            }
+            
+            document.getElementById('heapOutput').innerHTML = 
+                `<strong>Extracted Min:</strong> ${min}<br><strong>Heap:</strong> [${heap.join(', ')}]`;
+        }
+
+        function bubbleDown(index) {
+            const leftChild = 2 * index + 1;
+            const rightChild = 2 * index + 2;
+            let smallest = index;
+
+            if (leftChild < heap.length && heap[leftChild] < heap[smallest]) {
+                smallest = leftChild;
+            }
+
+            if (rightChild < heap.length && heap[rightChild] < heap[smallest]) {
+                smallest = rightChild;
+            }
+
+            if (smallest !== index) {
+                [heap[index], heap[smallest]] = [heap[smallest], heap[index]];
+                bubbleDown(smallest);
+            }
+        }
+
+        function clearHeap() {
+            heap = [];
+            displayHeap();
+        }
+
+        function displayHeap() {
+            document.getElementById('heapOutput').innerHTML = 
+                `<strong>Heap:</strong> [${heap.join(', ')}]<br>` +
+                `<strong>Min:</strong> ${heap.length > 0 ? heap[0] : 'N/A'}`;
+        }
+
+        // Initialize
+        drawBST();
+        displayHeap();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Concepts Checklist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            padding: 20px;
+        }
+
+        .topic {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .topic:hover {
+            background: #f0f0f0;
+        }
+
+        .topic-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #667eea;
+            flex-shrink: 0;
+        }
+
+        .topic-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .subtopics {
+            margin-left: 36px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .subtopic {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .subtopic:hover {
+            background: #e8e8e8;
+        }
+
+        .subtopic-name {
+            color: #555;
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+
+        .application {
+            margin-top: 15px;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe6cc 100%);
+            border-left: 5px solid #ff9800;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+
+        .application-label {
+            font-weight: bold;
+            color: #e65100;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+            display: block;
+        }
+
+        .app-example {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+        }
+
+        .app-title {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .app-description {
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .app-entities {
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 8px;
+            font-size: 0.9em;
+        }
+
+        .entity-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .entity-list {
+            color: #666;
+            margin-left: 15px;
+        }
+
+        .checked {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .language-note {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #2196f3;
+            font-style: italic;
+            color: #1565c0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 DSA Mastery Checklist</h1>
+        <p class="subtitle">Detailed Real-World Applications with Entities & Implementation Details</p>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill">0%</div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">📊 Fundamentals</div>
+            <div class="section-content">
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="arrays">
+                        <span class="topic-name">Arrays</span>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">📸 Instagram Image Filters</div>
+                            <div class="app-description">
+                                When you upload a photo to Instagram and apply a filter, the image is stored as a 2D array where each cell represents a pixel with RGB values. The filter algorithm modifies each pixel's color values in the array.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Image object with pixels array [1080][1920]<br>
+                                    • Each pixel contains [R, G, B] values (0-255)<br>
+                                    • Filter class that applies transformations (Brightness, Contrast, Saturation)<br>
+                                    • Processing: Iterate through array, modify each pixel's RGB values
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🛒 Amazon Shopping Cart</div>
+                            <div class="app-description">
+                                Your shopping cart stores multiple products in a dynamic array. Each element contains product details, and the cart needs to support adding, removing, and updating quantities efficiently.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Cart object containing array of CartItem objects<br>
+                                    • CartItem: {productId, name, price, quantity, image}<br>
+                                    • Operations: add(item), remove(index), updateQuantity(index, qty)<br>
+                                    • Calculation: Total = sum of (price × quantity) for all items
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🎮 Tic-Tac-Toe Game Board</div>
+                            <div class="app-description">
+                                The 3×3 game grid is represented as a 2D array where each cell can be empty, 'X', or 'O'. The game checks winning conditions by scanning rows, columns, and diagonals.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Board: 2D array [3][3] initialized with null/empty values<br>
+                                    • Cell states: Empty, Player1 ('X'), Player2 ('O')<br>
+                                    • Win checker: Scans rows, columns, diagonals for 3 matching symbols<br>
+                                    • Move validation: Check if board[row][col] is empty before placing
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Arrays work the same way in all languages - Python uses lists, Java/C++ use arrays, JavaScript uses arrays. The concept of storing data in contiguous memory with index-based access remains identical.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="strings">
+                        <span class="topic-name">Strings</span>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">💬 WhatsApp Message Search</div>
+                            <div class="app-description">
+                                When you search for a keyword in your chat history, WhatsApp uses string matching algorithms to find all messages containing that word, highlighting matches and showing context.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Message object: {messageId, senderId, text, timestamp}<br>
+                                    • Search query string entered by user<br>
+                                    • Pattern matching algorithm (KMP or Boyer-Moore) to find substring<br>
+                                    • Results: Array of matching messages with highlighted search terms<br>
+                                    • Case-insensitive comparison: Convert both to lowercase before matching
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🔗 URL Shortener (bit.ly, tinyurl)</div>
+                            <div class="app-description">
+                                Long URLs are converted to short codes using string hashing. When someone clicks the short link, the system looks up the original URL from the database using the short code as a key.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Original URL string (e.g., "https://www.example.com/very/long/path...")<br>
+                                    • Hash function generates unique 6-7 character code<br>
+                                    • Database mapping: {shortCode: "abc123", originalUrl: "..."}<br>
+                                    • Character set: [A-Z, a-z, 0-9] = 62 possible characters<br>
+                                    • Collision handling: If code exists, generate new one
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> String operations (search, split, concatenate) work identically across all languages. Whether you use Python's .find(), Java's .indexOf(), or JavaScript's .includes(), the underlying algorithm is the same.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="bit">
+                        <span class="topic-name">Bit Manipulation</span>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">📱 Android App Permissions System</div>
+                            <div class="app-description">
+                                Android stores app permissions as bits in a single integer. Each bit represents a permission (Camera=1, Location=2, Contacts=4, etc.). This allows checking multiple permissions efficiently using bitwise operations.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Permission constants: CAMERA = 1 (001), LOCATION = 2 (010), CONTACTS = 4 (100)<br>
+                                    • User's granted permissions stored as single integer (e.g., 5 = 101 = Camera + Contacts)<br>
+                                    • Check permission: (userPermissions & CAMERA) != 0<br>
+                                    • Grant permission: userPermissions |= LOCATION<br>
+                                    • Revoke permission: userPermissions &= ~CAMERA<br>
+                                    • Benefits: Store 32 permissions in just 4 bytes of memory
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🔐 WhatsApp End-to-End Encryption</div>
+                            <div class="app-description">
+                                Messages are encrypted using XOR operations with encryption keys. Each character in your message is XORed with the key, making it unreadable. Only the recipient with the same key can decrypt it.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Original message: "Hello" → Binary representation<br>
+                                    • Encryption key: Random binary string of same length<br>
+                                    • Encryption: encryptedMessage = originalMessage XOR key<br>
+                                    • Decryption: originalMessage = encryptedMessage XOR key<br>
+                                    • Property: XOR twice with same key returns original (A ⊕ B ⊕ B = A)<br>
+                                    • Transmission: Send encrypted bits over network
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Bitwise operators (&, |, ^, ~, <<, >>) work identically in all programming languages. The binary representation and operations are hardware-level, making them language-independent.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="hashmap">
+                        <span class="topic-name">HashMap / Dictionary</span>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">📞 Phone Contact Lookup</div>
+                            <div class="app-description">
+                                Your phone stores contacts in a HashMap where the name is the key and contact details are the value. When you type a name, it instantly retrieves the number without scanning through thousands of contacts.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • HashMap structure: Key = contact name (string), Value = Contact object<br>
+                                    • Contact object: {phoneNumber, email, address, photo}<br>
+                                    • Hash function: Converts name to array index (e.g., "John" → 1234)<br>
+                                    • Lookup: O(1) time - contacts.get("John Smith") instantly returns details<br>
+                                    • Collision handling: Linked list or probing when two names hash to same index<br>
+                                    • Searching 10,000 contacts takes same time as searching 10
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🚗 Uber Driver Matching</div>
+                            <div class="app-description">
+                                When you request a ride, Uber uses HashMap to quickly find nearby drivers. Driver IDs are keys, and their current location/status are values. This enables instant matching without checking every driver in the city.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Active drivers HashMap: {driverId: driverStatus}<br>
+                                    • DriverStatus object: {currentLocation, isAvailable, rating, vehicleType}<br>
+                                    • Area-based hashing: Divide city into grid cells, hash by cell ID<br>
+                                    • Query: "Find drivers near (lat: 12.9716, lon: 77.5946)"<br>
+                                    • Result: Instantly get drivers in that grid cell from HashMap<br>
+                                    • Without HashMap: Would need to check distance to ALL drivers (slow)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> HashMap = Python dict, Java HashMap, JavaScript Object/Map, C++ unordered_map. The concept of key-value pairs with O(1) lookup is universal across all languages.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">🔍 Searching & Sorting</div>
+            <div class="section-content">
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="searching">
+                        <span class="topic-name">Searching Algorithms</span>
+                    </div>
+                    <div class="subtopics">
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="linear-search">
+                            <span class="subtopic-name">Linear Search</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="binary-search">
+                            <span class="subtopic-name">Binary Search</span>
+                        </div>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">🔍 Ctrl+F in Web Browser (Linear Search)</div>
+                            <div class="app-description">
+                                When you press Ctrl+F and search for a word on a webpage, the browser scans through every word sequentially from start to end, highlighting all matches. It can't skip words because text isn't sorted.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Page content: Array of text nodes (unsorted)<br>
+                                    • Search query: User's input string (e.g., "privacy")<br>
+                                    • Algorithm: for each word in page: if word contains query, highlight<br>
+                                    • Time complexity: O(n) - checks every word<br>
+                                    • Match positions: Store indices [120, 450, 890] for "next" button<br>
+                                    • Use case: Unsorted data requires checking every element
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">📚 Dictionary Word Lookup (Binary Search)</div>
+                            <div class="app-description">
+                                Physical or digital dictionaries use binary search because words are alphabetically sorted. Instead of checking every word, you open the middle, determine if your word is before or after, and eliminate half the dictionary each time.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Dictionary: Sorted array of 50,000 words<br>
+                                    • Search target: "persistent"<br>
+                                    • Step 1: Check middle word (25,000th word) - "meadow"<br>
+                                    • "persistent" > "meadow" → Search right half<br>
+                                    • Step 2: Check middle of right half (37,500th) - "quest"<br>
+                                    • "persistent" < "quest" → Search left half<br>
+                                    • Repeat: Finds word in just 16 comparisons vs 50,000 in linear<br>
+                                    • Time complexity: O(log n) - exponentially faster
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Searching algorithms work identically in all languages. The logic of comparing elements sequentially (linear) or dividing search space (binary) is fundamental computer science, not language-specific.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="sorting">
+                        <span class="topic-name">Sorting Algorithms</span>
+                    </div>
+                    <div class="subtopics">
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="insertion-sort">
+                            <span class="subtopic-name">Insertion Sort</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="bubble-sort">
+                            <span class="subtopic-name">Bubble Sort</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="selection-sort">
+                            <span class="subtopic-name">Selection Sort</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="merge-sort">
+                            <span class="subtopic-name">Merge Sort</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="quick-sort">
+                            <span class="subtopic-name">Quick Sort</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="radix-sort">
+                            <span class="subtopic-name">Radix Sort</span>
+                        </div>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">🛒 Amazon "Sort by Price" (QuickSort)</div>
+                            <div class="app-description">
+                                When you click "Price: Low to High", Amazon uses QuickSort on the product array. It's fast for large datasets and sorts millions of products efficiently.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Product array: [{name: "Mouse", price: 599}, {name: "Keyboard", price: 1299}, ...]<br>
+                                    • Sort key: price field<br>
+                                    • QuickSort: Pick pivot (e.g., ₹999), partition into lower/higher<br>
+                                    • Recursively sort left partition (< ₹999) and right (> ₹999)<br>
+                                    • Why QuickSort: O(n log n) average, works well with large datasets<br>
+                                    • Result: 10,000 products sorted in milliseconds
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">📧 Gmail Sort by Date (MergeSort)</div>
+                            <div class="app-description">
+                                Gmail inbox uses MergeSort to sort emails by timestamp. MergeSort is stable (maintains order of equal elements) and guaranteed O(n log n) performance.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Email array: [{subject: "Meeting", date: "2024-12-19", ...}, ...]<br>
+                                    • Sort key: timestamp (epoch time in milliseconds)<br>
+                                    • MergeSort: Divide emails into halves recursively<br>
+                                    • Merge step: Combine two sorted halves by comparing timestamps<br>
+                                    • Stability: Emails with same timestamp keep original order<br>
+                                    • Used in databases, file systems for guaranteed performance
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🎮 Gaming Leaderboard (InsertionSort for small updates)</div>
+                            <div class="app-description">
+                                When few players join/leave, games use InsertionSort to quickly update rankings. It's efficient for nearly-sorted data.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Leaderboard: Already sorted array of players [{name, score}, ...]<br>
+                                    • New player joins with score 8500<br>
+                                    • InsertionSort: Find correct position by comparing with neighbors<br>
+                                    • Insert at position: Shift elements right, place new player<br>
+                                    • Efficiency: O(n) for nearly sorted, better than QuickSort for small changes<br>
+                                    • Real-time update: Leaderboard updates instantly
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Sorting algorithms are mathematical concepts independent of programming language. QuickSort, MergeSort logic is identical whether implemented in Python, Java, C++, or any language.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">🎯 Algorithm Techniques</div>
+            <div class="section-content">
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="two-pointers">
+                        <span class="topic-name">Two Pointers</span>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">🔤 Palindrome Checker (MADAM, RACECAR)</div>
+                            <div class="app-description">
+                                Checking if a word reads same forward and backward uses two pointers - one from start, one from end, moving towards center comparing characters.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Input string: "MALAYALAM"<br>
+                                    • Pointer 1 (left): Starts at index 0 → 'M'<br>
+                                    • Pointer 2 (right): Starts at index 8 → 'M'<br>
+                                    • Compare: if str[left] == str[right], move both pointers inward<br>
+                                    • Continue until pointers meet in middle<br>
+                                    • If all match → Palindrome, else → Not palindrome<br>
+                                    • Used in: Username validation, DNA sequence analysis
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🛒 Amazon Two Product Sum (Find pair = Budget)</div>
+                            <div class="app-description">
+                                Finding two products that together match your budget exactly uses two-pointer technique on sorted price array.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Sorted prices: [₹199, ₹299, ₹499, ₹799, ₹999, ₹1299]<br>
+                                    • Target budget: ₹1298<br>
+                                    • Left pointer: Start at ₹199, Right pointer: Start at ₹1299<br>
+                                    • Sum = ₹199 + ₹1299 = ₹1498 > ₹1298 → Move right pointer left<br>
+                                    • Sum = ₹199 + ₹999 = ₹1198 < ₹1298 → Move left pointer right<br>
+                                    • Sum = ₹299 + ₹999 = ₹1298 ✓ Found pair!<br>
+                                    • Time: O(n) single pass, Space: O(1) no extra memory
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Two pointer technique is a logical pattern, not language-specific. Works with any array/list structure in any programming language.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="prefix-sum">
+                        <span class="topic-name">Prefix Sum</span>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">💰 Zerodha Stock Portfolio - Total Investment Between Dates</div>
+                            <div class="app-description">
+                                Calculate total money invested between two dates without summing every day individually. Prefix sum precomputes cumulative totals for instant range queries.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Daily investments: [₹5000, ₹3000, ₹0, ₹7000, ₹2000, ₹0, ₹4000]<br>
+                                    • Prefix sum array: [₹5000, ₹8000, ₹8000, ₹15000, ₹17000, ₹17000, ₹21000]<br>
+                                    • Query: Total invested from Day 3 to Day 6?<br>
+                                    • Answer: prefixSum[6] - prefixSum[2] = ₹21000 - ₹8000 = ₹13000<br>
+                                    • Benefit: Any range query in O(1) time instead of O(n) summation<br>
+                                    • Used in: Banking statements, analytics dashboards, stock market apps
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">📊 Excel SUM Formula - Range Calculation</div>
+                            <div class="app-description">
+                                When you do =SUM(A1:A100), Excel uses prefix sum internally for efficient calculation rather than adding 100 cells each time.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Cells A1-A100 with numbers: [10, 20, 15, 30, ...]<br>
+                                    • Excel maintains prefix sum: [10, 30, 45, 75, ...]<br>
+                                    • Formula =SUM(A10:A50) translates to: prefix[50] - prefix[9]<br>
+                                    • Update cell A25: Only recompute prefix[25] onwards<br>
+                                    • Instant calculation even for thousands of cells<br>
+                                    • Also used in: Google Sheets, database aggregation queries
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Prefix sum is a mathematical preprocessing technique. Implementation is identical across all languages - build cumulative array, then subtract for range queries.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="sliding-window">
+                        <span class="topic-name">Sliding Window</span>
+                    </div>
+                    <div class="subtopics">
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="fixed-window">
+                            <span class="subtopic-name">Fixed Window</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="dynamic-window">
+                            <span class="subtopic-name">Dynamic Window</span>
+                        </div>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">🎬 Netflix Watch Time - Last 7 Days Average (Fixed Window)</div>
+                            <div class="app-description">
+                                Calculating your average daily watch time for last 7 days uses fixed sliding window that moves one day at a time.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Daily minutes: [45, 120, 0, 90, 150, 60, 180, 75, 100, ...]<br>
+                                    • Window size: 7 days (fixed)<br>
+                                    • Day 1-7: Sum = 645 mins, Average = 92 mins/day<br>
+                                    • Slide window: Remove Day 1 (45), Add Day 8 (75)<br>
+                                    • New sum: 645 - 45 + 75 = 675 mins, Average = 96 mins/day<br>
+                                    • Efficiency: O(1) per slide instead of O(k) recalculation<br>
+                                    • Also used: Stock moving averages, weather temperature trends
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">💬 WhatsApp Longest Message Streak (Dynamic Window)</div>
+                            <div class="app-description">
+                                Finding longest consecutive days of messaging uses dynamic sliding window that expands/contracts based on activity.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Message activity: [1, 1, 0, 1, 1, 1, 1, 0, 1, 1] (1=messaged, 0=no message)<br>
+                                    • Window expands: When seeing 1, include in current streak<br>
+                                    • Window contracts: When seeing 0, reset window<br>
+                                    • Track: Current streak = 4, Max streak = 4<br>
+                                    • Result: Longest messaging streak is 4 consecutive days<br>
+                                    • Used in: Fitness apps (workout streaks), Duolingo (learning streaks)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🚗 Uber Surge Pricing - Traffic Analysis (Fixed Window)</div>
+                            <div class="app-description">
+                                Uber monitors ride requests in 10-minute windows to detect surge periods and adjust pricing dynamically.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Ride requests per minute: [5, 8, 12, 20, 25, 30, 35, 28, 15, 10, ...]<br>
+                                    • Window: Last 10 minutes (fixed)<br>
+                                    • Calculate: Average requests in window<br>
+                                    • Threshold: If average > 20 requests/min → Apply surge pricing<br>
+                                    • Slide window: Every minute, remove oldest, add newest<br>
+                                    • Real-time decision: Dynamically adjust prices based on demand
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Sliding window is an algorithmic pattern for sequential data. The concept of maintaining a moving subset works identically in any language.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="kadane">
+                        <span class="topic-name">Kadane's Algorithm</span>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">📈 Stock Trading - Best Buy/Sell Period</div>
+                            <div class="app-description">
+                                Finding the period with maximum profit from daily price changes uses Kadane's algorithm to identify best consecutive days for trading.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Daily price changes: [-₹50, +₹100, -₹30, +₹200, +₹150, -₹80, +₹90]<br>
+                                    • Kadane's tracks: Current sum and maximum sum found so far<br>
+                                    • Day 1: curr = -50, max = -50<br>
+                                    • Day 2: curr = -50+100 = 50, max = 50<br>
+                                    • Day 3: curr = 50-30 = 20, max = 50<br>
+                                    • Day 4-5: curr = 20+200+150 = 370, max = 370 ✓<br>
+                                    • Result: Best trading period is Day 2 to Day 5, profit = ₹420<br>
+                                    • Used in: Stock analysis apps, cryptocurrency trading platforms
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🏃 Fitness Tracker - Maximum Calorie Burn Period</div>
+                            <div class="app-description">
+                                Finding your best consecutive workout period with highest total calorie burn uses Kadane's algorithm.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Daily calories burned: [300, -100, 500, 400, -200, 350, 450]<br>
+                                    • (Negative means rest day/lower than baseline)<br>
+                                    • Kadane's finds: Maximum sum of consecutive days<br>
+                                    • Best period: Days 3-4-5-6-7 = 500+400+(-200)+350+450 = 1500 calories<br>
+                                    • Insight: "Your best workout streak burned 1500 calories over 5 days!"<br>
+                                    • Also used: Cricket scoring runs, business quarterly profits
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Kadane's algorithm is a dynamic programming technique. The logic of tracking current vs maximum sum is language-independent mathematics.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">📚 Data Structures - Linear</div>
+            <div class="section-content">
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="stack">
+                        <span class="topic-name">Stack</span>
+                    </div>
+                    <div class="subtopics">
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="normal-stack">
+                            <span class="subtopic-name">Normal Stack</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="monotonic-stack">
+                            <span class="subtopic-name">Monotonic Stack</span>
+                        </div>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">🌐 Browser Back Button (Chrome, Firefox)</div>
+                            <div class="app-description">
+                                Every webpage you visit gets pushed onto a stack. Clicking back pops the current page and shows the previous one. This is classic LIFO (Last In, First Out) behavior.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • History stack: Empty initially<br>
+                                    • Visit google.com → Push onto stack: [google.com]<br>
+                                    • Visit youtube.com → Push: [google.com, youtube.com]<br>
+                                    • Visit netflix.com → Push: [google.com, youtube.com, netflix.com]<br>
+                                    • Click back → Pop netflix.com, show youtube.com<br>
+                                    • Click back → Pop youtube.com, show google.com<br>
+                                    • Forward button uses separate stack for re-visiting popped pages
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">↩️ Ctrl+Z Undo in Photoshop/Word/VS Code</div>
+                            <div class="app-description">
+                                Every action you perform is pushed onto an undo stack. Pressing Ctrl+Z pops the last action and reverses it. Ctrl+Y (redo) uses another stack.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Undo stack: Stores action history<br>
+                                    • Action: "Add text layer" → Push to stack<br>
+                                    • Action: "Apply blur filter" → Push to stack<br>
+                                    • Action: "Crop image" → Push to stack<br>
+                                    • Ctrl+Z: Pop "Crop image", reverse the crop operation<br>
+                                    • Ctrl+Z again: Pop "Apply blur", remove blur effect<br>
+                                    • Each popped action goes to redo stack for Ctrl+Y<br>
+                                    • Stack size limit: Usually 20-50 actions stored
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">✅ Code Editor Bracket Matching</div>
+                            <div class="app-description">
+                                IDEs check if brackets are balanced using stack. Opening brackets push, closing brackets pop. If stack is empty at end, code is valid.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Code: {[()]} → Valid, {[(])} → Invalid<br>
+                                    • Stack starts empty<br>
+                                    • See '{': Push '{'<br>
+                                    • See '[': Push '[' → Stack: ['{', '[']<br>
+                                    • See '(': Push '(' → Stack: ['{', '[', '(']<br>
+                                    • See ')': Pop '(' (matches) → Stack: ['{', '[']<br>
+                                    • See ']': Pop '[' (matches) → Stack: ['{']<br>
+                                    • See '}': Pop '{' (matches) → Stack: []<br>
+                                    • Stack empty = All brackets balanced ✓
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Stack is a fundamental data structure. Whether using Python list, Java Stack, or C++ stack, the LIFO principle and operations (push, pop, peek) are universal.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="queue">
+                        <span class="topic-name">Queue</span>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">🖨️ Printer Job Queue</div>
+                            <div class="app-description">
+                                When multiple people send print jobs, they're added to a queue and processed in order (FIFO - First In, First Out). First submitted job prints first.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Print queue: Empty initially<br>
+                                    • User A submits "Report.pdf" → Enqueue: [Report.pdf]<br>
+                                    • User B submits "Invoice.pdf" → Enqueue: [Report.pdf, Invoice.pdf]<br>
+                                    • User C submits "Letter.pdf" → Enqueue: [Report.pdf, Invoice.pdf, Letter.pdf]<br>
+                                    • Printer finishes Report.pdf → Dequeue, start Invoice.pdf<br>
+                                    • Queue operations: enqueue (add to back), dequeue (remove from front)<br>
+                                    • Priority queue variation: Urgent jobs can jump queue
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🎟️ BookMyShow Ticket Booking Queue</div>
+                            <div class="app-description">
+                                During high-demand movie releases, users are placed in a queue. First person to click "Book" gets served first (FIFO). Server processes requests sequentially.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Booking queue: Handles concurrent users<br>
+                                    • User 1 enters at 12:00:01 → Position 1<br>
+                                    • User 2 enters at 12:00:02 → Position 2<br>
+                                    • 1000 users join within seconds → Queue: [User1, User2, ..., User1000]<br>
+                                    • Server processes: Dequeue User1, allocate seats, confirm booking<br>
+                                    • Then dequeue User2, and so on<br>
+                                    • Queue prevents: Server overload, unfair booking, simultaneous seat allocation<br>
+                                    • Also used: E-commerce flash sales (Amazon, Flipkart)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">☎️ Customer Service Call Center</div>
+                            <div class="app-description">
+                                When all agents are busy, incoming calls are placed in a queue with "Your call is important to us" message. First caller in queue gets next available agent.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Call queue: FIFO structure<br>
+                                    • Caller A joins at 2:00 PM → Queue position 1<br>
+                                    • Caller B joins at 2:01 PM → Queue position 2<br>
+                                    • Caller C joins at 2:02 PM → Queue position 3<br>
+                                    • Agent becomes free → Dequeue Caller A, connect call<br>
+                                    • Estimated wait time: Based on queue length and average call duration<br>
+                                    • Priority queue version: Premium customers get higher priority
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Queue is a FIFO data structure. Implementation may vary (Python collections.deque, Java Queue, C++ queue) but concept remains identical - enqueue at rear, dequeue from front.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="recursion">
+                        <span class="topic-name">Recursion & Backtracking</span>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">📁 Windows File Explorer - Folder Traversal</div>
+                            <div class="app-description">
+                                When you search for a file in C:\, the system recursively explores each folder and its subfolders until finding all matches. Each folder may contain more folders (recursive structure).
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Start: C:\ (root folder)<br>
+                                    • Check files in C:\, then recursively enter C:\Users\<br>
+                                    • In C:\Users\, check files, then enter C:\Users\Documents\<br>
+                                    • Recursive call: searchFolder(subfolder) for each subfolder found<br>
+                                    • Base case: If folder has no subfolders, return to parent<br>
+                                    • Call stack: C:\ → Users → Documents → Pictures → ...<br>
+                                    • Collects all files meeting search criteria across entire directory tree
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🧩 Sudoku Solver Mobile Game</div>
+                            <div class="app-description">
+                                Sudoku solving apps use backtracking recursion. Try a number, recursively solve rest. If stuck, backtrack (undo) and try different number.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • 9x9 grid with some numbers filled, some empty<br>
+                                    • Find first empty cell → Try numbers 1-9<br>
+                                    • Try 1: Check if valid (row/column/box rules), if yes → Recursively solve next cell<br>
+                                    • If recursion succeeds → Solution found!<br>
+                                    • If recursion fails → Backtrack, try 2<br>
+                                    • Continue trying 3, 4, 5... until valid solution found<br>
+                                    • Decision tree: Each cell branches into 9 possibilities<br>
+                                    • Backtracking prunes invalid paths early
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🗺️ Google Maps - Alternate Route Finding</div>
+                            <div class="app-description">
+                                Finding all possible paths between two locations uses recursive exploration. At each intersection, recursively explore each road until reaching destination.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Current location: Point A<br>
+                                    • Destination: Point B<br>
+                                    • At intersection: 3 roads available (North, East, South)<br>
+                                    • Recursively explore: findPath(North), findPath(East), findPath(South)<br>
+                                    • Each recursive call explores further until reaching B or dead end<br>
+                                    • Backtracking: If dead end, return and try different route<br>
+                                    • Collects all valid paths, ranks by distance/time<br>
+                                    • Shows top 3 routes to user
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Recursion is a programming paradigm where function calls itself. Backtracking is an algorithm technique. Both concepts work identically in all languages with call stack support.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="linked-list">
+                        <span class="topic-name">Linked List</span>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">🎵 Spotify Playlist Implementation</div>
+                            <div class="app-description">
+                                Your playlists use linked lists where each song node points to the next song. Easy to add/remove/reorder songs without shifting entire array like in fixed lists.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Node structure: {songData, nextPointer}<br>
+                                    • Song1 → Song2 → Song3 → Song4 → null<br>
+                                    • Add song: Create new node, update pointers (O(1) at head)<br>
+                                    • Remove song3: Song2.next = Song4 (bypass Song3)<br>
+                                    • Reorder: Just change pointers, no data movement<br>
+                                    • Shuffle: Randomly reassign next pointers<br>
+                                    • Benefits: Dynamic size, efficient insertion/deletion<br>
+                                    • Drawback: Can't directly jump to song 50 (must traverse from head)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">⛓️ Blockchain - Bitcoin/Ethereum Transactions</div>
+                            <div class="app-description">
+                                Blockchain is literally a linked list of blocks. Each block contains transactions and a pointer (hash) to previous block. Tampering any block breaks the chain.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Block structure: {transactions[], timestamp, previousBlockHash, nonce}<br>
+                                    • Genesis Block (Block0) → Block1 → Block2 → Block3 → ...<br>
+                                    • Block1.previousHash = hash(Block0)<br>
+                                    • Block2.previousHash = hash(Block1)<br>
+                                    • Chain immutability: Changing Block1 changes its hash<br>
+                                    • Block2.previousHash won't match → Chain broken, tampering detected<br>
+                                    • Distributed ledger: Everyone has copy of entire linked list<br>
+                                    • Consensus required to add new block to chain
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">💾 Operating System Memory Management</div>
+                            <div class="app-description">
+                                Free memory blocks in RAM are maintained as linked list. When program requests memory, OS traverses list to find suitable block, allocates it, updates pointers.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Free list: Block1(100KB) → Block2(50KB) → Block3(200KB) → null<br>
+                                    • Program requests 75KB<br>
+                                    • OS traverses: Block1(100KB) is sufficient<br>
+                                    • Split Block1: Allocate 75KB, remaining 25KB stays in list<br>
+                                    • Updated list: Block1(25KB) → Block2(50KB) → Block3(200KB) → null<br>
+                                    • Program frees memory: Add block back to linked list<br>
+                                    • Coalescing: Merge adjacent free blocks to prevent fragmentation
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Linked lists are node-based data structures. Whether you implement with classes (Python/Java) or structs with pointers (C/C++), the concept of nodes pointing to next nodes is universal.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">🧮 Dynamic Programming</div>
+            <div class="section-content">
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="dp">
+                        <span class="topic-name">Dynamic Programming</span>
+                    </div>
+                    <div class="subtopics">
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="memoization">
+                            <span class="subtopic-name">Memoization (Top-Down)</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="tabulation">
+                            <span class="subtopic-name">Tabulation (Bottom-Up)</span>
+                        </div>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">🗺️ Google Maps - Shortest Path Calculation</div>
+                            <div class="app-description">
+                                Finding shortest route uses DP to break problem into subproblems. Shortest path to destination = shortest path to intermediate city + distance from that city to destination.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Cities: Bangalore → Mysore → Ooty<br>
+                                    • DP state: dp[city] = shortest distance to reach this city<br>
+                                    • dp[Bangalore] = 0 (starting point)<br>
+                                    • dp[Mysore] = min(all paths to Mysore)<br>
+                                    • dp[Ooty] = dp[Mysore] + distance(Mysore→Ooty)<br>
+                                    • Memoization: Store calculated distances to avoid recalculating<br>
+                                    • Optimization: Considers traffic, tolls, road conditions<br>
+                                    • Result: Best route with minimum time/distance<br>
+                                    • Also used: Flight booking (cheapest route with layovers)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🏦 ATM Cash Withdrawal - Minimum Notes</div>
+                            <div class="app-description">
+                                When you withdraw ₹3700, ATM calculates minimum number of notes using DP. Available denominations: ₹2000, ₹500, ₹200, ₹100.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Target amount: ₹3700<br>
+                                    • Notes available: [₹2000, ₹500, ₹200, ₹100]<br>
+                                    • DP table: dp[amount] = minimum notes needed for that amount<br>
+                                    • dp[0] = 0 (base case: no notes for ₹0)<br>
+                                    • dp[100] = 1, dp[200] = 1, dp[500] = 1, dp[2000] = 1<br>
+                                    • dp[3700] = min(dp[3700-2000]+1, dp[3700-500]+1, ...)<br>
+                                    • Solution: 1×₹2000 + 3×₹500 + 2×₹100 = 6 notes<br>
+                                    • Without DP: Would try all combinations (exponential time)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🎒 Travel Packing - Knapsack Problem</div>
+                            <div class="app-description">
+                                Packing maximum value items within luggage weight limit (20kg) uses 0/1 knapsack DP. Each item can be taken or left (binary choice).
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Items: Laptop(3kg,₹50k), Camera(2kg,₹30k), Clothes(5kg,₹5k), Books(4kg,₹2k)<br>
+                                    • Bag capacity: 20kg max<br>
+                                    • DP table: dp[item][weight] = max value achievable<br>
+                                    • For each item: Include it or exclude it<br>
+                                    • If include: dp[i][w] = value[i] + dp[i-1][w-weight[i]]<br>
+                                    • If exclude: dp[i][w] = dp[i-1][w]<br>
+                                    • Take maximum of both options<br>
+                                    • Result: Optimal combination within weight limit<br>
+                                    • Used in: Resource allocation, project selection, investment portfolios
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🎮 Video Game - Optimal Path/Strategy</div>
+                            <div class="app-description">
+                                Games like chess, tic-tac-toe use DP to calculate optimal moves. Each game state is evaluated and best move is chosen based on future consequences.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Game state: Current board configuration<br>
+                                    • DP/Memoization: Store evaluated positions to avoid recalculating<br>
+                                    • Minimax algorithm: Maximize your score, minimize opponent's score<br>
+                                    • For each possible move: Recursively evaluate future game states<br>
+                                    • Base case: Game over (win/loss/draw) → return score<br>
+                                    • Choose move with best evaluation score<br>
+                                    • Alpha-beta pruning: Skip branches that won't affect decision<br>
+                                    • Used in: Chess engines, Go AI, mobile puzzle games
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Dynamic Programming is an optimization technique that works by solving subproblems and storing results. The principle of optimal substructure and overlapping subproblems applies regardless of programming language.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">🌳 Trees</div>
+            <div class="section-content">
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="trees">
+                        <span class="topic-name">Tree Data Structures</span>
+                    </div>
+                    <div class="subtopics">
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="binary-tree">
+                            <span class="subtopic-name">Binary Tree</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="bst">
+                            <span class="subtopic-name">Binary Search Tree (BST)</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="avl">
+                            <span class="subtopic-name">AVL Tree</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="trie">
+                            <span class="subtopic-name">Trie</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="heap">
+                            <span class="subtopic-name">Heap (Max & Min)</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="priority-queue">
+                            <span class="subtopic-name">Priority Queue</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="n-ary">
+                            <span class="subtopic-name">N-ary Tree</span>
+                        </div>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">⌨️ Google Search Autocomplete (Trie)</div>
+                            <div class="app-description">
+                                When you type "face", Google instantly suggests "facebook", "face mask", "facetime". This uses Trie data structure for fast prefix-based search through billions of words.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Trie structure: Tree where each node represents a character<br>
+                                    • Root → f → a → c → e (multiple branches from 'e')<br>
+                                    • Branch 1: e → b → o → o → k (facebook)<br>
+                                    • Branch 2: e → t → i → m → e (facetime)<br>
+                                    • Branch 3: e → m → a → s → k (facemask)<br>
+                                    • Search "fac": Traverse root→f→a→c, return all words in subtree<br>
+                                    • Time complexity: O(m) where m = length of prefix<br>
+                                    • Space efficient: Common prefixes share nodes<br>
+                                    • Also used: T9 keyboard predictions, spell checkers, IP routing
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🏥 Hospital Emergency Room - Priority Queue (Min Heap)</div>
+                            <div class="app-description">
+                                ER patients treated based on severity, not arrival time. Critical patients (priority 1) treated before minor injuries (priority 5). Implemented using Min Heap.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Patient object: {name, severity (1-5), arrivalTime}<br>
+                                    • Min Heap: Root = most critical patient (lowest severity number)<br>
+                                    • Insert patient: Add to heap, bubble up based on priority<br>
+                                    • Patient A arrives: Severity 3 (moderate)<br>
+                                    • Patient B arrives: Severity 1 (critical) → Moves to top of heap<br>
+                                    • Patient C arrives: Severity 5 (minor) → Stays at bottom<br>
+                                    • Doctor free: Extract root (Patient B, severity 1), treat first<br>
+                                    • Heap restructures: Next critical patient becomes root<br>
+                                    • Operations: Insert O(log n), Extract-Min O(log n)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">📚 Database Indexing - Binary Search Tree (BST)</div>
+                            <div class="app-description">
+                                Databases use BST (or advanced variants like B-Trees) to index records. Enables fast search, insertion, deletion of millions of records by employee ID, product ID, etc.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Node structure: {employeeId, leftChild, rightChild}<br>
+                                    • BST property: Left child < Parent < Right child<br>
+                                    • Insert employee ID 500: Start at root, compare, go left/right<br>
+                                    • Search employee ID 750: O(log n) comparisons<br>
+                                    • Database with 1 million records: Only ~20 comparisons needed<br>
+                                    • Example tree: Root(500) → Left(300) → Right(700)<br>
+                                    • In-order traversal: Gives sorted employee IDs<br>
+                                    • Balancing: AVL/Red-Black trees prevent skewed trees<br>
+                                    • Real implementation: B-Trees (optimized for disk storage)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">📂 File System - N-ary Tree (Folders & Subfolders)</div>
+                            <div class="app-description">
+                                Your computer's file system is an N-ary tree. Each folder can contain multiple subfolders (children), creating hierarchical structure. Root is C:\ or / drive.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Node: Folder/File with name, type, size<br>
+                                    • C:\ (root) has children: [Users, Program Files, Windows]<br>
+                                    • Users has children: [John, Alice, Guest]<br>
+                                    • John has children: [Documents, Pictures, Downloads]<br>
+                                    • Documents has children: [Resume.pdf, Budget.xlsx]<br>
+                                    • Each node can have unlimited children (N-ary)<br>
+                                    • Operations: Create folder (add child), Delete (remove subtree)<br>
+                                    • Traversal: DFS to list all files, BFS to show by level<br>
+                                    • Also used: Organization charts, XML/HTML DOM structure
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🎮 Gaming Leaderboard - Max Heap</div>
+                            <div class="app-description">
+                                Top 10 players in game leaderboard maintained using Max Heap. Highest score always at root, enabling quick updates when player scores change.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Max Heap: Parent score ≥ Children scores<br>
+                                    • Root = Highest scorer (e.g., Player X: 9500 points)<br>
+                                    • Player Y scores 9800: Insert into heap<br>
+                                    • Bubble up: 9800 > 9500, swap with root → Y becomes new leader<br>
+                                    • Display top 10: Extract-max 10 times<br>
+                                    • Player quits: Remove from heap, restructure<br>
+                                    • Efficient updates: O(log n) for insert/delete<br>
+                                    • Alternative to sorting entire list every time (O(n log n))
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Trees are hierarchical data structures. Whether implementing with classes, pointers, or references, the parent-child relationship and tree traversal algorithms (pre-order, in-order, post-order, level-order) remain identical across all languages.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">🕸️ Graphs</div>
+            <div class="section-content">
+                <div class="topic">
+                    <div class="topic-header">
+                        <input type="checkbox" class="checkbox" data-topic="graphs">
+                        <span class="topic-name">Graph Algorithms</span>
+                    </div>
+                    <div class="subtopics">
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="bfs">
+                            <span class="subtopic-name">BFS (Breadth First Search)</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="dfs">
+                            <span class="subtopic-name">DFS (Depth First Search)</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="dijkstra">
+                            <span class="subtopic-name">Dijkstra's Algorithm</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="bellman-ford">
+                            <span class="subtopic-name">Bellman Ford</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="floyd-warshall">
+                            <span class="subtopic-name">Floyd Warshall</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="prims">
+                            <span class="subtopic-name">Prim's Algorithm</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="kruskals">
+                            <span class="subtopic-name">Kruskal's Algorithm</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="topological">
+                            <span class="subtopic-name">Topological Sort</span>
+                        </div>
+                        <div class="subtopic">
+                            <input type="checkbox" class="checkbox" data-subtopic="union-find">
+                            <span class="subtopic-name">Union Find (Disjoint Set)</span>
+                        </div>
+                    </div>
+                    <div class="application">
+                        <span class="application-label">🌍 Real-World Applications:</span>
+                        
+                        <div class="app-example">
+                            <div class="app-title">👥 Facebook "People You May Know" (BFS)</div>
+                            <div class="app-description">
+                                Facebook suggests friends using BFS on social graph. It explores friends of friends (2nd degree), then friends of friends of friends (3rd degree), prioritizing closer connections.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Graph: Users as nodes, friendships as edges<br>
+                                    • Start: Your profile (root node)<br>
+                                    • Level 1 (BFS): Your direct friends [Alice, Bob, Charlie]<br>
+                                    • Level 2: Friends of Alice [David, Emma], Friends of Bob [Frank], etc.<br>
+                                    • Level 3: Friends of David, friends of Emma, and so on<br>
+                                    • Suggestion logic: Users at level 2-3 who aren't your friends yet<br>
+                                    • Ranking: Number of mutual friends (higher = better suggestion)<br>
+                                    • BFS ensures: Closer connections suggested first<br>
+                                    • Also used: LinkedIn connections, Instagram follow suggestions
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🗺️ Google Maps Shortest Route (Dijkstra's Algorithm)</div>
+                            <div class="app-description">
+                                Finding fastest route from your location to destination uses Dijkstra's algorithm. Cities are nodes, roads are edges with weights (distance/time).
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Graph: Cities connected by roads with distances<br>
+                                    • Source: Bangalore, Destination: Chennai<br>
+                                    • Dijkstra maintains: Distance table, visited set, priority queue<br>
+                                    • Start: Distance[Bangalore] = 0, all others = infinity<br>
+                                    • Explore neighbors: Update distances if shorter path found<br>
+                                    • Bangalore → Vellore: 140km, Bangalore → Hosur: 40km<br>
+                                    • Choose minimum: Visit Hosur (40km), update neighbors<br>
+                                    • Continue until reaching Chennai with shortest total distance<br>
+                                    • Result: Optimal route with minimum time/distance<br>
+                                    • Real-time: Considers live traffic, road closures, tolls
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">💱 Currency Exchange Arbitrage (Bellman-Ford)</div>
+                            <div class="app-description">
+                                Detecting profitable currency exchange cycles uses Bellman-Ford. Convert USD→EUR→GBP→USD and end up with more USD than you started (negative cycle detection).
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Graph: Currencies as nodes, exchange rates as edge weights<br>
+                                    • Edge weights: -log(exchange_rate) to convert multiplication to addition<br>
+                                    • Example: USD→EUR (0.92), EUR→GBP (0.87), GBP→USD (1.27)<br>
+                                    • Bellman-Ford relaxes edges V-1 times (V = number of currencies)<br>
+                                    • Negative cycle detection: One more iteration finds improving path<br>
+                                    • If negative cycle exists: Arbitrage opportunity found!<br>
+                                    • Path: USD → EUR → GBP → USD nets profit<br>
+                                    • Also detects: Network routing with negative costs
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🌐 Internet Cable Network (Prim's/Kruskal's MST)</div>
+                            <div class="app-description">
+                                Laying minimum fiber optic cable to connect all cities uses Minimum Spanning Tree algorithms. Connect all nodes with minimum total cable length.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Graph: Cities as nodes, potential cable routes as weighted edges<br>
+                                    • Edge weights: Cable length/cost between cities<br>
+                                    • Goal: Connect all cities with minimum total cable<br>
+                                    • Prim's approach: Start from any city, keep adding nearest unconnected city<br>
+                                    • Kruskal's approach: Sort all edges by weight, add edge if doesn't create cycle<br>
+                                    • Example: 5 cities need 4 connections (tree property)<br>
+                                    • MST ensures: All connected, no cycles, minimum cost<br>
+                                    • Result: Optimal network with lowest infrastructure cost<br>
+                                    • Also used: Electrical grid design, water pipeline networks
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">📚 University Course Prerequisites (Topological Sort)</div>
+                            <div class="app-description">
+                                Determining valid course order based on prerequisites uses topological sort. Must take Data Structures before Algorithms, Math before Physics, etc.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • DAG (Directed Acyclic Graph): Courses as nodes, prerequisites as directed edges<br>
+                                    • Edge: Math → Physics means "take Math before Physics"<br>
+                                    • Courses: [Math, Programming, DataStructures, Algorithms, AI]<br>
+                                    • Prerequisites: Math→Physics, Programming→DataStructures→Algorithms→AI<br>
+                                    • Topological sort: Valid order that respects all prerequisites<br>
+                                    • Algorithm: Find node with no incoming edges (no prerequisites), output it<br>
+                                    • Remove that node, repeat until all nodes processed<br>
+                                    • Result: [Math, Programming, Physics, DataStructures, Algorithms, AI]<br>
+                                    • Cycle detection: If cycle exists, no valid course order possible<br>
+                                    • Also used: Build systems (compile dependencies), task scheduling
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🖼️ Photoshop Paint Bucket Tool (Union-Find)</div>
+                            <div class="app-description">
+                                Filling connected regions with same color uses Union-Find to group pixels. Click on blue pixel, all connected blue pixels become red.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Graph: Pixels as nodes, adjacent same-color pixels connected<br>
+                                    • Union-Find: Tracks which pixels belong to same connected component<br>
+                                    • Click pixel (x,y) with color blue<br>
+                                    • Find: Determine set/component of this pixel<br>
+                                    • BFS/DFS: Explore all 4-connected pixels with same color<br>
+                                    • Union: Merge all connected blue pixels into one set<br>
+                                    • Fill: Change color of entire connected component to new color<br>
+                                    • Efficiency: Union-Find with path compression is near O(1)<br>
+                                    • Also used: Network connectivity, image segmentation, Kruskal's MST
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="app-example">
+                            <div class="app-title">🔍 LinkedIn Connection Path (DFS)</div>
+                            <div class="app-description">
+                                LinkedIn shows "how you're connected" to someone using DFS to find path through mutual connections. Explores deep into one connection chain before backtracking.
+                            </div>
+                            <div class="app-entities">
+                                <div class="entity-label">Entities Involved:</div>
+                                <div class="entity-list">
+                                    • Graph: Users as nodes, connections as edges<br>
+                                    • Find path: You → Target person<br>
+                                    • DFS starts: Visit your first connection (Alice)<br>
+                                    • Recursively explore: Alice's connections deeply before trying others<br>
+                                    • Alice → Bob → Charlie → Target (depth-first exploration)<br>
+                                    • If dead end: Backtrack to Alice, try next connection<br>
+                                    • Path found: "You → Alice → Bob → Charlie → Target"<br>
+                                    • LinkedIn shows: "3rd degree connection via Alice and Bob"<br>
+                                    • DFS vs BFS: DFS finds any path quickly, BFS finds shortest path
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="language-note">
+                            💡 <strong>Language Universal:</strong> Graphs represent relationships between entities. Whether you implement with adjacency matrix, adjacency list, or edge list, graph algorithms (BFS, DFS, Dijkstra, etc.) work identically in all programming languages.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const checkboxes = document.querySelectorAll('.checkbox');
+        const progressFill = document.getElementById('progressFill');
+
+        function updateProgress() {
+            const total = checkboxes.length;
+            const checked = document.querySelectorAll('.checkbox:checked').length;
+            const percentage = Math.round((checked / total) * 100);
+            progressFill.style.width = percentage + '%';
+            progressFill.textContent = percentage + '%';
+            
+            localStorage.setItem('dsa-progress', JSON.stringify(getCheckedItems()));
+        }
+
+        function getCheckedItems() {
+            const checked = {};
+            checkboxes.forEach(cb => {
+                const topic = cb.dataset.topic || cb.dataset.subtopic;
+                if (topic) {
+                    checked[topic] = cb.checked;
+                }
+            });
+            return checked;
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('dsa-progress');
+            if (saved) {
+                const checked = JSON.parse(saved);
+                checkboxes.forEach(cb => {
+                    const topic = cb.dataset.topic || cb.dataset.subtopic;
+                    if (topic && checked[topic]) {
+                        cb.checked = true;
+                        toggleChecked(cb);
+                    }
+                });
+                updateProgress();
+            }
+        }
+
+        function toggleChecked(checkbox) {
+            const parent = checkbox.closest('.topic-header, .subtopic');
+            const nameElement = parent.querySelector('.topic-name, .subtopic-name');
+            if (checkbox.checked) {
+                nameElement.classList.add('checked');
+            } else {
+                nameElement.classList.remove('checked');
+            }
+        }
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                toggleChecked(this);
+                updateProgress();
+            });
+        });
+
+        loadProgress();
+    </script>
+</body>
+</html>

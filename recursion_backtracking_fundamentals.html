@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursion & Backtracking Masterclass</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #764ba2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        h3 { color: #764ba2; margin-top: 25px; margin-bottom: 15px; }
+        h4 { color: #667eea; margin-top: 20px; margin-bottom: 10px; }
+        .concept-box {
+            background: #f0f4ff;
+            padding: 20px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .warning-box {
+            background: #ffebee;
+            padding: 15px;
+            border-left: 5px solid #f44336;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f0f4ff;
+        }
+        .visualization {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .call-stack {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .stack-frame {
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .stack-frame.highlight {
+            background: #ff9800;
+            transform: scale(1.05);
+        }
+        .tree-diagram {
+            text-align: center;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            line-height: 2;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        .demo-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        input[type="number"], input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            width: 150px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #667eea; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+            border: 2px solid #667eea;
+            font-family: 'Courier New', monospace;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(40px, 40px));
+            gap: 2px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        .grid-cell {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            background: white;
+        }
+        .grid-cell.queen {
+            background: #667eea;
+            color: white;
+        }
+        .grid-cell.visited {
+            background: #ffeb3b;
+        }
+        .grid-cell.path {
+            background: #4caf50;
+            color: white;
+        }
+        .step-indicator {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #667eea;
+            color: white;
+            border-radius: 3px;
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 Recursion & Backtracking Masterclass</h1>
+            <p class="subtitle">Master the Art of Self-Calling Functions</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('basics')">Basics</button>
+                <button class="nav-btn" onclick="showSection('classic')">Classic Problems</button>
+                <button class="nav-btn" onclick="showSection('backtracking')">Backtracking</button>
+                <button class="nav-btn" onclick="showSection('advanced')">Advanced</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 What is Recursion?</h2>
+            
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p><strong>Recursion</strong> is a programming technique where a function <span class="highlight">calls itself</span> to solve a problem by breaking it down into smaller, similar subproblems.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Recursion Concept</h4>
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 1.2em; margin: 10px 0;">
+                        <strong>Problem:</strong> Calculate factorial(5)
+                    </div>
+                    <div class="tree-diagram">
+factorial(5)
+    ↓
+5 × factorial(4)
+        ↓
+    4 × factorial(3)
+            ↓
+        3 × factorial(2)
+                ↓
+            2 × factorial(1)
+                    ↓
+                    1 (base case)
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Critical Insight:</strong> Recursion is like Russian nesting dolls (Matryoshka) - each doll contains a smaller version of itself until you reach the smallest one (base case).
+            </div>
+
+            <h3>Key Components of Recursion</h3>
+
+            <div class="concept-box">
+                <ol>
+                    <li><strong>Base Case:</strong> The stopping condition that prevents infinite recursion</li>
+                    <li><strong>Recursive Case:</strong> The part where function calls itself with modified parameters</li>
+                    <li><strong>Progress:</strong> Each recursive call must move toward the base case</li>
+                </ol>
+            </div>
+
+            <div class="code-label">Python - Simple Recursion Template</div>
+            <div class="code-block">def recursive_function(parameters):
+    # BASE CASE - Stop condition
+    if base_condition:
+        return base_value
+    
+    # RECURSIVE CASE - Call itself
+    # Must make progress toward base case!
+    return recursive_function(modified_parameters)</div>
+
+            <h3>Why Learn Recursion?</h3>
+            <ul>
+                <li><strong>Elegant Solutions:</strong> Some problems naturally solved recursively</li>
+                <li><strong>Tree/Graph Traversal:</strong> Essential for DFS, tree operations</li>
+                <li><strong>Divide and Conquer:</strong> Merge sort, quick sort, binary search</li>
+                <li><strong>Backtracking:</strong> N-Queens, Sudoku, maze solving</li>
+                <li><strong>Interview Essential:</strong> Common in coding interviews</li>
+                <li><strong>Mathematical Problems:</strong> Fibonacci, factorials, combinations</li>
+            </ul>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> Recursion = "To understand recursion, you must first understand recursion"
+                <ul>
+                    <li><strong>Self-Reference:</strong> Function calls itself</li>
+                    <li><strong>Smaller Problem:</strong> Each call solves a simpler version</li>
+                    <li><strong>Base Case:</strong> Eventually reaches the simplest case</li>
+                    <li><strong>Build Up:</strong> Solutions combine on the way back</li>
+                </ul>
+            </div>
+
+            <h3>Recursion vs Iteration</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Recursion</th>
+                    <th>Iteration</th>
+                </tr>
+                <tr>
+                    <td><strong>Definition</strong></td>
+                    <td>Function calls itself</td>
+                    <td>Loops (for, while)</td>
+                </tr>
+                <tr>
+                    <td><strong>Termination</strong></td>
+                    <td>Base case</td>
+                    <td>Loop condition</td>
+                </tr>
+                <tr>
+                    <td><strong>Memory</strong></td>
+                    <td>Uses call stack (more memory)</td>
+                    <td>Uses loop variables (less memory)</td>
+                </tr>
+                <tr>
+                    <td><strong>Speed</strong></td>
+                    <td>Slower (function call overhead)</td>
+                    <td>Faster</td>
+                </tr>
+                <tr>
+                    <td><strong>Readability</strong></td>
+                    <td>Often cleaner for tree/graph problems</td>
+                    <td>Easier for simple loops</td>
+                </tr>
+                <tr>
+                    <td><strong>Stack Overflow</strong></td>
+                    <td>Risk if too many calls</td>
+                    <td>No risk</td>
+                </tr>
+                <tr>
+                    <td><strong>Best For</strong></td>
+                    <td>Trees, graphs, divide & conquer</td>
+                    <td>Simple counting, arrays</td>
+                </tr>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ Recursion Risks:</strong>
+                <ul>
+                    <li><strong>Stack Overflow:</strong> Too many recursive calls exhaust memory</li>
+                    <li><strong>Performance:</strong> Function call overhead can be expensive</li>
+                    <li><strong>Debugging:</strong> Harder to trace through recursive calls</li>
+                    <li><strong>Infinite Recursion:</strong> Missing/wrong base case causes infinite loop</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- BASICS SECTION -->
+        <div id="basics" class="section">
+            <h2>📚 Recursion Basics</h2>
+
+            <h3>1. Simple Examples</h3>
+
+            <div class="code-label">Python - Factorial (Classic Example)</div>
+            <div class="code-block">def factorial(n):
+    """
+    Calculate n! = n × (n-1) × ... × 1
+    
+    Recursion breakdown:
+    factorial(5) = 5 × factorial(4)
+                 = 5 × 4 × factorial(3)
+                 = 5 × 4 × 3 × factorial(2)
+                 = 5 × 4 × 3 × 2 × factorial(1)
+                 = 5 × 4 × 3 × 2 × 1 = 120
+    """
+    # BASE CASE
+    if n <= 1:
+        return 1
+    
+    # RECURSIVE CASE
+    return n * factorial(n - 1)
+
+print(factorial(5))  # 120
+print(factorial(0))  # 1
+print(factorial(1))  # 1</div>
+
+            <div class="pseudocode">PSEUDOCODE: Factorial
+
+FUNCTION factorial(n):
+    IF n <= 1:
+        RETURN 1
+    END IF
+    
+    RETURN n × factorial(n - 1)
+END FUNCTION
+
+Time Complexity: O(n)
+Space Complexity: O(n) - call stack</div>
+
+            <div class="code-label">Python - Sum of Numbers</div>
+            <div class="code-block">def sum_n(n):
+    """
+    Calculate sum: 1 + 2 + ... + n
+    """
+    # BASE CASE
+    if n <= 0:
+        return 0
+    
+    # RECURSIVE CASE
+    return n + sum_n(n - 1)
+
+print(sum_n(5))   # 15 (1+2+3+4+5)
+print(sum_n(10))  # 55</div>
+
+            <div class="code-label">Python - Power Function</div>
+            <div class="code-block">def power(base, exp):
+    """
+    Calculate base^exp recursively
+    """
+    # BASE CASE
+    if exp == 0:
+        return 1
+    
+    # RECURSIVE CASE
+    return base * power(base, exp - 1)
+
+print(power(2, 5))  # 32 (2^5)
+print(power(3, 3))  # 27 (3^3)
+
+# OPTIMIZED VERSION - O(log n)
+def power_optimized(base, exp):
+    """
+    Using divide and conquer
+    base^8 = (base^4)^2 = ((base^2)^2)^2
+    """
+    if exp == 0:
+        return 1
+    
+    if exp % 2 == 0:
+        # Even exponent
+        half = power_optimized(base, exp // 2)
+        return half * half
+    else:
+        # Odd exponent
+        return base * power_optimized(base, exp - 1)
+
+print(power_optimized(2, 10))  # 1024</div>
+
+            <h3>2. Fibonacci Sequence</h3>
+
+            <div class="concept-box">
+                <p><strong>Fibonacci:</strong> Each number is sum of previous two. F(0)=0, F(1)=1, F(n)=F(n-1)+F(n-2)</p>
+                <p>Sequence: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55...</p>
+            </div>
+
+            <div class="code-label">Python - Fibonacci (Naive)</div>
+            <div class="code-block">def fibonacci(n):
+    """
+    Naive recursion - VERY SLOW for large n!
+    Time: O(2^n) - exponential!
+    """
+    # BASE CASES
+    if n <= 0:
+        return 0
+    if n == 1:
+        return 1
+    
+    # RECURSIVE CASE
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+print(fibonacci(6))   # 8
+print(fibonacci(10))  # 55
+# fibonacci(40) would take forever!</div>
+
+            <div class="tree-diagram">
+                <h4>Fibonacci Call Tree (Notice Repeated Calculations!)</h4>
+<pre>
+                fib(5)
+              /        \
+        fib(4)          fib(3)
+        /    \          /    \
+    fib(3)  fib(2)  fib(2)  fib(1)
+    /   \    /  \    /  \
+fib(2) fib(1) ...  ...
+</pre>
+            </div>
+
+            <div class="code-label">Python - Fibonacci (Memoization)</div>
+            <div class="code-block">def fibonacci_memo(n, memo={}):
+    """
+    With memoization - O(n) time!
+    Cache results to avoid recomputation
+    """
+    if n in memo:
+        return memo[n]
+    
+    # BASE CASES
+    if n <= 0:
+        return 0
+    if n == 1:
+        return 1
+    
+    # RECURSIVE CASE with caching
+    memo[n] = fibonacci_memo(n - 1, memo) + fibonacci_memo(n - 2, memo)
+    return memo[n]
+
+print(fibonacci_memo(50))   # 12586269025 - instant!
+print(fibonacci_memo(100))  # Works fast!</div>
+
+            <h3>3. Array/List Recursion</h3>
+
+            <div class="code-label">Python - Sum of Array</div>
+            <div class="code-block">def sum_array(arr):
+    """
+    Sum all elements recursively
+    """
+    # BASE CASE - empty array
+    if len(arr) == 0:
+        return 0
+    
+    # RECURSIVE CASE
+    return arr[0] + sum_array(arr[1:])
+
+print(sum_array([1, 2, 3, 4, 5]))  # 15
+print(sum_array([10, 20, 30]))     # 60</div>
+
+            <div class="code-label">Python - Find Maximum</div>
+            <div class="code-block">def find_max(arr):
+    """
+    Find maximum element recursively
+    """
+    # BASE CASE - single element
+    if len(arr) == 1:
+        return arr[0]
+    
+    # RECURSIVE CASE
+    max_of_rest = find_max(arr[1:])
+    return arr[0] if arr[0] > max_of_rest else max_of_rest
+
+print(find_max([3, 7, 2, 9, 1]))  # 9
+print(find_max([15, 8, 23, 11]))  # 23</div>
+
+            <div class="code-label">Python - Reverse String</div>
+            <div class="code-block">def reverse_string(s):
+    """
+    Reverse string recursively
+    """
+    # BASE CASE
+    if len(s) <= 1:
+        return s
+    
+    # RECURSIVE CASE
+    return reverse_string(s[1:]) + s[0]
+
+print(reverse_string("hello"))     # "olleh"
+print(reverse_string("recursion")) # "noisrucer"</div>
+
+            <h3>4. Understanding Call Stack</h3>
+
+            <div class="visualization">
+                <h4>Call Stack for factorial(4)</h4>
+                <div class="call-stack" id="callStackDemo">
+                    <div class="stack-frame">factorial(1) returns 1</div>
+                    <div class="stack-frame">factorial(2) = 2 × 1 = 2</div>
+                    <div class="stack-frame">factorial(3) = 3 × 2 = 6</div>
+                    <div class="stack-frame highlight">factorial(4) = 4 × 6 = 24</div>
+                </div>
+                <p style="text-align: center; margin-top: 20px;">
+                    <strong>Stack grows down, unwinds back up with results</strong>
+                </p>
+            </div>
+
+            <div class="memory-tip">
+                <strong>💡 Call Stack Memory:</strong>
+                <ul>
+                    <li>Each recursive call adds a frame to the stack</li>
+                    <li>Stack has limited size (usually ~1000 calls in Python)</li>
+                    <li>Exceeding limit causes <code>RecursionError</code></li>
+                    <li>Tail recursion optimization can help (not in Python)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- CLASSIC PROBLEMS SECTION -->
+        <div id="classic" class="section">
+            <h2>🎯 Classic Recursion Problems</h2>
+
+            <h3>1. Binary Search (Divide & Conquer)</h3>
+
+            <div class="code-label">Python - Recursive Binary Search</div>
+            <div class="code-block">def binary_search(arr, target, left, right):
+    """
+    Search in sorted array - O(log n)
+    """
+    # BASE CASE - not found
+    if left > right:
+        return -1
+    
+    mid = (left + right) // 2
+    
+    # BASE CASE - found
+    if arr[mid] == target:
+        return mid
+    
+    # RECURSIVE CASES
+    if arr[mid] > target:
+        return binary_search(arr, target, left, mid - 1)
+    else:
+        return binary_search(arr, target, mid + 1, right)
+
+arr = [1, 3, 5, 7, 9, 11, 13, 15]
+print(binary_search(arr, 7, 0, len(arr) - 1))   # 3
+print(binary_search(arr, 11, 0, len(arr) - 1))  # 5
+print(binary_search(arr, 6, 0, len(arr) - 1))   # -1</div>
+
+            <h3>2. Tower of Hanoi</h3>
+
+            <div class="concept-box">
+                <p><strong>Problem:</strong> Move n disks from source peg to destination peg using auxiliary peg. Rules: Only one disk at a time, never place larger disk on smaller.</p>
+            </div>
+
+            <div class="code-label">Python - Tower of Hanoi</div>
+            <div class="code-block">def tower_of_hanoi(n, source, destination, auxiliary):
+    """
+    Solve Tower of Hanoi puzzle
+    
+    Strategy:
+    1. Move n-1 disks from source to auxiliary (using destination)
+    2. Move largest disk from source to destination
+    3. Move n-1 disks from auxiliary to destination (using source)
+    """
+    if n == 1:
+        print(f"Move disk 1 from {source} to {destination}")
+        return
+    
+    # Move n-1 disks to auxiliary
+    tower_of_hanoi(n - 1, source, auxiliary, destination)
+    
+    # Move largest disk
+    print(f"Move disk {n} from {source} to {destination}")
+    
+    # Move n-1 disks from auxiliary to destination
+    tower_of_hanoi(n - 1, auxiliary, destination, source)
+
+print("Tower of Hanoi with 3 disks:")
+tower_of_hanoi(3, 'A', 'C', 'B')
+
+# Moves needed: 2^n - 1
+# For 3 disks: 7 moves
+# For 64 disks: 18,446,744,073,709,551,615 moves!</div>
+
+            <h3>3. Permutations</h3>
+
+            <div class="code-label">Python - Generate All Permutations</div>
+            <div class="code-block">def permutations(arr):
+    """
+    Generate all permutations of array
+    Time: O(n! × n) - factorial!
+    """
+    result = []
+    
+    def backtrack(current, remaining):
+        # BASE CASE - no elements left
+        if not remaining:
+            result.append(current[:])
+            return
+        
+        # RECURSIVE CASE - try each element
+        for i in range(len(remaining)):
+            current.append(remaining[i])
+            backtrack(current, remaining[:i] + remaining[i+1:])
+            current.pop()  # backtrack
+    
+    backtrack([], arr)
+    return result
+
+print(permutations([1, 2, 3]))
+# Output: [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
+
+print(permutations(['A', 'B', 'C']))</div>
+
+            <h3>4. Combinations</h3>
+
+            <div class="code-label">Python - Generate Combinations</div>
+            <div class="code-block">def combinations(arr, k):
+    """
+    Generate all combinations of k elements
+    C(n, k) = n! / (k! × (n-k)!)
+    """
+    result = []
+    
+    def backtrack(start, current):
+        # BASE CASE - k elements collected
+        if len(current) == k:
+            result.append(current[:])
+            return
+        
+        # RECURSIVE CASE - try elements from start onward
+        for i in range(start, len(arr)):
+            current.append(arr[i])
+            backtrack(i + 1, current)  # i+1 to avoid duplicates
+            current.pop()  # backtrack
+    
+    backtrack(0, [])
+    return result
+
+print(combinations([1, 2, 3, 4], 2))
+# Output: [[1,2], [1,3], [1,4], [2,3], [2,4], [3,4]]
+
+print(combinations(['A', 'B', 'C', 'D'], 3))</div>
+
+            <h3>5. Subset Sum Problem</h3>
+
+            <div class="code-label">Python - Check if Subset Sums to Target</div>
+            <div class="code-block">def subset_sum(arr, target):
+    """
+    Check if any subset sums to target
+    """
+    def helper(index, current_sum):
+        # BASE CASE - found target
+        if current_sum == target:
+            return True
+        
+        # BASE CASE - exceeded target or no elements left
+        if current_sum > target or index >= len(arr):
+            return False
+        
+        # RECURSIVE CASES
+        # Include current element
+        include = helper(index + 1, current_sum + arr[index])
+        
+        # Exclude current element
+        exclude = helper(index + 1, current_sum)
+        
+        return include or exclude
+    
+    return helper(0, 0)
+
+print(subset_sum([3, 34, 4, 12, 5, 2], 9))   # True (4+5=9)
+print(subset_sum([3, 34, 4, 12, 5, 2], 30))  # False</div>
+
+            <h3>6. Generate Parentheses</h3>
+
+            <div class="code-label">Python - Valid Parentheses Combinations</div>
+            <div class="code-block">def generate_parentheses(n):
+    """
+    Generate all valid combinations of n pairs of parentheses
+    """
+    result = []
+    
+    def backtrack(current, open_count, close_count):
+        # BASE CASE - complete string
+        if len(current) == 2 * n:
+            result.append(current)
+            return
+        
+        # Add '(' if we can
+        if open_count < n:
+            backtrack(current + '(', open_count + 1, close_count)
+        
+        # Add ')' if valid
+        if close_count < open_count:
+            backtrack(current + ')', open_count, close_count + 1)
+    
+    backtrack('', 0, 0)
+    return result
+
+print(generate_parentheses(3))
+# Output: ['((()))', '(()())', '(())()', '()(())', '()()()']</div>
+
+            <div class="key-point">
+                <strong>Classic Problem Patterns:</strong>
+                <ul>
+                    <li><strong>Divide & Conquer:</strong> Binary search, merge sort</li>
+                    <li><strong>Mathematical:</strong> Factorial, Fibonacci, GCD</li>
+                    <li><strong>Combinatorial:</strong> Permutations, combinations, subsets</li>
+                    <li><strong>String Manipulation:</strong> Reverse, palindrome</li>
+                    <li><strong>Tree/Graph:</strong> DFS, path finding</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- BACKTRACKING SECTION -->
+        <div id="backtracking" class="section">
+            <h2>🔙 Backtracking</h2>
+
+            <div class="concept-box">
+                <h3>What is Backtracking?</h3>
+                <p><strong>Backtracking</strong> is a refinement of recursion where we try different possibilities and "backtrack" (undo) when a path doesn't lead to a solution. It's like exploring a maze - if you hit a dead end, you go back and try a different path.</p>
+            </div>
+
+            <div class="pseudocode">BACKTRACKING TEMPLATE:
+
+FUNCTION backtrack(state):
+    IF is_solution(state):
+        add state to solutions
+        RETURN
+    END IF
+    
+    IF is_invalid(state):
+        RETURN  # Prune this branch
+    END IF
+    
+    FOR each choice IN available_choices:
+        make_choice(choice)           # Do
+        backtrack(new_state)          # Recurse
+        undo_choice(choice)           # Undo (backtrack)
+    END FOR
+END FUNCTION</div>
+
+            <h3>1. N-Queens Problem</h3>
+
+            <div class="concept-box">
+                <p><strong>Problem:</strong> Place N queens on an N×N chessboard so no two queens attack each other (same row, column, or diagonal).</p>
+            </div>
+
+            <div class="code-label">Python - N-Queens Solution</div>
+            <div class="code-block">def solve_n_queens(n):
+    """
+    Solve N-Queens using backtracking
+    """
+    def is_safe(board, row, col):
+        # Check column
+        for i in range(row):
+            if board[i][col] == 'Q':
+                return False
+        
+        # Check upper-left diagonal
+        i, j = row - 1, col - 1
+        while i >= 0 and j >= 0:
+            if board[i][j] == 'Q':
+                return False
+            i -= 1
+            j -= 1
+        
+        # Check upper-right diagonal
+        i, j = row - 1, col + 1
+        while i >= 0 and j < n:
+            if board[i][j] == 'Q':
+                return False
+            i -= 1
+            j += 1
+        
+        return True
+    
+    def backtrack(board, row):
+        # BASE CASE - all queens placed
+        if row == n:
+            result.append([''.join(r) for r in board])
+            return
+        
+        # Try placing queen in each column
+        for col in range(n):
+            if is_safe(board, row, col):
+                board[row][col] = 'Q'       # Place queen
+                backtrack(board, row + 1)   # Recurse
+                board[row][col] = '.'       # Backtrack
+    
+    result = []
+    board = [['.' for _ in range(n)] for _ in range(n)]
+    backtrack(board, 0)
+    return result
+
+# Solve 4-Queens
+solutions = solve_n_queens(4)
+print(f"Found {len(solutions)} solutions for 4-Queens:")
+for i, solution in enumerate(solutions):
+    print(f"\nSolution {i+1}:")
+    for row in solution:
+        print(row)</div>
+
+            <h3>2. Sudoku Solver</h3>
+
+            <div class="code-label">Python - Sudoku Backtracking</div>
+            <div class="code-block">def solve_sudoku(board):
+    """
+    Solve 9x9 Sudoku using backtracking
+    board is 2D list with 0 for empty cells
+    """
+    def is_valid(board, row, col, num):
+        # Check row
+        if num in board[row]:
+            return False
+        
+        # Check column
+        if num in [board[i][col] for i in range(9)]:
+            return False
+        
+        # Check 3x3 box
+        box_row, box_col = 3 * (row // 3), 3 * (col // 3)
+        for i in range(box_row, box_row + 3):
+            for j in range(box_col, box_col + 3):
+                if board[i][j] == num:
+                    return False
+        
+        return True
+    
+    def backtrack():
+        # Find next empty cell
+        for row in range(9):
+            for col in range(9):
+                if board[row][col] == 0:
+                    # Try digits 1-9
+                    for num in range(1, 10):
+                        if is_valid(board, row, col, num):
+                            board[row][col] = num    # Place
+                            
+                            if backtrack():          # Recurse
+                                return True
+                            
+                            board[row][col] = 0      # Backtrack
+                    
+                    return False  # No valid number found
+        
+        return True  # Board complete!
+    
+    backtrack()
+    return board
+
+# Example puzzle (0 = empty)
+puzzle = [
+    [5,3,0,0,7,0,0,0,0],
+    [6,0,0,1,9,5,0,0,0],
+    [0,9,8,0,0,0,0,6,0],
+    [8,0,0,0,6,0,0,0,3],
+    [4,0,0,8,0,3,0,0,1],
+    [7,0,0,0,2,0,0,0,6],
+    [0,6,0,0,0,0,2,8,0],
+    [0,0,0,4,1,9,0,0,5],
+    [0,0,0,0,8,0,0,7,9]
+]
+
+solved = solve_sudoku(puzzle)
+print("Solved Sudoku:")</div>
+
+            <h3>3. Rat in a Maze</h3>
+
+            <div class="code-label">Python - Maze Path Finding</div>
+            <div class="code-block">def rat_in_maze(maze):
+    """
+    Find path from top-left to bottom-right
+    1 = path, 0 = wall
+    Can move right or down only
+    """
+    n = len(maze)
+    solution = [[0 for _ in range(n)] for _ in range(n)]
+    
+    def is_safe(x, y):
+        return 0 <= x < n and 0 <= y < n and maze[x][y] == 1
+    
+    def backtrack(x, y):
+        # BASE CASE - reached destination
+        if x == n - 1 and y == n - 1:
+            solution[x][y] = 1
+            return True
+        
+        # Check if current cell is valid
+        if is_safe(x, y):
+            solution[x][y] = 1  # Mark as part of path
+            
+            # Try moving right
+            if backtrack(x, y + 1):
+                return True
+            
+            # Try moving down
+            if backtrack(x + 1, y):
+                return True
+            
+            # Backtrack - this path doesn't work
+            solution[x][y] = 0
+            return False
+        
+        return False
+    
+    if backtrack(0, 0):
+        return solution
+    else:
+        return None
+
+# Example maze
+maze = [
+    [1, 1, 0, 0],
+    [1, 1, 1, 0],
+    [0, 1, 1, 1],
+    [0, 0, 1, 1]
+]
+
+path = rat_in_maze(maze)
+if path:
+    print("Path found:")
+    for row in path:
+        print(row)
+else:
+    print("No path exists!")</div>
+
+            <h3>4. Word Search</h3>
+
+            <div class="code-label">Python - Word Search in Grid</div>
+            <div class="code-block">def word_search(board, word):
+    """
+    Find if word exists in board (can move in 4 directions)
+    """
+    rows, cols = len(board), len(board[0])
+    
+    def backtrack(r, c, index):
+        # BASE CASE - found complete word
+        if index == len(word):
+            return True
+        
+        # Check boundaries and character match
+        if (r < 0 or r >= rows or c < 0 or c >= cols or 
+            board[r][c] != word[index]):
+            return False
+        
+        # Mark as visited
+        temp = board[r][c]
+        board[r][c] = '#'
+        
+        # Explore 4 directions
+        found = (backtrack(r + 1, c, index + 1) or  # Down
+                backtrack(r - 1, c, index + 1) or   # Up
+                backtrack(r, c + 1, index + 1) or   # Right
+                backtrack(r, c - 1, index + 1))     # Left
+        
+        # Backtrack - restore cell
+        board[r][c] = temp
+        
+        return found
+    
+    # Try starting from each cell
+    for r in range(rows):
+        for c in range(cols):
+            if backtrack(r, c, 0):
+                return True
+    
+    return False
+
+board = [
+    ['A', 'B', 'C', 'E'],
+    ['S', 'F', 'C', 'S'],
+    ['A', 'D', 'E', 'E']
+]
+
+print(word_search(board, "ABCCED"))  # True
+print(word_search(board, "SEE"))     # True
+print(word_search(board, "ABCB"))    # False</div>
+
+            <div class="memory-tip">
+                <strong>💡 Backtracking Pattern Recognition:</strong>
+                <ul>
+                    <li><strong>"Find all solutions"</strong> → Backtracking</li>
+                    <li><strong>"Generate all combinations"</strong> → Backtracking</li>
+                    <li><strong>"Place items with constraints"</strong> → Backtracking</li>
+                    <li><strong>"Explore all paths"</strong> → Backtracking</li>
+                    <li><strong>Key: Make choice, recurse, undo choice</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ADVANCED SECTION -->
+        <div id="advanced" class="section">
+            <h2>🚀 Advanced Techniques</h2>
+
+            <h3>1. Memoization (Top-Down DP)</h3>
+
+            <div class="concept-box">
+                <p><strong>Memoization:</strong> Cache results of expensive function calls to avoid recomputation. Essential for optimization!</p>
+            </div>
+
+            <div class="code-label">Python - Climbing Stairs with Memoization</div>
+            <div class="code-block">def climb_stairs(n, memo={}):
+    """
+    How many ways to climb n stairs?
+    Can take 1 or 2 steps at a time
+    
+    Recurrence: ways(n) = ways(n-1) + ways(n-2)
+    """
+    if n in memo:
+        return memo[n]
+    
+    if n <= 2:
+        return n
+    
+    memo[n] = climb_stairs(n - 1, memo) + climb_stairs(n - 2, memo)
+    return memo[n]
+
+print(climb_stairs(10))  # 89
+print(climb_stairs(50))  # 20365011074 - instant with memoization!</div>
+
+            <h3>2. Tail Recursion</h3>
+
+            <div class="concept-box">
+                <p><strong>Tail Recursion:</strong> When recursive call is the last operation. Can be optimized to iteration (not in Python, but in many languages).</p>
+            </div>
+
+            <div class="code-label">Python - Tail Recursive Factorial</div>
+            <div class="code-block">def factorial_tail(n, accumulator=1):
+    """
+    Tail recursive version
+    Last operation is the recursive call
+    """
+    if n <= 1:
+        return accumulator
+    
+    return factorial_tail(n - 1, n * accumulator)
+
+print(factorial_tail(5))   # 120
+print(factorial_tail(10))  # 3628800</div>
+
+            <h3>3. Mutual Recursion</h3>
+
+            <div class="code-label">Python - Mutual Recursion</div>
+            <div class="code-block">def is_even(n):
+    """Functions that call each other"""
+    if n == 0:
+        return True
+    return is_odd(n - 1)
+
+def is_odd(n):
+    if n == 0:
+        return False
+    return is_even(n - 1)
+
+print(is_even(10))  # True
+print(is_odd(7))    # True</div>
+
+            <h3>4. Recursion with Multiple Paths</h3>
+
+            <div class="code-label">Python - Grid Unique Paths</div>
+            <div class="code-block">def unique_paths(m, n, memo={}):
+    """
+    Count unique paths in m×n grid
+    Can only move right or down
+    """
+    if (m, n) in memo:
+        return memo[(m, n)]
+    
+    # BASE CASES
+    if m == 1 or n == 1:
+        return 1
+    
+    # RECURSIVE CASE
+    memo[(m, n)] = unique_paths(m - 1, n, memo) + unique_paths(m, n - 1, memo)
+    return memo[(m, n)]
+
+print(unique_paths(3, 3))  # 6
+print(unique_paths(7, 3))  # 28</div>
+
+            <h3>5. Optimization Techniques</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Technique</th>
+                    <th>Description</th>
+                    <th>When to Use</th>
+                </tr>
+                <tr>
+                    <td><strong>Memoization</strong></td>
+                    <td>Cache results in dictionary</td>
+                    <td>Overlapping subproblems</td>
+                </tr>
+                <tr>
+                    <td><strong>Tail Recursion</strong></td>
+                    <td>Recursive call is last operation</td>
+                    <td>Can convert to iteration</td>
+                </tr>
+                <tr>
+                    <td><strong>Pruning</strong></td>
+                    <td>Skip branches that can't lead to solution</td>
+                    <td>Backtracking problems</td>
+                </tr>
+                <tr>
+                    <td><strong>Iterative</strong></td>
+                    <td>Convert to loop when possible</td>
+                    <td>Simple recursion, stack overflow risk</td>
+                </tr>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ When to Avoid Recursion:</strong>
+                <ul>
+                    <li>Deep recursion (>1000 levels) - use iteration</li>
+                    <li>Simple loops - iteration is clearer</li>
+                    <li>Performance critical code - recursion has overhead</li>
+                    <li>Limited stack space - use iterative approach</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- INTERACTIVE PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Interactive Recursion Demo</h2>
+
+            <div class="interactive-demo">
+                <h3>Factorial Calculator</h3>
+                <p>Watch recursion in action!</p>
+
+                <div class="demo-controls">
+                    <input type="number" id="factorialInput" placeholder="Enter n" min="0" max="12" value="5">
+                    <button class="demo-btn" onclick="calculateFactorial()">Calculate Factorial</button>
+                </div>
+
+                <div id="output">Ready! Enter a number and click Calculate.</div>
+
+                <div class="visualization" id="recursionViz" style="display: none;">
+                    <h4>Recursion Call Stack</h4>
+                    <div id="stackDisplay"></div>
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3>Fibonacci Sequence Generator</h3>
+
+                <div class="demo-controls">
+                    <input type="number" id="fibInput" placeholder="Count" min="1" max="20" value="10">
+                    <button class="demo-btn" onclick="generateFibonacci()">Generate Fibonacci</button>
+                </div>
+
+                <div id="fibOutput">Enter count and generate sequence.</div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3>N-Queens Visualizer (4x4)</h3>
+                <p>Click solve to see N-Queens solution!</p>
+
+                <button class="demo-btn" onclick="visualizeNQueens()">Solve 4-Queens</button>
+
+                <div id="queensDisplay" class="grid-container" style="margin-top: 20px;"></div>
+            </div>
+
+            <h3>Practice Exercises</h3>
+
+            <div class="concept-box">
+                <h4>Try These Challenges:</h4>
+                <ol>
+                    <li><strong>Easy:</strong> Write recursive function to calculate sum of digits</li>
+                    <li><strong>Medium:</strong> Generate all subsets of an array</li>
+                    <li><strong>Hard:</strong> Solve 8-Queens problem</li>
+                    <li><strong>Challenge:</strong> Find all palindromic partitions of string</li>
+                </ol>
+            </div>
+
+            <h3>Key Takeaways</h3>
+
+            <div class="key-point">
+                <strong>Remember:</strong>
+                <ul>
+                    <li><strong>Always define base case</strong> - prevents infinite recursion</li>
+                    <li><strong>Make progress</strong> - each call must move toward base case</li>
+                    <li><strong>Use memoization</strong> - avoid redundant calculations</li>
+                    <li><strong>Backtracking = Try, Recurse, Undo</strong></li>
+                    <li><strong>Consider iteration</strong> - sometimes simpler and faster</li>
+                    <li><strong>Watch stack depth</strong> - too many calls cause overflow</li>
+                </ul>
+            </div>
+
+            <div class="memory-tip">
+                <strong>🎯 Recursion Checklist:</strong>
+                <ol>
+                    <li>✅ Identify base case(s)</li>
+                    <li>✅ Identify recursive case(s)</li>
+                    <li>✅ Ensure progress toward base case</li>
+                    <li>✅ Consider memoization if overlapping subproblems</li>
+                    <li>✅ Test with small inputs first</li>
+                    <li>✅ Think about call stack depth</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            const buttons = document.querySelectorAll('.nav-btn');
+            
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Factorial Calculator with Visualization
+        function calculateFactorial() {
+            const n = parseInt(document.getElementById('factorialInput').value);
+            
+            if (isNaN(n) || n < 0 || n > 12) {
+                document.getElementById('output').innerHTML = 
+                    '<span style="color: #f44336;">Please enter a number between 0 and 12!</span>';
+                return;
+            }
+
+            const calls = [];
+            
+            function factorial(num) {
+                calls.push(`factorial(${num})`);
+                
+                if (num <= 1) {
+                    return 1;
+                }
+                
+                return num * factorial(num - 1);
+            }
+
+            const result = factorial(n);
+            
+            // Display result
+            document.getElementById('output').innerHTML = 
+                `<strong>Result:</strong> ${n}! = ${result.toLocaleString()}<br>
+                <strong>Recursive Calls:</strong> ${calls.length}`;
+
+            // Show call stack visualization
+            const vizDiv = document.getElementById('recursionViz');
+            const stackDiv = document.getElementById('stackDisplay');
+            
+            vizDiv.style.display = 'block';
+            stackDiv.innerHTML = '';
+
+            // Animate call stack
+            calls.forEach((call, index) => {
+                setTimeout(() => {
+                    const frame = document.createElement('div');
+                    frame.className = 'stack-frame';
+                    frame.textContent = call;
+                    stackDiv.appendChild(frame);
+                }, index * 200);
+            });
+        }
+
+        // Fibonacci Generator
+        function generateFibonacci() {
+            const count = parseInt(document.getElementById('fibInput').value);
+            
+            if (isNaN(count) || count < 1 || count > 20) {
+                document.getElementById('fibOutput').innerHTML = 
+                    '<span style="color: #f44336;">Please enter a count between 1 and 20!</span>';
+                return;
+            }
+
+            function fibonacci(n, memo = {}) {
+                if (n in memo) return memo[n];
+                if (n <= 0) return 0;
+                if (n === 1) return 1;
+                
+                memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo);
+                return memo[n];
+            }
+
+            const sequence = [];
+            for (let i = 0; i < count; i++) {
+                sequence.push(fibonacci(i));
+            }
+
+            document.getElementById('fibOutput').innerHTML = 
+                `<strong>First ${count} Fibonacci numbers:</strong><br>
+                <div style="font-size: 1.2em; margin-top: 10px; color: #667eea;">
+                    ${sequence.join(', ')}
+                </div>`;
+        }
+
+        // N-Queens Visualizer
+        function visualizeNQueens() {
+            const n = 4;
+            const board = Array(n).fill(null).map(() => Array(n).fill('.'));
+            const solutions = [];
+
+            function isSafe(row, col) {
+                for (let i = 0; i < row; i++) {
+                    if (board[i][col] === 'Q') return false;
+                }
+
+                let i = row - 1, j = col - 1;
+                while (i >= 0 && j >= 0) {
+                    if (board[i][j] === 'Q') return false;
+                    i--;
+                    j--;
+                }
+
+                i = row - 1;
+                j = col + 1;
+                while (i >= 0 && j < n) {
+                    if (board[i][j] === 'Q') return false;
+                    i--;
+                    j++;
+                }
+
+                return true;
+            }
+
+            function solve(row) {
+                if (row === n) {
+                    solutions.push(board.map(r => [...r]));
+                    return;
+                }
+
+                for (let col = 0; col < n; col++) {
+                    if (isSafe(row, col)) {
+                        board[row][col] = 'Q';
+                        solve(row + 1);
+                        board[row][col] = '.';
+                    }
+                }
+            }
+
+            solve(0);
+
+            // Display first solution
+            const display = document.getElementById('queensDisplay');
+            display.innerHTML = '';
+
+            if (solutions.length > 0) {
+                const solution = solutions[0];
+                for (let i = 0; i < n; i++) {
+                    for (let j = 0; j < n; j++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'grid-cell';
+                        if (solution[i][j] === 'Q') {
+                            cell.className += ' queen';
+                            cell.textContent = '♛';
+                        }
+                        display.appendChild(cell);
+                    }
+                }
+                
+                display.insertAdjacentHTML('afterend', 
+                    `<p style="text-align: center; margin-top: 15px;">
+                        <strong>Found ${solutions.length} solutions for 4-Queens!</strong>
+                    </p>`);
+            }
+        }
+
+        // Allow Enter key
+        document.getElementById('factorialInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calculateFactorial();
+        });
+
+        document.getElementById('fibInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') generateFibonacci();
+        });
+    </script>
+</body>
+</html>

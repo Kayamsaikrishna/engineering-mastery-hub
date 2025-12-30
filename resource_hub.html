@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Knowledge Hub | Central Navigation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #0a0b10;
+            --bg-header: rgba(17, 19, 26, 0.8);
+            --bg-card: #161a23;
+            --bg-card-hover: #1e2430;
+            --text-primary: #f0f2f5;
+            --text-secondary: #9ea7b4;
+            --accent-primary: #818cf8;
+            --accent-secondary: #6366f1;
+            --accent-gradient: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-body: #f4f7fa;
+            --bg-header: rgba(255, 255, 255, 0.8);
+            --bg-card: #ffffff;
+            --bg-card-hover: #f9fbff;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --border-color: rgba(0, 0, 0, 0.05);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            transition: var(--transition);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: var(--bg-header);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .search-container {
+            margin-left: auto;
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 10px 40px;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+        }
+
+        .theme-toggle {
+            margin-left: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        main {
+            padding: 120px 5% 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -0.03em;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            margin: 60px 0 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: var(--bg-card-hover);
+            border-color: var(--accent-primary);
+            box-shadow: var(--card-shadow);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            background: var(--border-color);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+        }
+
+        .card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .file-type {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            background: rgba(129, 140, 248, 0.1);
+            color: var(--accent-primary);
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .learn-more {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .learn-more::after {
+            content: "→";
+            transition: var(--transition);
+        }
+
+        .card:hover .learn-more::after {
+            transform: translateX(5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .search-container {
+                display: none;
+            }
+        }
+
+        .empty-results {
+            text-align: center;
+            padding: 100px 0;
+            color: var(--text-secondary);
+            grid-column: 1 / -1;
+            display: none;
+        }
+    </style>
+</head>
+
+<body data-theme="dark">
+    <header>
+        <div class="logo">E-Knowledge Hub</div>
+        <div class="search-container">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" class="search-input" id="searchInput"
+                placeholder="Search materials, topics, roadmaps...">
+        </div>
+        <button class="theme-toggle" id="themeToggle">
+            <span id="themeIcon">☀️</span>
+            <span id="themeText">Light</span>
+        </button>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Your Learning Universe</h1>
+            <p>Access all your DSA, AI, and Engineering resources from a single, organized interface.</p>
+            <div style="margin-top: 20px; font-size: 0.95rem; opacity: 0.8; font-weight: 500;">
+                Developed by <a href="https://kayam-sai-krishna-aiml-portfolio.netlify.app/" target="_blank"
+                    style="text-decoration: none; background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; font-family: 'Outfit', sans-serif;">Kayam
+                    Sai Krishna</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <!-- Sections will be injected here -->
+        </div>
+
+        <div id="emptySearch" class="empty-results">
+            <h2>No resources found</h2>
+            <p>Try searching with different keywords.</p>
+        </div>
+    </main>
+
+    <script>
+        const resources = [
+            {
+                category: "Interview Mastery",
+                icon: "🏆",
+                items: [
+                    { title: "AI/ML DSA Interview Bank", desc: "230+ engineering-grade application questions for AI/ML systems.", path: "dsa_ai_interview_questions.html", type: "HTML" },
+                    { title: "DSA Preparation Checklist", desc: "Comprehensive checklist to track your coding interview journey.", path: "dsa_checklist.html", type: "HTML" }
+                ]
+            },
+            {
+                category: "DSA Fundamentals",
+                icon: "🧩",
+                items: [
+                    { title: "Array Fundamentals", desc: "Master memory layouts, striding, and multi-dimensional processing.", path: "array_fundamentals.html", type: "HTML" },
+                    { title: "String Fundamentals", desc: "Pattern matching, token streams, and efficient text manipulation.", path: "string_fundamentals.html", type: "HTML" },
+                    { title: "Bit Manipulation", desc: "Optimization tricks, bloom filters, and feature encoding.", path: "bit_manipulation_fundamentals.html", type: "HTML" },
+                    { title: "HashMaps & Sets", desc: "O(1) lookups, collision strategies, and frequency tracking.", path: "hashmap_fundamentals.html", type: "HTML" },
+                    { title: "Searching Algorithms", desc: "Binary search variations and advanced search strategies.", path: "searching_fundamentals.html", type: "HTML" },
+                    { title: "Sorting Algorithms", desc: "Stable vs Unstable, in-place sorting, and complexity analysis.", path: "sorting_fundamentals.html", type: "HTML" },
+                    { title: "Linked Lists", desc: "Pointers, memory management, and dynamic data structures.", path: "linked_list_fundamentals.html", type: "HTML" },
+                    { title: "Stacks & Queues", desc: "Monotonic stacks, deques, and buffer management.", path: "queue_fundamentals.html", type: "HTML" },
+                    { title: "Recursion & Backtracking", desc: "State space search and recursive problem-solving.", path: "recursion_backtracking_fundamentals.html", type: "HTML" },
+                    { title: "Trees & Hierarchies", desc: "Binary trees, BSTs, and spatial indexing structures.", path: "tree_data_structures_fundamentals.html", type: "HTML" },
+                    { title: "Graphs & Networks", desc: "Traversals, connectivity, and shortest path logic.", path: "graph_algorithms_fundamentals.html", type: "HTML" },
+                    { title: "Dynamic Programming", desc: "Optimization, state transitions, and space-saving tricks.", path: "dynamic_programming_fundamentals.html", type: "HTML" }
+                ]
+            },
+            {
+                category: "Tech Foundations",
+                icon: "🏗️",
+                items: [
+                    { title: "SQL & Data Modeling", desc: "Advanced queries, normalization, and relational logic.", path: "sql_fundamentals.html", type: "HTML" },
+                    { title: "Web Dev Core", desc: "Full-stack foundations and modern web architecture.", path: "web_dev_fundamentals.html", type: "HTML" }
+                ]
+            },
+            {
+                category: "Visual Roadmaps",
+                icon: "🗺️",
+                items: [
+                    { title: "Python DSA Thinking", desc: "Visual guide to problem-solving patterns in Python.", path: "roadmaps/Python DSA Thinking Roadmap.pdf", type: "PDF" },
+                    { title: "Full Python Roadmap", desc: "End-to-end guide to mastering Python for engineering.", path: "roadmaps/Python Roadmap Diagram .pdf", type: "PDF" },
+                    { title: "AI/Data Scientist Path", desc: "Comprehensive career roadmap for AI professionals.", path: "roadmaps/ai-data-scientist.pdf", type: "PDF" },
+                    { title: "Backend Mastery", desc: "From beginner to senior backend engineer roadmap.", path: "roadmaps/backend.pdf", type: "PDF" },
+                    { title: "DevOps Foundations", desc: "Essential roadmap for modern cloud and DevOps.", path: "roadmaps/devops-beginner.pdf", type: "PDF" },
+                    { title: "Docker Containerization", desc: "Mastering container lifecycles and orchestration.", path: "roadmaps/docker.pdf", type: "PDF" }
+                ]
+            }
+        ];
+
+        const contentEl = document.getElementById('content');
+        const searchInput = document.getElementById('searchInput');
+        const emptySearch = document.getElementById('emptySearch');
+        const themeToggle = document.getElementById('themeToggle');
+
+        function renderHub(filter = "") {
+            let html = "";
+            let totalFound = 0;
+
+            resources.forEach(section => {
+                const filteredItems = section.items.filter(item =>
+                    item.title.toLowerCase().includes(filter.toLowerCase()) ||
+                    item.desc.toLowerCase().includes(filter.toLowerCase()) ||
+                    section.category.toLowerCase().includes(filter.toLowerCase())
+                );
+
+                if (filteredItems.length > 0) {
+                    totalFound += filteredItems.length;
+                    html += `
+                        <div class="section">
+                            <h2 class="section-title">${section.icon} ${section.category}</h2>
+                            <div class="grid">
+                                ${filteredItems.map(item => `
+                                    <a href="${item.path}" class="card" target="_blank">
+                                        <div class="card-icon">${section.icon}</div>
+                                        <h3>${item.title}</h3>
+                                        <p>${item.desc}</p>
+                                        <div class="card-footer">
+                                            <span class="file-type">${item.type}</span>
+                                            <span class="learn-more">Open Material</span>
+                                        </div>
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            contentEl.innerHTML = html;
+            emptySearch.style.display = totalFound === 0 ? 'block' : 'none';
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            const current = document.body.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', next);
+            localStorage.setItem('hub-theme', next);
+            updateThemeUI(next);
+        }
+
+        function updateThemeUI(theme) {
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            if (theme === 'light') {
+                icon.innerText = '🌙';
+                text.innerText = 'Dark';
+            } else {
+                icon.innerText = '☀️';
+                text.innerText = 'Light';
+            }
+        }
+
+        // Init
+        searchInput.addEventListener('input', (e) => renderHub(e.target.value));
+        themeToggle.addEventListener('click', toggleTheme);
+
+        const savedTheme = localStorage.getItem('hub-theme') || 'dark';
+        document.body.setAttribute('data-theme', savedTheme);
+        updateThemeUI(savedTheme);
+        renderHub();
+    </script>
+</body>
+
+</html>

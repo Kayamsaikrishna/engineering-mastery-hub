@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HashMap Fundamentals - Master the Basics</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #764ba2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        h3 { color: #764ba2; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box {
+            background: #f8f9ff;
+            padding: 20px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .visual-hashmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .hash-entry {
+            border: 2px solid #667eea;
+            padding: 15px;
+            border-radius: 8px;
+            background: white;
+            transition: all 0.3s;
+        }
+        .hash-entry:hover {
+            background: #f8f9ff;
+            transform: scale(1.05);
+        }
+        .hash-key {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        .hash-value {
+            color: #764ba2;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9ff;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        input[type="text"],
+        input[type="number"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            min-width: 150px;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #667eea; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+        }
+        #demoHashmap {
+            min-height: 100px;
+        }
+        .hash-visual {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .bucket {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9ff;
+            border-radius: 5px;
+        }
+        .bucket-index {
+            font-weight: bold;
+            color: #667eea;
+            margin-right: 10px;
+            min-width: 50px;
+        }
+        .bucket-content {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🗺️ HashMap/Dictionary Fundamentals</h1>
+            <p class="subtitle">Master Key-Value Data Structures</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('basics')">Basics & Creation</button>
+                <button class="nav-btn" onclick="showSection('operations')">Operations</button>
+                <button class="nav-btn" onclick="showSection('advanced')">Advanced Concepts</button>
+                <button class="nav-btn" onclick="showSection('patterns')">Common Patterns</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive Practice</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 What is a HashMap?</h2>
+            
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>A <strong>HashMap</strong> (also called Dictionary in Python, Hash Table, or Map) is a data structure that stores <span class="highlight">key-value pairs</span>. Think of it as a real dictionary where you look up a word (key) to find its definition (value).</p>
+            </div>
+
+            <div class="visual-hashmap">
+                <div class="hash-entry">
+                    <div class="hash-key">Key: "name"</div>
+                    <div class="hash-value">Value: "Alice"</div>
+                </div>
+                <div class="hash-entry">
+                    <div class="hash-key">Key: "age"</div>
+                    <div class="hash-value">Value: 25</div>
+                </div>
+                <div class="hash-entry">
+                    <div class="hash-key">Key: "city"</div>
+                    <div class="hash-value">Value: "NYC"</div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Critical Insight:</strong> HashMaps provide <span class="highlight">O(1) average</span> time complexity for insertion, deletion, and lookup! This is incredibly fast.
+            </div>
+
+            <h3>Why Learn HashMaps?</h3>
+            <ul>
+                <li><strong>Speed:</strong> O(1) average access time - fastest lookup possible</li>
+                <li><strong>Versatility:</strong> Used in 60%+ of interview problems</li>
+                <li><strong>Real-World:</strong> Caching, databases, counting, grouping</li>
+                <li><strong>Problem Solving:</strong> Transforms O(n²) problems to O(n)</li>
+            </ul>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> HashMap = Restaurant Menu
+                <ul>
+                    <li>Dish Name (key) → Price (value)</li>
+                    <li>You don't search the whole menu line by line</li>
+                    <li>You jump directly to what you want (O(1)!)</li>
+                </ul>
+            </div>
+
+            <h3>HashMap vs Array: Key Differences</h3>
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>HashMap</th>
+                    <th>Array</th>
+                </tr>
+                <tr>
+                    <td><strong>Access</strong></td>
+                    <td>By key (any type)</td>
+                    <td>By index (integer only)</td>
+                </tr>
+                <tr>
+                    <td><strong>Lookup Time</strong></td>
+                    <td>O(1) average</td>
+                    <td>O(1) by index, O(n) by value</td>
+                </tr>
+                <tr>
+                    <td><strong>Order</strong></td>
+                    <td>Unordered (in most languages)</td>
+                    <td>Ordered by index</td>
+                </tr>
+                <tr>
+                    <td><strong>Keys</strong></td>
+                    <td>Unique (no duplicates)</td>
+                    <td>Index auto-assigned</td>
+                </tr>
+                <tr>
+                    <td><strong>Use Case</strong></td>
+                    <td>Fast lookup, counting, grouping</td>
+                    <td>Sequential data, ordered lists</td>
+                </tr>
+            </table>
+
+            <h3>How HashMap Works (Simplified)</h3>
+
+            <div class="hash-visual">
+                <h4>Internal Structure (Hash Table):</h4>
+                <div class="bucket">
+                    <div class="bucket-index">Bucket 0:</div>
+                    <div class="bucket-content">("apple", 5)</div>
+                </div>
+                <div class="bucket">
+                    <div class="bucket-index">Bucket 1:</div>
+                    <div class="bucket-content">Empty</div>
+                </div>
+                <div class="bucket">
+                    <div class="bucket-index">Bucket 2:</div>
+                    <div class="bucket-content">("banana", 3)</div>
+                </div>
+                <div class="bucket">
+                    <div class="bucket-index">Bucket 3:</div>
+                    <div class="bucket-content">("cherry", 8)</div>
+                </div>
+            </div>
+
+            <div class="concept-box">
+                <h4>The Magic: Hash Function</h4>
+                <p><strong>Hash Function:</strong> Converts a key into an array index</p>
+                <code>index = hash(key) % array_size</code>
+                <br><br>
+                <strong>Example:</strong>
+                <ul>
+                    <li>hash("apple") = 1234567 → 1234567 % 10 = 7 → Store at index 7</li>
+                    <li>hash("banana") = 9876543 → 9876543 % 10 = 3 → Store at index 3</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- BASICS SECTION -->
+        <div id="basics" class="section">
+            <h2>📚 Dictionary Basics in Python</h2>
+
+            <h3>1. Creating Dictionaries</h3>
+
+            <div class="code-label">Python - Dictionary Creation</div>
+            <div class="code-block"># Method 1: Using curly braces
+student = {
+    "name": "Alice",
+    "age": 20,
+    "grade": "A"
+}
+
+# Method 2: Empty dictionary
+empty_dict = {}
+
+# Method 3: Using dict() constructor
+person = dict(name="Bob", age=25, city="NYC")
+
+# Method 4: From list of tuples
+pairs = [("a", 1), ("b", 2), ("c", 3)]
+my_dict = dict(pairs)
+
+# Method 5: Dictionary comprehension
+squares = {x: x**2 for x in range(5)}
+# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# Method 6: Using fromkeys (same value for all keys)
+keys = ["a", "b", "c"]
+default_dict = dict.fromkeys(keys, 0)
+# {"a": 0, "b": 0, "c": 0}
+
+# Mixed data types (keys and values)
+mixed = {
+    "name": "Charlie",
+    1: "one",
+    (2, 3): "tuple key",
+    "list": [1, 2, 3]
+}</div>
+
+            <div class="pseudocode">PSEUDOCODE: Create HashMap
+
+DECLARE hashmap map
+SET map = {key1: value1, key2: value2, ...}
+SET size = LENGTH(map)</div>
+
+            <div class="key-point">
+                <strong>⚠️ Key Requirements:</strong>
+                <ul>
+                    <li>Keys must be <strong>immutable</strong>: strings, numbers, tuples (not lists!)</li>
+                    <li>Keys must be <strong>unique</strong>: duplicate keys will overwrite</li>
+                    <li>Values can be <strong>anything</strong>: any data type, mutable or immutable</li>
+                </ul>
+            </div>
+
+            <h3>2. Accessing Values</h3>
+
+            <div class="code-label">Python - Access Operations</div>
+            <div class="code-block">student = {
+    "name": "Alice",
+    "age": 20,
+    "grade": "A"
+}
+
+# Method 1: Using square brackets
+print(student["name"])  # "Alice"
+print(student["age"])   # 20
+
+# Problem: KeyError if key doesn't exist
+# print(student["phone"])  # KeyError!
+
+# Method 2: Using get() - SAFER
+print(student.get("name"))  # "Alice"
+print(student.get("phone"))  # None (no error!)
+
+# get() with default value
+print(student.get("phone", "Not Found"))  # "Not Found"
+
+# Check if key exists
+if "name" in student:
+    print(student["name"])
+
+# Check if key doesn't exist
+if "phone" not in student:
+    print("Phone not found")
+
+# Get all keys
+print(student.keys())  # dict_keys(['name', 'age', 'grade'])
+
+# Get all values
+print(student.values())  # dict_values(['Alice', 20, 'A'])
+
+# Get all key-value pairs
+print(student.items())  # dict_items([('name', 'Alice'), ...])</div>
+
+            <div class="pseudocode">PSEUDOCODE: Access Value
+
+FUNCTION getValue(map, key):
+    IF key EXISTS IN map:
+        RETURN map[key]
+    ELSE:
+        RETURN null OR default value
+    END IF
+END FUNCTION
+
+Time Complexity: O(1) average
+Space Complexity: O(1)</div>
+
+            <h3>3. Modifying Dictionaries</h3>
+
+            <div class="code-label">Python - Modification</div>
+            <div class="code-block">student = {"name": "Alice", "age": 20}
+
+# Update existing key
+student["age"] = 21
+print(student)  # {"name": "Alice", "age": 21}
+
+# Add new key-value pair
+student["grade"] = "A"
+print(student)  # {"name": "Alice", "age": 21, "grade": "A"}
+
+# Update multiple values
+student.update({"age": 22, "city": "NYC"})
+print(student)
+
+# Update with another dictionary
+new_data = {"phone": "123-456", "email": "alice@example.com"}
+student.update(new_data)
+
+# Set default value if key doesn't exist
+student.setdefault("country", "USA")  # Adds if not present
+student.setdefault("name", "Bob")  # Doesn't change (already exists)</div>
+
+            <div class="memory-tip">
+                <strong>💡 Update vs Assignment:</strong>
+                <br><code>dict[key] = value</code> → Adds or updates single key
+                <br><code>dict.update({...})</code> → Updates multiple keys at once
+            </div>
+        </div>
+
+        <!-- OPERATIONS SECTION -->
+        <div id="operations" class="section">
+            <h2>⚙️ Core HashMap Operations</h2>
+
+            <h3>1. Insertion</h3>
+
+            <div class="code-label">Python - Insert Operations</div>
+            <div class="code-block">my_dict = {}
+
+# Insert single key-value pair
+my_dict["apple"] = 5
+my_dict["banana"] = 3
+my_dict["cherry"] = 8
+
+print(my_dict)  # {"apple": 5, "banana": 3, "cherry": 8}
+
+# Insert multiple at once
+my_dict.update({
+    "orange": 4,
+    "grape": 10
+})
+
+# Insert only if key doesn't exist
+my_dict.setdefault("apple", 100)  # Won't change (already exists)
+my_dict.setdefault("mango", 6)    # Will add (doesn't exist)
+
+# Overwrite warning
+my_dict["apple"] = 12  # Overwrites old value (5 → 12)</div>
+
+            <div class="pseudocode">PSEUDOCODE: Insert into HashMap
+
+FUNCTION insert(map, key, value):
+    map[key] = value  // Overwrites if exists
+END FUNCTION
+
+Time Complexity: O(1) average
+Space Complexity: O(1)</div>
+
+            <h3>2. Deletion</h3>
+
+            <div class="code-label">Python - Delete Operations</div>
+            <div class="code-block">student = {
+    "name": "Alice",
+    "age": 20,
+    "grade": "A",
+    "city": "NYC"
+}
+
+# Method 1: del statement
+del student["city"]
+print(student)  # city removed
+
+# Problem: KeyError if key doesn't exist
+# del student["phone"]  # KeyError!
+
+# Method 2: pop() - returns value and removes
+age = student.pop("age")
+print(age)  # 20
+print(student)  # age removed
+
+# pop() with default (no error if key missing)
+phone = student.pop("phone", "Not Found")
+print(phone)  # "Not Found"
+
+# Method 3: popitem() - removes last inserted (Python 3.7+)
+last_item = student.popitem()
+print(last_item)  # ("grade", "A")
+
+# Method 4: clear() - removes all items
+student.clear()
+print(student)  # {}</div>
+
+            <div class="pseudocode">PSEUDOCODE: Delete from HashMap
+
+FUNCTION delete(map, key):
+    IF key EXISTS IN map:
+        REMOVE map[key]
+        RETURN True
+    ELSE:
+        RETURN False
+    END IF
+END FUNCTION
+
+Time Complexity: O(1) average
+Space Complexity: O(1)</div>
+
+            <h3>3. Searching/Lookup</h3>
+
+            <div class="code-label">Python - Search Operations</div>
+            <div class="code-block">fruits = {
+    "apple": 5,
+    "banana": 3,
+    "cherry": 8
+}
+
+# Check if key exists
+if "apple" in fruits:
+    print("Apple found!")
+
+if "orange" not in fruits:
+    print("Orange not found!")
+
+# Check if value exists (slower - O(n))
+if 5 in fruits.values():
+    print("Value 5 found!")
+
+# Get value safely
+count = fruits.get("apple", 0)
+
+# Find key by value (manual search)
+def find_key_by_value(dictionary, target_value):
+    for key, value in dictionary.items():
+        if value == target_value:
+            return key
+    return None
+
+key = find_key_by_value(fruits, 8)
+print(key)  # "cherry"</div>
+
+            <div class="pseudocode">PSEUDOCODE: Search in HashMap
+
+FUNCTION search(map, key):
+    RETURN key IN map
+END FUNCTION
+
+Time Complexity: O(1) average for key lookup
+Space Complexity: O(1)</div>
+
+            <h3>4. Traversal/Iteration</h3>
+
+            <div class="code-label">Python - Iteration Methods</div>
+            <div class="code-block">student = {
+    "name": "Alice",
+    "age": 20,
+    "grade": "A"
+}
+
+# Method 1: Iterate over keys (default)
+for key in student:
+    print(key, student[key])
+
+# Method 2: Iterate over keys explicitly
+for key in student.keys():
+    print(key, student[key])
+
+# Method 3: Iterate over values
+for value in student.values():
+    print(value)
+
+# Method 4: Iterate over key-value pairs (BEST)
+for key, value in student.items():
+    print(f"{key}: {value}")
+
+# Method 5: Using enumerate for index
+for index, (key, value) in enumerate(student.items()):
+    print(f"{index}. {key} = {value}")
+
+# List comprehension with dictionaries
+names = [v for k, v in student.items() if k == "name"]
+doubled = {k: v*2 for k, v in {"a": 1, "b": 2}.items()}</div>
+
+            <div class="pseudocode">PSEUDOCODE: Traverse HashMap
+
+FUNCTION traverse(map):
+    FOR each key IN map:
+        value = map[key]
+        PROCESS key and value
+    END FOR
+END FUNCTION
+
+Time Complexity: O(n)
+Space Complexity: O(1)</div>
+
+            <h3>5. Merging Dictionaries</h3>
+
+            <div class="code-label">Python - Merge Operations</div>
+            <div class="code-block">dict1 = {"a": 1, "b": 2}
+dict2 = {"c": 3, "d": 4}
+dict3 = {"b": 20, "e": 5}  # Note: "b" conflicts with dict1
+
+# Method 1: Using update() - modifies dict1
+dict1_copy = dict1.copy()
+dict1_copy.update(dict2)
+print(dict1_copy)  # {"a": 1, "b": 2, "c": 3, "d": 4}
+
+# Method 2: Using ** operator (Python 3.5+)
+merged = {**dict1, **dict2}
+print(merged)  # {"a": 1, "b": 2, "c": 3, "d": 4}
+
+# Method 3: Using | operator (Python 3.9+)
+merged = dict1 | dict2
+print(merged)
+
+# Handling conflicts (later dict wins)
+merged = {**dict1, **dict3}
+print(merged)  # {"a": 1, "b": 20, "e": 5} - dict3's "b" wins
+
+# Merge multiple dictionaries
+dict4 = {"f": 6}
+merged = {**dict1, **dict2, **dict3, **dict4}
+print(merged)</div>
+
+            <h3>6. Copying Dictionaries</h3>
+
+            <div class="code-label">Python - Copy Operations</div>
+            <div class="code-block">original = {"a": 1, "b": 2, "c": [1, 2, 3]}
+
+# Shallow copy - Method 1
+copy1 = original.copy()
+
+# Shallow copy - Method 2
+copy2 = dict(original)
+
+# Problem with shallow copy
+copy1["c"][0] = 999  # Changes original too!
+print(original["c"])  # [999, 2, 3] - affected!
+
+# Deep copy (for nested structures)
+import copy
+deep = copy.deepcopy(original)
+deep["c"][0] = 100
+print(original["c"])  # [999, 2, 3] - not affected!
+
+# Reference (not a copy!)
+ref = original
+ref["a"] = 100
+print(original["a"])  # 100 - same object!</div>
+
+            <div class="key-point">
+                <strong>⚠️ Copy Warning:</strong>
+                <ul>
+                    <li><code>.copy()</code> creates <strong>shallow copy</strong> - nested objects still shared</li>
+                    <li><code>copy.deepcopy()</code> creates <strong>deep copy</strong> - completely independent</li>
+                    <li>Assignment (<code>=</code>) creates <strong>reference</strong> - same object!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ADVANCED SECTION -->
+        <div id="advanced" class="section">
+            <h2>🧠 Advanced Concepts</h2>
+
+            <h3>1. Nested Dictionaries</h3>
+
+            <div class="code-label">Python - Nested Dictionaries</div>
+            <div class="code-block"># Student database
+students = {
+    "student1": {
+        "name": "Alice",
+        "age": 20,
+        "grades": {"math": 95, "science": 88}
+    },
+    "student2": {
+        "name": "Bob",
+        "age": 22,
+        "grades": {"math": 78, "science": 92}
+    }
+}
+
+# Access nested values
+print(students["student1"]["name"])  # "Alice"
+print(students["student1"]["grades"]["math"])  # 95
+
+# Safe access with get()
+math_grade = students.get("student1", {}).get("grades", {}).get("math", 0)
+
+# Iterate nested dictionary
+for student_id, info in students.items():
+    print(f"Student: {info['name']}")
+    for subject, grade in info['grades'].items():
+        print(f"  {subject}: {grade}")
+
+# Add to nested structure
+students["student3"] = {
+    "name": "Charlie",
+    "age": 21,
+    "grades": {}
+}
+students["student3"]["grades"]["math"] = 85</div>
+
+            <h3>2. Dictionary Comprehension</h3>
+
+            <div class="code-label">Python - Comprehensions</div>
+            <div class="code-block"># Basic comprehension
+squares = {x: x**2 for x in range(6)}
+# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16, 5: 25}
+
+# With condition
+even_squares = {x: x**2 for x in range(10) if x % 2 == 0}
+# {0: 0, 2: 4, 4: 16, 6: 36, 8: 64}
+
+# From two lists
+keys = ["a", "b", "c"]
+values = [1, 2, 3]
+my_dict = {k: v for k, v in zip(keys, values)}
+# {"a": 1, "b": 2, "c": 3}
+
+# Transform existing dictionary
+prices = {"apple": 5, "banana": 3, "cherry": 8}
+discounted = {item: price * 0.9 for item, price in prices.items()}
+
+# Conditional values
+numbers = [1, 2, 3, 4, 5]
+parity = {n: "even" if n % 2 == 0 else "odd" for n in numbers}
+
+# Nested comprehension
+matrix = {i: {j: i*j for j in range(3)} for i in range(3)}</div>
+
+            <h3>3. DefaultDict (Collections Module)</h3>
+
+            <div class="code-label">Python - DefaultDict</div>
+            <div class="code-block">from collections import defaultdict
+
+# Problem with regular dict
+word_count = {}
+words = ["apple", "banana", "apple", "cherry", "banana", "apple"]
+
+# Regular dict - need to check if key exists
+for word in words:
+    if word in word_count:
+        word_count[word] += 1
+    else:
+        word_count[word] = 1
+
+# Solution: DefaultDict (no checking needed!)
+word_count = defaultdict(int)  # default value is 0
+for word in words:
+    word_count[word] += 1  # Works even if key doesn't exist!
+
+print(dict(word_count))  # {"apple": 3, "banana": 2, "cherry": 1}
+
+# Different default types
+list_dict = defaultdict(list)
+list_dict["fruits"].append("apple")
+list_dict["fruits"].append("banana")
+
+set_dict = defaultdict(set)
+set_dict["numbers"].add(1)
+set_dict["numbers"].add(2)
+
+# Custom default function
+def default_value():
+    return "Not Found"
+
+custom = defaultdict(default_value)
+print(custom["missing"])  # "Not Found"</div>
+
+            <h3>4. Counter (Collections Module)</h3>
+
+            <div class="code-label">Python - Counter</div>
+            <div class="code-block">from collections import Counter
+
+# Count elements in a list
+numbers = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+count = Counter(numbers)
+print(count)  # Counter({4: 4, 3: 3, 2: 2, 1: 1})
+
+# Count characters in string
+text = "hello world"
+char_count = Counter(text)
+print(char_count)  # Counter({'l': 3, 'o': 2, ...})
+
+# Most common elements
+print(count.most_common(2))  # [(4, 4), (3, 3)]
+
+# Count from multiple sources
+count1 = Counter([1, 2, 3])
+count2 = Counter([2, 3, 4])
+total = count1 + count2  # Counter({2: 2, 3: 2, 1: 1, 4: 1})
+
+# Subtract counts
+diff = count1 - count2  # Counter({1: 1})
+
+# Update counter
+count1.update([4, 5, 5])
+
+# Common operations
+words = ["apple", "banana", "apple", "cherry", "banana", "apple"]
+word_freq = Counter(words)
+print(word_freq["apple"])  # 3
+print(word_freq["orange"])  # 0 (no KeyError!)
+
+# Convert to regular dict
+regular_dict = dict(word_freq)</div>
+
+            <h3>5. OrderedDict (Collections Module)</h3>
+
+            <div class="code-label">Python - OrderedDict</div>
+            <div class="code-block">from collections import OrderedDict
+
+# Note: Python 3.7+ regular dicts maintain insertion order
+# OrderedDict still useful for explicit ordering operations
+
+ordered = OrderedDict()
+ordered["first"] = 1
+ordered["second"] = 2
+ordered["third"] = 3
+
+print(ordered)  # Maintains insertion order
+
+# Move to end
+ordered.move_to_end("first")  # Moves "first" to end
+print(ordered)  # OrderedDict([('second', 2), ('third', 3), ('first', 1)])
+
+# Move to beginning
+ordered.move_to_end("third", last=False)
+print(ordered)  # OrderedDict([('third', 3), ('second', 2), ('first', 1)])
+
+# Pop last item (LIFO)
+last = ordered.popitem()  # ('first', 1)
+
+# Pop first item (FIFO)
+first = ordered.popitem(last=False)  # ('third', 3)</div>
+
+            <h3>6. Time Complexity Summary</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operation</th>
+                    <th>Average Case</th>
+                    <th>Worst Case</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>Access/Get</td>
+                    <td>O(1)</td>
+                    <td>O(n)</td>
+                    <td>Direct hash lookup</td>
+                </tr>
+                <tr>
+                    <td>Insert/Set</td>
+                    <td>O(1)</td>
+                    <td>O(n)</td>
+                    <td>May resize table</td>
+                </tr>
+                <tr>
+                    <td>Delete</td>
+                    <td>O(1)</td>
+                    <td>O(n)</td>
+                    <td>Find and remove</td>
+                </tr>
+                <tr>
+                    <td>Search Key</td>
+                    <td>O(1)</td>
+                    <td>O(n)</td>
+                    <td>Check existence</td>
+                </tr>
+                <tr>
+                    <td>Search Value</td>
+                    <td>O(n)</td>
+                    <td>O(n)</td>
+                    <td>Must scan all values</td>
+                </tr>
+                <tr>
+                    <td>Iteration</td>
+                    <td>O(n)</td>
+                    <td>O(n)</td>
+                    <td>Visit all entries</td>
+                </tr>
+            </table>
+
+            <div class="memory-tip">
+                <strong>💡 When to Use HashMap:</strong>
+                <ul>
+                    <li><strong>Counting:</strong> Frequency of elements</li>
+                    <li><strong>Caching:</strong> Store computed results</li>
+                    <li><strong>Grouping:</strong> Group items by category</li>
+                    <li><strong>Fast lookup:</strong> Check if element exists</li>
+                    <li><strong>Two-sum problems:</strong> Store complements</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PATTERNS SECTION -->
+        <div id="patterns" class="section">
+            <h2>🎨 Common HashMap Patterns</h2>
+
+            <h3>Pattern 1: Frequency Counter</h3>
+
+            <div class="code-label">Python - Count Frequency</div>
+            <div class="code-block">from collections import Counter
+
+# Count occurrences of each element
+def count_frequency(arr):
+    freq = {}
+    for item in arr:
+        freq[item] = freq.get(item, 0) + 1
+    return freq
+
+# Or using Counter (easier)
+def count_frequency_v2(arr):
+    return Counter(arr)
+
+numbers = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+print(count_frequency(numbers))
+# {1: 1, 2: 2, 3: 3, 4: 4}
+
+# Find most frequent element
+def most_frequent(arr):
+    freq = Counter(arr)
+    return freq.most_common(1)[0][0]
+
+print(most_frequent(numbers))  # 4</div>
+
+            <div class="pseudocode">PSEUDOCODE: Frequency Counter
+
+FUNCTION countFrequency(arr):
+    freq = HASHMAP()
+    
+    FOR each element IN arr:
+        IF element IN freq:
+            freq[element] = freq[element] + 1
+        ELSE:
+            freq[element] = 1
+        END IF
+    END FOR
+    
+    RETURN freq
+END FUNCTION
+
+Time Complexity: O(n)
+Space Complexity: O(k) where k = unique elements</div>
+
+            <h3>Pattern 2: Two Sum Problem</h3>
+
+            <div class="code-label">Python - Two Sum</div>
+            <div class="code-block"># Find two numbers that add up to target
+def two_sum(nums, target):
+    seen = {}  # Store number: index
+    
+    for i, num in enumerate(nums):
+        complement = target - num
+        
+        if complement in seen:
+            return [seen[complement], i]
+        
+        seen[num] = i
+    
+    return None
+
+nums = [2, 7, 11, 15]
+target = 9
+print(two_sum(nums, target))  # [0, 1] (2 + 7 = 9)
+
+# Without HashMap - O(n²)
+def two_sum_slow(nums, target):
+    for i in range(len(nums)):
+        for j in range(i + 1, len(nums)):
+            if nums[i] + nums[j] == target:
+                return [i, j]
+    return None
+
+# HashMap version is O(n) - much faster!</div>
+
+            <div class="pseudocode">PSEUDOCODE: Two Sum
+
+FUNCTION twoSum(nums, target):
+    seen = HASHMAP()
+    
+    FOR i = 0 TO LENGTH(nums) - 1:
+        complement = target - nums[i]
+        
+        IF complement IN seen:
+            RETURN [seen[complement], i]
+        END IF
+        
+        seen[nums[i]] = i
+    END FOR
+    
+    RETURN null
+END FUNCTION
+
+Time Complexity: O(n)
+Space Complexity: O(n)</div>
+
+            <h3>Pattern 3: Group Anagrams</h3>
+
+            <div class="code-label">Python - Group Anagrams</div>
+            <div class="code-block">from collections import defaultdict
+
+def group_anagrams(words):
+    groups = defaultdict(list)
+    
+    for word in words:
+        # Sort word to get key
+        key = ''.join(sorted(word))
+        groups[key].append(word)
+    
+    return list(groups.values())
+
+words = ["eat", "tea", "tan", "ate", "nat", "bat"]
+result = group_anagrams(words)
+print(result)
+# [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
+
+# Alternative: use tuple of character counts as key
+def group_anagrams_v2(words):
+    groups = defaultdict(list)
+    
+    for word in words:
+        # Count each character
+        count = [0] * 26
+        for char in word:
+            count[ord(char) - ord('a')] += 1
+        groups[tuple(count)].append(word)
+    
+    return list(groups.values())</div>
+
+            <h3>Pattern 4: First Unique Character</h3>
+
+            <div class="code-label">Python - First Unique</div>
+            <div class="code-block">from collections import Counter
+
+def first_unique_char(s):
+    # Count frequency
+    freq = Counter(s)
+    
+    # Find first character with count 1
+    for i, char in enumerate(s):
+        if freq[char] == 1:
+            return i
+    
+    return -1
+
+text = "leetcode"
+print(first_unique_char(text))  # 0 ('l' is first unique)
+
+text = "loveleetcode"
+print(first_unique_char(text))  # 2 ('v' is first unique)
+
+text = "aabb"
+print(first_unique_char(text))  # -1 (no unique characters)</div>
+
+            <h3>Pattern 5: Subarray Sum Equals K</h3>
+
+            <div class="code-label">Python - Subarray Sum</div>
+            <div class="code-block">def subarray_sum(nums, k):
+    count = 0
+    curr_sum = 0
+    sum_freq = {0: 1}  # Initialize with sum 0
+    
+    for num in nums:
+        curr_sum += num
+        
+        # Check if (curr_sum - k) exists
+        if curr_sum - k in sum_freq:
+            count += sum_freq[curr_sum - k]
+        
+        # Add current sum to map
+        sum_freq[curr_sum] = sum_freq.get(curr_sum, 0) + 1
+    
+    return count
+
+nums = [1, 2, 3]
+k = 3
+print(subarray_sum(nums, k))  # 2 ([1,2] and [3])
+
+nums = [1, 1, 1]
+k = 2
+print(subarray_sum(nums, k))  # 2 ([1,1] twice)</div>
+
+            <h3>Pattern 6: Longest Consecutive Sequence</h3>
+
+            <div class="code-label">Python - Consecutive Sequence</div>
+            <div class="code-block">def longest_consecutive(nums):
+    if not nums:
+        return 0
+    
+    num_set = set(nums)  # Convert to set for O(1) lookup
+    longest = 0
+    
+    for num in num_set:
+        # Only start counting if num is start of sequence
+        if num - 1 not in num_set:
+            current_num = num
+            current_length = 1
+            
+            # Count consecutive numbers
+            while current_num + 1 in num_set:
+                current_num += 1
+                current_length += 1
+            
+            longest = max(longest, current_length)
+    
+    return longest
+
+nums = [100, 4, 200, 1, 3, 2]
+print(longest_consecutive(nums))  # 4 ([1, 2, 3, 4])
+
+nums = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]
+print(longest_consecutive(nums))  # 9 ([0,1,2,3,4,5,6,7,8])</div>
+
+            <h3>Pattern 7: LRU Cache (Least Recently Used)</h3>
+
+            <div class="code-label">Python - LRU Cache</div>
+            <div class="code-block">from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity):
+        self.cache = OrderedDict()
+        self.capacity = capacity
+    
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        # Move to end (most recently used)
+        self.cache.move_to_end(key)
+        return self.cache[key]
+    
+    def put(self, key, value):
+        if key in self.cache:
+            # Update and move to end
+            self.cache.move_to_end(key)
+        self.cache[key] = value
+        
+        # Remove oldest if over capacity
+        if len(self.cache) > self.capacity:
+            self.cache.popitem(last=False)
+
+# Usage
+cache = LRUCache(2)
+cache.put(1, 1)
+cache.put(2, 2)
+print(cache.get(1))  # 1
+cache.put(3, 3)  # Removes key 2
+print(cache.get(2))  # -1 (not found)</div>
+
+            <h3>Pattern 8: Check if Array Contains Duplicates</h3>
+
+            <div class="code-label">Python - Find Duplicates</div>
+            <div class="code-block"># Check if any duplicates exist
+def contains_duplicate(nums):
+    seen = set()
+    for num in nums:
+        if num in seen:
+            return True
+        seen.add(num)
+    return False
+
+# Or simpler
+def contains_duplicate_v2(nums):
+    return len(nums) != len(set(nums))
+
+print(contains_duplicate([1, 2, 3, 1]))  # True
+print(contains_duplicate([1, 2, 3, 4]))  # False
+
+# Find all duplicates
+def find_duplicates(nums):
+    freq = {}
+    duplicates = []
+    
+    for num in nums:
+        freq[num] = freq.get(num, 0) + 1
+    
+    for num, count in freq.items():
+        if count > 1:
+            duplicates.append(num)
+    
+    return duplicates
+
+print(find_duplicates([4,3,2,7,8,2,3,1]))  # [2, 3]</div>
+
+            <div class="memory-tip">
+                <strong>💡 Pattern Recognition Guide:</strong>
+                <ul>
+                    <li><strong>Counting:</strong> Use Counter or frequency dict</li>
+                    <li><strong>Complement search:</strong> Use dict to store seen values (Two Sum)</li>
+                    <li><strong>Grouping:</strong> Use defaultdict(list) with computed key</li>
+                    <li><strong>Unique check:</strong> Use set for O(1) lookup</li>
+                    <li><strong>Caching:</strong> Use dict to store computed results</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Interactive HashMap Practice</h2>
+
+            <div class="interactive-demo">
+                <h3>Dictionary Visualizer</h3>
+                <input type="text" id="keyInput" placeholder="Key" value="name">
+                <input type="text" id="valueInput" placeholder="Value" value="Alice">
+                
+                <div class="demo-controls">
+                    <button class="demo-btn" onclick="addPair()">Add/Update</button>
+                    <button class="demo-btn" onclick="deletePair()">Delete Key</button>
+                    <button class="demo-btn" onclick="searchKey()">Search Key</button>
+                    <button class="demo-btn" onclick="getKeys()">Show Keys</button>
+                    <button class="demo-btn" onclick="getValues()">Show Values</button>
+                    <button class="demo-btn" onclick="clearDict()">Clear All</button>
+                </div>
+                
+                <div id="demoHashmap" class="visual-hashmap"></div>
+                <div id="output"></div>
+            </div>
+
+            <h3>🏋️ Practice Problems</h3>
+
+            <div class="key-point">
+                <strong>Problem 1: Word Frequency Counter</strong>
+                <div class="pseudocode">FUNCTION wordFrequency(text):
+    words = SPLIT(text by spaces)
+    freq = HASHMAP()
+    
+    FOR each word IN words:
+        word = LOWERCASE(word)
+        freq[word] = freq.get(word, 0) + 1
+    END FOR
+    
+    RETURN freq
+END FUNCTION</div>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def word_frequency(text):
+    words = text.lower().split()
+    freq = {}
+    for word in words:
+        freq[word] = freq.get(word, 0) + 1
+    return freq
+
+text = "hello world hello python world"
+print(word_frequency(text))
+# {'hello': 2, 'world': 2, 'python': 1}</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 2: Isomorphic Strings</strong>
+                <div class="pseudocode">FUNCTION isIsomorphic(s, t):
+    IF LENGTH(s) != LENGTH(t):
+        RETURN False
+    END IF
+    
+    map_s_to_t = HASHMAP()
+    map_t_to_s = HASHMAP()
+    
+    FOR i = 0 TO LENGTH(s) - 1:
+        char_s = s[i]
+        char_t = t[i]
+        
+        IF char_s IN map_s_to_t:
+            IF map_s_to_t[char_s] != char_t:
+                RETURN False
+            END IF
+        ELSE:
+            map_s_to_t[char_s] = char_t
+        END IF
+        
+        IF char_t IN map_t_to_s:
+            IF map_t_to_s[char_t] != char_s:
+                RETURN False
+            END IF
+        ELSE:
+            map_t_to_s[char_t] = char_s
+        END IF
+    END FOR
+    
+    RETURN True
+END FUNCTION</div>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def is_isomorphic(s, t):
+    if len(s) != len(t):
+        return False
+    
+    map_s_to_t = {}
+    map_t_to_s = {}
+    
+    for char_s, char_t in zip(s, t):
+        if char_s in map_s_to_t:
+            if map_s_to_t[char_s] != char_t:
+                return False
+        else:
+            map_s_to_t[char_s] = char_t
+        
+        if char_t in map_t_to_s:
+            if map_t_to_s[char_t] != char_s:
+                return False
+        else:
+            map_t_to_s[char_t] = char_s
+    
+    return True
+
+print(is_isomorphic("egg", "add"))  # True
+print(is_isomorphic("foo", "bar"))  # False</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 3: Top K Frequent Elements</strong>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">from collections import Counter
+import heapq
+
+def top_k_frequent(nums, k):
+    # Count frequency
+    freq = Counter(nums)
+    
+    # Get k most common
+    return [num for num, count in freq.most_common(k)]
+
+# Alternative using heap
+def top_k_frequent_v2(nums, k):
+    freq = Counter(nums)
+    # Use heap to get top k
+    return heapq.nlargest(k, freq.keys(), key=freq.get)
+
+nums = [1,1,1,2,2,3]
+k = 2
+print(top_k_frequent(nums, k))  # [1, 2]</div>
+            </div>
+
+            <h3>🎯 Key Takeaways to Remember Forever</h3>
+
+            <div class="memory-tip">
+                <strong>The 10 Commandments of HashMaps:</strong>
+                <ol>
+                    <li><strong>O(1) lookup:</strong> Fastest data structure for search</li>
+                    <li><strong>Keys must be immutable:</strong> Strings, numbers, tuples only</li>
+                    <li><strong>Keys must be unique:</strong> Duplicate keys overwrite</li>
+                    <li><strong>Use .get() for safety:</strong> Avoid KeyError</li>
+                    <li><strong>Check existence with 'in':</strong> Fast membership test</li>
+                    <li><strong>Use Counter for frequency:</strong> Built-in counting tool</li>
+                    <li><strong>Use defaultdict to avoid checks:</strong> Auto-initialize missing keys</li>
+                    <li><strong>Iterate with .items():</strong> Get both key and value</li>
+                    <li><strong>HashMap transforms O(n²) to O(n):</strong> Two Sum pattern</li>
+                    <li><strong>Trade space for time:</strong> Use memory to gain speed</li>
+                </ol>
+            </div>
+
+            <h3>📊 HashMap vs Other Data Structures</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operation</th>
+                    <th>HashMap</th>
+                    <th>Array</th>
+                    <th>Set</th>
+                </tr>
+                <tr>
+                    <td>Search by Key/Value</td>
+                    <td>O(1)</td>
+                    <td>O(n)</td>
+                    <td>O(1)</td>
+                </tr>
+                <tr>
+                    <td>Insert</td>
+                    <td>O(1)</td>
+                    <td>O(1) at end</td>
+                    <td>O(1)</td>
+                </tr>
+                <tr>
+                    <td>Delete</td>
+                    <td>O(1)</td>
+                    <td>O(n)</td>
+                    <td>O(1)</td>
+                </tr>
+                <tr>
+                    <td>Order</td>
+                    <td>Unordered*</td>
+                    <td>Ordered</td>
+                    <td>Unordered</td>
+                </tr>
+                <tr>
+                    <td>Duplicates</td>
+                    <td>Keys: No, Values: Yes</td>
+                    <td>Yes</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>Use Case</td>
+                    <td>Key-value mapping</td>
+                    <td>Indexed access</td>
+                    <td>Unique elements</td>
+                </tr>
+            </table>
+            <p style="font-size: 0.9em; color: #666;">*Python 3.7+ dicts maintain insertion order</p>
+
+            <h3>🔥 Common Interview Questions</h3>
+
+            <div class="concept-box">
+                <h4>Must Practice:</h4>
+                <ol>
+                    <li>Two Sum</li>
+                    <li>Group Anagrams</li>
+                    <li>Top K Frequent Elements</li>
+                    <li>Longest Consecutive Sequence</li>
+                    <li>Subarray Sum Equals K</li>
+                    <li>First Unique Character</li>
+                    <li>Check if arrays are equal (frequency match)</li>
+                    <li>Find all duplicates in array</li>
+                    <li>Isomorphic Strings</li>
+                    <li>Design LRU Cache</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let demoDict = {};
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function renderHashmap() {
+            const container = document.getElementById('demoHashmap');
+            container.innerHTML = '';
+            
+            if (Object.keys(demoDict).length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999;">Dictionary is empty</p>';
+                return;
+            }
+            
+            for (let [key, value] of Object.entries(demoDict)) {
+                const entry = document.createElement('div');
+                entry.className = 'hash-entry';
+                entry.innerHTML = `
+                    <div class="hash-key">Key: "${key}"</div>
+                    <div class="hash-value">Value: "${value}"</div>
+                `;
+                container.appendChild(entry);
+            }
+        }
+
+        function displayOutput(msg) {
+            document.getElementById('output').innerHTML = `<strong>${msg}</strong>`;
+        }
+
+        function addPair() {
+            const key = document.getElementById('keyInput').value;
+            const value = document.getElementById('valueInput').value;
+            
+            if (!key) {
+                displayOutput('❌ Please enter a key!');
+                return;
+            }
+            
+            const isUpdate = key in demoDict;
+            demoDict[key] = value;
+            renderHashmap();
+            
+            if (isUpdate) {
+                displayOutput(`✅ Updated key "${key}" to value "${value}"`);
+            } else {
+                displayOutput(`✅ Added new pair: "${key}" → "${value}"`);
+            }
+        }
+
+        function deletePair() {
+            const key = document.getElementById('keyInput').value;
+            
+            if (!key) {
+                displayOutput('❌ Please enter a key to delete!');
+                return;
+            }
+            
+            if (key in demoDict) {
+                const value = demoDict[key];
+                delete demoDict[key];
+                renderHashmap();
+                displayOutput(`✅ Deleted key "${key}" (value was "${value}")`);
+            } else {
+                displayOutput(`❌ Key "${key}" not found!`);
+            }
+        }
+
+        function searchKey() {
+            const key = document.getElementById('keyInput').value;
+            
+            if (!key) {
+                displayOutput('❌ Please enter a key to search!');
+                return;
+            }
+            
+            if (key in demoDict) {
+                displayOutput(`✅ Key "${key}" found! Value: "${demoDict[key]}"`);
+            } else {
+                displayOutput(`❌ Key "${key}" not found in dictionary`);
+            }
+        }
+
+        function getKeys() {
+            const keys = Object.keys(demoDict);
+            if (keys.length === 0) {
+                displayOutput('Dictionary is empty - no keys');
+            } else {
+                displayOutput(`Keys: ${keys.map(k => `"${k}"`).join(', ')}`);
+            }
+        }
+
+        function getValues() {
+            const values = Object.values(demoDict);
+            if (values.length === 0) {
+                displayOutput('Dictionary is empty - no values');
+            } else {
+                displayOutput(`Values: ${values.map(v => `"${v}"`).join(', ')}`);
+            }
+        }
+
+        function clearDict() {
+            demoDict = {};
+            renderHashmap();
+            displayOutput('✅ Dictionary cleared!');
+        }
+
+        // Initialize with sample data
+        demoDict = {
+            "name": "Alice",
+            "age": "25",
+            "city": "NYC"
+        };
+        renderHashmap();
+    </script>
+</body>
+</html>

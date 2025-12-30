@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Development Fundamentals - Complete Guide</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #764ba2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        h3 { color: #764ba2; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box {
+            background: #f8f9ff;
+            padding: 20px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .html-label { background: #e34f26; }
+        .css-label { background: #1572b6; }
+        .js-label { background: #f7df1e; color: #333; }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9ff;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .live-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+        .demo-result {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 15px;
+            border: 2px solid #e0e0e0;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #667eea; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .visual-box {
+            border: 2px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌐 Web Development Fundamentals</h1>
+            <p class="subtitle">Master HTML, CSS & JavaScript from Zero to Hero</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('html')">HTML</button>
+                <button class="nav-btn" onclick="showSection('css')">CSS</button>
+                <button class="nav-btn" onclick="showSection('javascript')">JavaScript</button>
+                <button class="nav-btn" onclick="showSection('dom')">DOM Manipulation</button>
+                <button class="nav-btn" onclick="showSection('projects')">Projects</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 Introduction to Web Development</h2>
+            
+            <div class="concept-box">
+                <h3>The Three Pillars of Web Development</h3>
+                <p><strong>HTML</strong> (Structure) + <strong>CSS</strong> (Style) + <strong>JavaScript</strong> (Behavior) = <span class="highlight">Web Page</span></p>
+            </div>
+
+            <div class="visual-box">
+                <h4>Think of Building a House:</h4>
+                <ul>
+                    <li><strong>HTML</strong> = Foundation, walls, rooms (structure)</li>
+                    <li><strong>CSS</strong> = Paint, decorations, furniture (appearance)</li>
+                    <li><strong>JavaScript</strong> = Electricity, plumbing, smart devices (functionality)</li>
+                </ul>
+            </div>
+
+            <h3>What Each Technology Does</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Technology</th>
+                    <th>Purpose</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><strong>HTML</strong></td>
+                    <td>Content & Structure</td>
+                    <td>Headings, paragraphs, images, links</td>
+                </tr>
+                <tr>
+                    <td><strong>CSS</strong></td>
+                    <td>Styling & Layout</td>
+                    <td>Colors, fonts, spacing, positioning</td>
+                </tr>
+                <tr>
+                    <td><strong>JavaScript</strong></td>
+                    <td>Interactivity & Logic</td>
+                    <td>Buttons, animations, data processing</td>
+                </tr>
+            </table>
+
+            <div class="memory-tip">
+                <strong>💡 Remember:</strong> You can't skip any of the three! They work together:
+                <ul>
+                    <li>HTML without CSS = Ugly but functional</li>
+                    <li>HTML without JS = Static, no interaction</li>
+                    <li>CSS without HTML = Nothing to style</li>
+                    <li>JS without HTML = Nothing to manipulate</li>
+                </ul>
+            </div>
+
+            <h3>Your First Web Page</h3>
+
+            <div class="code-label">Complete Web Page Example</div>
+            <div class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;My First Page&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Hello, World!&lt;/h1&gt;
+    &lt;p&gt;This is my first web page.&lt;/p&gt;
+    &lt;button onclick="sayHello()"&gt;Click Me&lt;/button&gt;
+    
+    &lt;script&gt;
+        function sayHello() {
+            alert('Hello from JavaScript!');
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</div>
+        </div>
+
+        <!-- HTML SECTION -->
+        <div id="html" class="section">
+            <h2>📄 HTML - HyperText Markup Language</h2>
+
+            <div class="concept-box">
+                <h3>What is HTML?</h3>
+                <p>HTML is the <strong>skeleton</strong> of every web page. It defines the structure and content using <span class="highlight">tags</span>.</p>
+            </div>
+
+            <h3>Basic HTML Structure</h3>
+
+            <div class="code-label html-label">HTML - Basic Structure</div>
+            <div class="code-block">&lt;!DOCTYPE html&gt;           &lt;!-- Declares HTML5 --&gt;
+&lt;html lang="en"&gt;           &lt;!-- Root element --&gt;
+&lt;head&gt;                     &lt;!-- Metadata --&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Page Title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;                     &lt;!-- Visible content --&gt;
+    &lt;h1&gt;Main Heading&lt;/h1&gt;
+    &lt;p&gt;A paragraph&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</div>
+
+            <h3>Essential HTML Tags</h3>
+
+            <div class="code-label html-label">HTML - Headings & Text</div>
+            <div class="code-block">&lt;!-- Headings (h1 largest, h6 smallest) --&gt;
+&lt;h1&gt;Heading 1&lt;/h1&gt;
+&lt;h2&gt;Heading 2&lt;/h2&gt;
+&lt;h3&gt;Heading 3&lt;/h3&gt;
+
+&lt;!-- Paragraphs --&gt;
+&lt;p&gt;This is a paragraph of text.&lt;/p&gt;
+
+&lt;!-- Text Formatting --&gt;
+&lt;strong&gt;Bold text&lt;/strong&gt;
+&lt;em&gt;Italic text&lt;/em&gt;
+&lt;u&gt;Underlined text&lt;/u&gt;
+&lt;mark&gt;Highlighted text&lt;/mark&gt;
+
+&lt;!-- Line breaks --&gt;
+First line&lt;br&gt;
+Second line
+
+&lt;!-- Horizontal line --&gt;
+&lt;hr&gt;</div>
+
+            <div class="code-label html-label">HTML - Links & Images</div>
+            <div class="code-block">&lt;!-- Links --&gt;
+&lt;a href="https://google.com"&gt;Visit Google&lt;/a&gt;
+&lt;a href="about.html"&gt;About Page&lt;/a&gt;
+&lt;a href="#section1"&gt;Jump to Section 1&lt;/a&gt;
+&lt;a href="mailto:email@example.com"&gt;Email Us&lt;/a&gt;
+
+&lt;!-- Images --&gt;
+&lt;img src="image.jpg" alt="Description"&gt;
+&lt;img src="photo.png" alt="Photo" width="300" height="200"&gt;</div>
+
+            <div class="code-label html-label">HTML - Lists</div>
+            <div class="code-block">&lt;!-- Unordered List --&gt;
+&lt;ul&gt;
+    &lt;li&gt;Item 1&lt;/li&gt;
+    &lt;li&gt;Item 2&lt;/li&gt;
+    &lt;li&gt;Item 3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Ordered List --&gt;
+&lt;ol&gt;
+    &lt;li&gt;First step&lt;/li&gt;
+    &lt;li&gt;Second step&lt;/li&gt;
+    &lt;li&gt;Third step&lt;/li&gt;
+&lt;/ol&gt;</div>
+
+            <div class="code-label html-label">HTML - Tables</div>
+            <div class="code-block">&lt;table&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Name&lt;/th&gt;
+            &lt;th&gt;Age&lt;/th&gt;
+            &lt;th&gt;City&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Alice&lt;/td&gt;
+            &lt;td&gt;25&lt;/td&gt;
+            &lt;td&gt;NYC&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Bob&lt;/td&gt;
+            &lt;td&gt;30&lt;/td&gt;
+            &lt;td&gt;LA&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</div>
+
+            <div class="code-label html-label">HTML - Forms</div>
+            <div class="code-block">&lt;form action="/submit" method="POST"&gt;
+    &lt;!-- Text Input --&gt;
+    &lt;label for="name"&gt;Name:&lt;/label&gt;
+    &lt;input type="text" id="name" name="name" required&gt;
+    
+    &lt;!-- Email Input --&gt;
+    &lt;label for="email"&gt;Email:&lt;/label&gt;
+    &lt;input type="email" id="email" name="email"&gt;
+    
+    &lt;!-- Password --&gt;
+    &lt;label for="password"&gt;Password:&lt;/label&gt;
+    &lt;input type="password" id="password" name="password"&gt;
+    
+    &lt;!-- Radio Buttons --&gt;
+    &lt;input type="radio" id="male" name="gender" value="male"&gt;
+    &lt;label for="male"&gt;Male&lt;/label&gt;
+    &lt;input type="radio" id="female" name="gender" value="female"&gt;
+    &lt;label for="female"&gt;Female&lt;/label&gt;
+    
+    &lt;!-- Checkbox --&gt;
+    &lt;input type="checkbox" id="subscribe" name="subscribe"&gt;
+    &lt;label for="subscribe"&gt;Subscribe to newsletter&lt;/label&gt;
+    
+    &lt;!-- Dropdown --&gt;
+    &lt;select name="country"&gt;
+        &lt;option value="us"&gt;United States&lt;/option&gt;
+        &lt;option value="uk"&gt;United Kingdom&lt;/option&gt;
+        &lt;option value="in"&gt;India&lt;/option&gt;
+    &lt;/select&gt;
+    
+    &lt;!-- Textarea --&gt;
+    &lt;textarea name="message" rows="4" cols="50"&gt;&lt;/textarea&gt;
+    
+    &lt;!-- Submit Button --&gt;
+    &lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</div>
+
+            <div class="code-label html-label">HTML - Semantic Elements</div>
+            <div class="code-block">&lt;!-- Modern HTML5 Semantic Tags --&gt;
+&lt;header&gt;
+    &lt;nav&gt;
+        &lt;a href="#home"&gt;Home&lt;/a&gt;
+        &lt;a href="#about"&gt;About&lt;/a&gt;
+    &lt;/nav&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+    &lt;article&gt;
+        &lt;h2&gt;Article Title&lt;/h2&gt;
+        &lt;p&gt;Article content...&lt;/p&gt;
+    &lt;/article&gt;
+    
+    &lt;section&gt;
+        &lt;h2&gt;Section Title&lt;/h2&gt;
+        &lt;p&gt;Section content...&lt;/p&gt;
+    &lt;/section&gt;
+    
+    &lt;aside&gt;
+        &lt;p&gt;Sidebar content&lt;/p&gt;
+    &lt;/aside&gt;
+&lt;/main&gt;
+
+&lt;footer&gt;
+    &lt;p&gt;&copy; 2024 My Website&lt;/p&gt;
+&lt;/footer&gt;</div>
+
+            <div class="key-point">
+                <strong>HTML Best Practices:</strong>
+                <ul>
+                    <li>Use semantic tags (header, nav, main, footer) for better SEO</li>
+                    <li>Always include alt text for images</li>
+                    <li>Use proper heading hierarchy (h1 → h2 → h3)</li>
+                    <li>Close all tags properly</li>
+                    <li>Use lowercase for tag names</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- CSS SECTION -->
+        <div id="css" class="section">
+            <h2>🎨 CSS - Cascading Style Sheets</h2>
+
+            <div class="concept-box">
+                <h3>What is CSS?</h3>
+                <p>CSS makes web pages <strong>beautiful</strong>. It controls colors, fonts, spacing, layout, and animations.</p>
+            </div>
+
+            <h3>Three Ways to Add CSS</h3>
+
+            <div class="code-label css-label">CSS - Inline Style</div>
+            <div class="code-block">&lt;p style="color: red; font-size: 20px;"&gt;Red text&lt;/p&gt;</div>
+
+            <div class="code-label css-label">CSS - Internal Style (in &lt;head&gt;)</div>
+            <div class="code-block">&lt;head&gt;
+    &lt;style&gt;
+        p {
+            color: blue;
+            font-size: 18px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;</div>
+
+            <div class="code-label css-label">CSS - External Stylesheet (Best Practice)</div>
+            <div class="code-block">&lt;!-- In HTML file --&gt;
+&lt;link rel="stylesheet" href="styles.css"&gt;
+
+/* In styles.css file */
+p {
+    color: green;
+    font-size: 16px;
+}</div>
+
+            <h3>CSS Selectors</h3>
+
+            <div class="code-label css-label">CSS - Basic Selectors</div>
+            <div class="code-block">/* Element Selector */
+p {
+    color: blue;
+}
+
+/* Class Selector */
+.my-class {
+    background-color: yellow;
+}
+
+/* ID Selector */
+#my-id {
+    font-size: 24px;
+}
+
+/* Multiple Selectors */
+h1, h2, h3 {
+    font-family: Arial, sans-serif;
+}
+
+/* Descendant Selector */
+div p {
+    margin: 10px;
+}
+
+/* Child Selector */
+div > p {
+    padding: 5px;
+}
+
+/* Pseudo-classes */
+a:hover {
+    color: red;
+}
+
+button:active {
+    transform: scale(0.95);
+}</div>
+
+            <h3>Common CSS Properties</h3>
+
+            <div class="code-label css-label">CSS - Text Styling</div>
+            <div class="code-block">.text-style {
+    /* Font */
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: italic;
+    
+    /* Color */
+    color: #333;
+    
+    /* Alignment */
+    text-align: center;
+    
+    /* Decoration */
+    text-decoration: underline;
+    
+    /* Spacing */
+    letter-spacing: 2px;
+    line-height: 1.6;
+}</div>
+
+            <div class="code-label css-label">CSS - Box Model</div>
+            <div class="code-block">.box {
+    /* Content size */
+    width: 300px;
+    height: 200px;
+    
+    /* Padding (inside spacing) */
+    padding: 20px;
+    padding-top: 10px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    /* Shorthand: padding: 10px 15px; (vertical horizontal) */
+    
+    /* Border */
+    border: 2px solid #333;
+    border-radius: 10px;
+    
+    /* Margin (outside spacing) */
+    margin: 20px;
+    margin: 10px 20px; /* top/bottom left/right */
+    margin: 10px 20px 15px 25px; /* top right bottom left */
+    
+    /* Background */
+    background-color: #f0f0f0;
+    background-image: url('image.jpg');
+    background-size: cover;
+    background-position: center;
+}</div>
+
+            <div class="code-label css-label">CSS - Display & Position</div>
+            <div class="code-block">/* Display Property */
+.block {
+    display: block;      /* Takes full width */
+}
+
+.inline {
+    display: inline;     /* Fits content, no width/height */
+}
+
+.inline-block {
+    display: inline-block; /* Inline but with width/height */
+}
+
+.flex {
+    display: flex;       /* Flexbox layout */
+}
+
+.grid {
+    display: grid;       /* Grid layout */
+}
+
+.hidden {
+    display: none;       /* Hide element */
+}
+
+/* Position Property */
+.static {
+    position: static;    /* Default */
+}
+
+.relative {
+    position: relative;  /* Relative to normal position */
+    top: 10px;
+    left: 20px;
+}
+
+.absolute {
+    position: absolute;  /* Relative to parent */
+    top: 0;
+    right: 0;
+}
+
+.fixed {
+    position: fixed;     /* Relative to viewport */
+    bottom: 0;
+    right: 0;
+}
+
+.sticky {
+    position: sticky;    /* Stick when scrolling */
+    top: 0;
+}</div>
+
+            <h3>Flexbox - Modern Layout</h3>
+
+            <div class="code-label css-label">CSS - Flexbox</div>
+            <div class="code-block">.container {
+    display: flex;
+    
+    /* Direction */
+    flex-direction: row;        /* default: left to right */
+    flex-direction: column;     /* top to bottom */
+    
+    /* Alignment */
+    justify-content: center;    /* horizontal alignment */
+    justify-content: space-between;
+    justify-content: space-around;
+    
+    align-items: center;        /* vertical alignment */
+    align-items: flex-start;
+    align-items: flex-end;
+    
+    /* Wrapping */
+    flex-wrap: wrap;
+    
+    /* Gap */
+    gap: 20px;
+}
+
+.item {
+    flex: 1;           /* Grow to fill space */
+    flex-shrink: 0;    /* Don't shrink */
+}</div>
+
+            <h3>CSS Grid - 2D Layout</h3>
+
+            <div class="code-label css-label">CSS - Grid</div>
+            <div class="code-block">.grid-container {
+    display: grid;
+    
+    /* Columns */
+    grid-template-columns: 200px 200px 200px;
+    grid-template-columns: 1fr 2fr 1fr;  /* Fractions */
+    grid-template-columns: repeat(3, 1fr);  /* 3 equal columns */
+    
+    /* Rows */
+    grid-template-rows: 100px auto 100px;
+    
+    /* Gap */
+    gap: 20px;
+    grid-column-gap: 10px;
+    grid-row-gap: 15px;
+}
+
+.grid-item {
+    /* Span multiple columns/rows */
+    grid-column: 1 / 3;  /* From column 1 to 3 */
+    grid-row: 1 / 2;
+}</div>
+
+            <h3>Responsive Design</h3>
+
+            <div class="code-label css-label">CSS - Media Queries</div>
+            <div class="code-block">/* Mobile First Approach */
+.container {
+    width: 100%;
+    padding: 10px;
+}
+
+/* Tablet (768px and up) */
+@media (min-width: 768px) {
+    .container {
+        width: 750px;
+        padding: 20px;
+    }
+}
+
+/* Desktop (1024px and up) */
+@media (min-width: 1024px) {
+    .container {
+        width: 1000px;
+        padding: 30px;
+    }
+}
+
+/* Large Desktop (1200px and up) */
+@media (min-width: 1200px) {
+    .container {
+        width: 1140px;
+    }
+}</div>
+
+            <h3>CSS Animations</h3>
+
+            <div class="code-label css-label">CSS - Transitions & Animations</div>
+            <div class="code-block">/* Transitions (smooth changes) */
+.button {
+    background-color: blue;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background-color: red;
+    transform: scale(1.1);
+}
+
+/* Keyframe Animations */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.animated {
+    animation: slideIn 1s ease-in-out;
+    animation-iteration-count: infinite;  /* Loop forever */
+    animation-direction: alternate;        /* Back and forth */
+}</div>
+
+            <div class="live-demo">
+                <h4>Live CSS Demo</h4>
+                <div class="demo-result" id="cssDemo">
+                    <div style="padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 10px; text-align: center; transition: transform 0.3s;">
+                        <h3>Hover over me!</h3>
+                        <p>I have gradient background, padding, border-radius, and hover effect!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="memory-tip">
+                <strong>💡 CSS Tips:</strong>
+                <ul>
+                    <li>Use Flexbox for 1D layouts (row or column)</li>
+                    <li>Use Grid for 2D layouts (rows AND columns)</li>
+                    <li>Mobile-first: Design for small screens first</li>
+                    <li>Use rem/em for responsive font sizes</li>
+                    <li>Name classes meaningfully (.btn-primary, not .blue-button)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- JAVASCRIPT SECTION -->
+        <div id="javascript" class="section">
+            <h2>⚡ JavaScript - Programming Language of the Web</h2>
+
+            <div class="concept-box">
+                <h3>What is JavaScript?</h3>
+                <p>JavaScript makes web pages <strong>interactive</strong> and <strong>dynamic</strong>. It's a full programming language that runs in the browser.</p>
+            </div>
+
+            <h3>Variables & Data Types</h3>
+
+            <div class="code-label js-label">JavaScript - Variables</div>
+            <div class="code-block">// Three ways to declare variables
+let name = "Alice";        // Can be changed
+const age = 25;            // Cannot be changed (constant)
+var city = "NYC";           // Old way (avoid using)
+
+// Data Types
+let string = "Hello";       // String
+let number = 42;            // Number
+let float = 3.14;           // Number (no separate float type)
+let boolean = true;         // Boolean (true/false)
+let nothing = null;         // Null
+let undefined_var;          // Undefined
+let array = [1, 2, 3];      // Array
+let object = {              // Object
+    name: "Alice",
+    age: 25
+};
+
+// Check type
+console.log(typeof string);  // "string"</div>
+
+            <h3>Operators</h3>
+
+            <div class="code-label js-label">JavaScript - Operators</div>
+            <div class="code-block">// Arithmetic
+let sum = 5 + 3;        // 8
+let diff = 10 - 4;      // 6
+let product = 4 * 5;    // 20
+let quotient = 20 / 4;  // 5
+let remainder = 10 % 3; // 1
+let power = 2 ** 3;     // 8
+
+// Assignment
+let x = 10;
+x += 5;  // x = x + 5 = 15
+x -= 3;  // x = x - 3 = 12
+x *= 2;  // x = x * 2 = 24
+x /= 4;  // x = x / 4 = 6
+
+// Comparison
+5 == "5"   // true (loose equality)
+5 === "5"  // false (strict equality)
+5 != 6     // true
+5 !== "5"  // true
+5 > 3      // true
+5 <= 5     // true
+
+// Logical
+true && false  // false (AND)
+true || false  // true (OR)
+!true          // false (NOT)</div>
+
+            <h3>Control Flow</h3>
+
+            <div class="code-label js-label">JavaScript - If/Else</div>
+            <div class="code-block">let age = 20;
+
+if (age >= 18) {
+    console.log("Adult");
+} else if (age >= 13) {
+    console.log("Teenager");
+} else {
+    console.log("Child");
+}
+
+// Ternary operator (shorthand)
+let status = age >= 18 ? "Adult" : "Minor";
+
+// Switch statement
+let day = "Monday";
+switch (day) {
+    case "Monday":
+        console.log("Start of week");
+        break;
+    case "Friday":
+        console.log("Almost weekend!");
+        break;
+    default:
+        console.log("Regular day");
+}</div>
+
+            <h3>Loops</h3>
+
+            <div class="code-label js-label">JavaScript - Loops</div>
+            <div class="code-block">// For loop
+for (let i = 0; i < 5; i++) {
+    console.log(i);  // 0, 1, 2, 3, 4
+}
+
+// While loop
+let count = 0;
+while (count < 5) {
+    console.log(count);
+    count++;
+}
+
+// Do-while (runs at least once)
+let num = 0;
+do {
+    console.log(num);
+    num++;
+} while (num < 5);
+
+// For...of (iterate arrays)
+let fruits = ["apple", "banana", "orange"];
+for (let fruit of fruits) {
+    console.log(fruit);
+}
+
+// For...in (iterate object properties)
+let person = {name: "Alice", age: 25};
+for (let key in person) {
+    console.log(key + ": " + person[key]);
+}</div>
+
+            <h3>Functions</h3>
+
+            <div class="code-label js-label">JavaScript - Functions</div>
+            <div class="code-block">// Function declaration
+function greet(name) {
+    return "Hello, " + name + "!";
+}
+console.log(greet("Alice"));  // "Hello, Alice!"
+
+// Function expression
+const add = function(a, b) {
+    return a + b;
+};
+console.log(add(5, 3));  // 8
+
+// Arrow function (modern ES6)
+const multiply = (a, b) => a * b;
+console.log(multiply(4, 5));  // 20
+
+// Arrow function with multiple lines
+const calculate = (x, y) => {
+    let sum = x + y;
+    let product = x * y;
+    return {sum, product};
+};
+
+// Default parameters
+function power(base, exponent = 2) {
+    return base ** exponent;
+}
+console.log(power(5));     // 25 (5^2)
+console.log(power(5, 3));  // 125 (5^3)</div>
+
+            <h3>Arrays</h3>
+
+            <div class="code-label js-label">JavaScript - Array Methods</div>
+            <div class="code-block">let numbers = [1, 2, 3, 4, 5];
+
+// Add/Remove elements
+numbers.push(6);           // Add to end: [1,2,3,4,5,6]
+numbers.pop();             // Remove from end: [1,2,3,4,5]
+numbers.unshift(0);        // Add to start: [0,1,2,3,4,5]
+numbers.shift();           // Remove from start: [1,2,3,4,5]
+
+// Array methods
+numbers.length;            // 5
+numbers.includes(3);       // true
+numbers.indexOf(4);        // 3
+numbers.slice(1, 3);       // [2, 3]
+numbers.splice(2, 1);      // Remove 1 element at index 2
+
+// Iteration methods
+numbers.forEach(num => console.log(num));
+
+// Map (transform each element)
+let doubled = numbers.map(num => num * 2);  // [2, 4, 6, 8, 10]
+
+// Filter (keep elements that match condition)
+let evens = numbers.filter(num => num % 2 === 0);  // [2, 4]
+
+// Reduce (combine into single value)
+let sum = numbers.reduce((acc, num) => acc + num, 0);  // 15
+
+// Find
+let found = numbers.find(num => num > 3);  // 4
+
+// Some/Every
+numbers.some(num => num > 3);   // true (at least one)
+numbers.every(num => num > 0);  // true (all)</div>
+
+            <h3>Objects</h3>
+
+            <div class="code-label js-label">JavaScript - Objects</div>
+            <div class="code-block">// Object literal
+let person = {
+    name: "Alice",
+    age: 25,
+    city: "NYC",
+    greet: function() {
+        console.log("Hello, I'm " + this.name);
+    }
+};
+
+// Access properties
+console.log(person.name);        // "Alice"
+console.log(person["age"]);      // 25
+
+// Modify properties
+person.age = 26;
+person.email = "alice@example.com";
+
+// Delete property
+delete person.city;
+
+// Object methods
+Object.keys(person);     // ["name", "age", "email", "greet"]
+Object.values(person);   // ["Alice", 26, "alice@example.com", function]
+Object.entries(person);  // Array of [key, value] pairs
+
+// Destructuring
+let {name, age} = person;
+console.log(name);  // "Alice"
+
+// Spread operator
+let newPerson = {...person, country: "USA"};
+
+// Object shorthand
+let firstName = "Bob";
+let lastName = "Smith";
+let user = {firstName, lastName};  // {firstName: "Bob", lastName: "Smith"}</div>
+
+            <h3>ES6+ Modern Features</h3>
+
+            <div class="code-label js-label">JavaScript - Modern Features</div>
+            <div class="code-block">// Template literals
+let name = "Alice";
+let age = 25;
+console.log(`Hello, I'm ${name} and I'm ${age} years old.`);
+
+// Destructuring
+let [first, second, ...rest] = [1, 2, 3, 4, 5];
+// first = 1, second = 2, rest = [3, 4, 5]
+
+// Spread operator
+let arr1 = [1, 2, 3];
+let arr2 = [4, 5, 6];
+let combined = [...arr1, ...arr2];  // [1,2,3,4,5,6]
+
+// Rest parameters
+function sum(...numbers) {
+    return numbers.reduce((acc, num) => acc + num, 0);
+}
+console.log(sum(1, 2, 3, 4));  // 10
+
+// Optional chaining
+let user = {profile: {name: "Alice"}};
+console.log(user?.profile?.name);  // "Alice"
+console.log(user?.settings?.theme);  // undefined (no error)
+
+// Nullish coalescing
+let value = null ?? "default";  // "default"
+let value2 = 0 ?? "default";    // 0 (only null/undefined trigger default)</div>
+
+            <h3>Asynchronous JavaScript</h3>
+
+            <div class="code-label js-label">JavaScript - Async/Await & Promises</div>
+            <div class="code-block">// Promises
+function fetchData() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve("Data loaded!");
+        }, 2000);
+    });
+}
+
+fetchData()
+    .then(data => console.log(data))
+    .catch(error => console.error(error));
+
+// Async/Await (cleaner syntax)
+async function getData() {
+    try {
+        let response = await fetch('https://api.example.com/data');
+        let data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// setTimeout
+setTimeout(() => {
+    console.log("This runs after 2 seconds");
+}, 2000);
+
+// setInterval
+let counter = 0;
+let interval = setInterval(() => {
+    counter++;
+    console.log(counter);
+    if (counter === 5) clearInterval(interval);
+}, 1000);</div>
+
+            <div class="memory-tip">
+                <strong>💡 JavaScript Tips:</strong>
+                <ul>
+                    <li>Use <code>const</code> by default, <code>let</code> when value changes</li>
+                    <li>Use <code>===</code> instead of <code>==</code> for comparisons</li>
+                    <li>Arrow functions (<code>=></code>) are more concise</li>
+                    <li>Array methods (<code>map</code>, <code>filter</code>) are powerful</li>
+                    <li>Use <code>async/await</code> for cleaner async code</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- DOM MANIPULATION SECTION -->
+        <div id="dom" class="section">
+            <h2>🎯 DOM Manipulation</h2>
+
+            <div class="concept-box">
+                <h3>What is the DOM?</h3>
+                <p>The <strong>Document Object Model (DOM)</strong> is how JavaScript interacts with HTML. It represents the page as a tree of objects that you can modify.</p>
+            </div>
+
+            <h3>Selecting Elements</h3>
+
+            <div class="code-label js-label">JavaScript - Selecting Elements</div>
+            <div class="code-block">// Get element by ID
+let element = document.getElementById('myId');
+
+// Get elements by class name (returns HTMLCollection)
+let elements = document.getElementsByClassName('myClass');
+
+// Get elements by tag name
+let paragraphs = document.getElementsByTagName('p');
+
+// Query selector (CSS selector) - returns first match
+let item = document.querySelector('.myClass');
+let button = document.querySelector('#submitBtn');
+
+// Query selector all - returns NodeList
+let allItems = document.querySelectorAll('.item');
+
+// Modern way (most flexible)
+let header = document.querySelector('header h1');</div>
+
+            <h3>Modifying Elements</h3>
+
+            <div class="code-label js-label">JavaScript - Changing Content & Style</div>
+            <div class="code-block">let element = document.querySelector('#myElement');
+
+// Change text content
+element.textContent = "New text";
+
+// Change HTML content
+element.innerHTML = "&lt;strong&gt;Bold text&lt;/strong&gt;";
+
+// Change attributes
+element.setAttribute('class', 'active');
+element.getAttribute('class');
+element.removeAttribute('class');
+
+// Direct attribute access
+element.id = "newId";
+element.className = "myClass";
+
+// Change styles
+element.style.color = "red";
+element.style.fontSize = "20px";
+element.style.backgroundColor = "#f0f0f0";
+
+// Add/remove classes
+element.classList.add('active');
+element.classList.remove('hidden');
+element.classList.toggle('highlight');
+element.classList.contains('active');  // true/false</div>
+
+            <h3>Creating & Removing Elements</h3>
+
+            <div class="code-label js-label">JavaScript - Create/Remove Elements</div>
+            <div class="code-block">// Create new element
+let newDiv = document.createElement('div');
+newDiv.textContent = "I'm a new div!";
+newDiv.className = "box";
+
+// Add to DOM
+let container = document.querySelector('#container');
+container.appendChild(newDiv);           // Add to end
+container.prepend(newDiv);               // Add to beginning
+container.insertBefore(newDiv, firstChild);
+
+// Remove element
+newDiv.remove();
+
+// Replace element
+let oldElement = document.querySelector('.old');
+let newElement = document.createElement('p');
+newElement.textContent = "New element";
+oldElement.replaceWith(newElement);</div>
+
+            <h3>Event Handling</h3>
+
+            <div class="code-label js-label">JavaScript - Events</div>
+            <div class="code-block">let button = document.querySelector('#myButton');
+
+// Method 1: onclick attribute (not recommended)
+// &lt;button onclick="handleClick()"&gt;Click&lt;/button&gt;
+
+// Method 2: onclick property
+button.onclick = function() {
+    console.log("Button clicked!");
+};
+
+// Method 3: addEventListener (BEST)
+button.addEventListener('click', function(event) {
+    console.log("Button clicked!");
+    console.log(event);  // Event object with details
+});
+
+// Arrow function
+button.addEventListener('click', (e) => {
+    console.log("Clicked!");
+});
+
+// Common events
+element.addEventListener('click', handleClick);
+element.addEventListener('dblclick', handleDoubleClick);
+element.addEventListener('mouseover', handleMouseOver);
+element.addEventListener('mouseout', handleMouseOut);
+input.addEventListener('keydown', handleKeyPress);
+input.addEventListener('keyup', handleKeyRelease);
+form.addEventListener('submit', handleSubmit);
+input.addEventListener('change', handleChange);
+input.addEventListener('input', handleInput);  // Every keystroke
+
+// Remove event listener
+button.removeEventListener('click', handleClick);
+
+// Event object
+button.addEventListener('click', (event) => {
+    event.target;              // Element that triggered event
+    event.preventDefault();    // Prevent default behavior
+    event.stopPropagation();   // Stop event bubbling
+});</div>
+
+            <h3>Form Handling</h3>
+
+            <div class="code-label js-label">JavaScript - Forms</div>
+            <div class="code-block">let form = document.querySelector('#myForm');
+let nameInput = document.querySelector('#name');
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();  // Prevent page reload
+    
+    // Get form values
+    let name = nameInput.value;
+    let email = document.querySelector('#email').value;
+    
+    // Validate
+    if (name === '') {
+        alert('Name is required!');
+        return;
+    }
+    
+    // Create form data
+    let formData = new FormData(form);
+    
+    // Process data
+    console.log('Name:', name);
+    console.log('Email:', email);
+    
+    // Reset form
+    form.reset();
+});
+
+// Input validation on change
+nameInput.addEventListener('input', (e) => {
+    let value = e.target.value;
+    if (value.length < 3) {
+        nameInput.style.borderColor = 'red';
+    } else {
+        nameInput.style.borderColor = 'green';
+    }
+});</div>
+
+            <h3>Local Storage</h3>
+
+            <div class="code-label js-label">JavaScript - Local Storage</div>
+            <div class="code-block">// Save data (key-value pairs, strings only)
+localStorage.setItem('username', 'Alice');
+localStorage.setItem('age', '25');
+
+// Get data
+let username = localStorage.getItem('username');  // "Alice"
+
+// Save object (convert to JSON)
+let user = {name: 'Alice', age: 25};
+localStorage.setItem('user', JSON.stringify(user));
+
+// Get object (parse JSON)
+let savedUser = JSON.parse(localStorage.getItem('user'));
+
+// Remove item
+localStorage.removeItem('username');
+
+// Clear all
+localStorage.clear();
+
+// Check if exists
+if (localStorage.getItem('username')) {
+    console.log('Username exists!');
+}</div>
+
+            <h3>Fetch API (AJAX)</h3>
+
+            <div class="code-label js-label">JavaScript - Fetch API</div>
+            <div class="code-block">// GET request
+fetch('https://api.example.com/users')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+// GET with async/await
+async function getUsers() {
+    try {
+        let response = await fetch('https://api.example.com/users');
+        let data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+// POST request
+async function createUser() {
+    try {
+        let response = await fetch('https://api.example.com/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: 'Alice',
+                email: 'alice@example.com'
+            })
+        });
+        let data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}</div>
+
+            <div class="live-demo">
+                <h4>Live DOM Demo</h4>
+                <button id="demoBtn" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">Click Me!</button>
+                <p id="demoText" style="margin-top: 10px;">Click count: 0</p>
+            </div>
+
+            <div class="key-point">
+                <strong>DOM Best Practices:</strong>
+                <ul>
+                    <li>Use <code>querySelector</code> for modern, flexible selection</li>
+                    <li>Use <code>addEventListener</code> instead of onclick</li>
+                    <li>Cache DOM queries in variables for performance</li>
+                    <li>Use event delegation for dynamic elements</li>
+                    <li>Always use <code>e.preventDefault()</code> for form submissions</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PROJECTS SECTION -->
+        <div id="projects" class="section">
+            <h2>🚀 Practice Projects</h2>
+
+            <div class="concept-box">
+                <h3>Learn by Building!</h3>
+                <p>The best way to master web development is by building projects. Here are projects from beginner to advanced.</p>
+            </div>
+
+            <h3>Beginner Projects</h3>
+
+            <div class="key-point">
+                <strong>1. To-Do List</strong>
+                <p><strong>Skills:</strong> DOM manipulation, events, local storage</p>
+                <p><strong>Features:</strong> Add tasks, mark complete, delete tasks, persist data</p>
+            </div>
+
+            <div class="key-point">
+                <strong>2. Calculator</strong>
+                <p><strong>Skills:</strong> JavaScript logic, event handling, DOM updates</p>
+                <p><strong>Features:</strong> Basic operations (+, -, *, /), clear, decimal support</p>
+            </div>
+
+            <div class="key-point">
+                <strong>3. Quiz App</strong>
+                <p><strong>Skills:</strong> Arrays, objects, conditional logic</p>
+                <p><strong>Features:</strong> Multiple questions, score tracking, feedback</p>
+            </div>
+
+            <h3>Intermediate Projects</h3>
+
+            <div class="key-point">
+                <strong>4. Weather App</strong>
+                <p><strong>Skills:</strong> Fetch API, async/await, error handling</p>
+                <p><strong>Features:</strong> Search cities, display weather data, icons</p>
+            </div>
+
+            <div class="key-point">
+                <strong>5. Note Taking App</strong>
+                <p><strong>Skills:</strong> CRUD operations, local storage, text editing</p>
+                <p><strong>Features:</strong> Create, edit, delete, search notes</p>
+            </div>
+
+            <div class="key-point">
+                <strong>6. Image Gallery</strong>
+                <p><strong>Skills:</strong> Grid layout, modal, image handling</p>
+                <p><strong>Features:</strong> Lightbox, thumbnails, navigation</p>
+            </div>
+
+            <h3>Advanced Projects</h3>
+
+            <div class="key-point">
+                <strong>7. E-commerce Product Page</strong>
+                <p><strong>Skills:</strong> Complex state, cart management, forms</p>
+                <p><strong>Features:</strong> Product details, cart, checkout form</p>
+            </div>
+
+            <div class="key-point">
+                <strong>8. Social Media Dashboard</strong>
+                <p><strong>Skills:</strong> API integration, data visualization, responsive design</p>
+                <p><strong>Features:</strong> Stats, charts, user profiles</p>
+            </div>
+
+            <h3>🎯 Learning Roadmap</h3>
+
+            <div class="memory-tip">
+                <strong>Step-by-Step Path:</strong>
+                <ol>
+                    <li><strong>Week 1-2:</strong> HTML basics, semantic tags, forms</li>
+                    <li><strong>Week 3-4:</strong> CSS basics, Flexbox, Grid, responsive design</li>
+                    <li><strong>Week 5-6:</strong> JavaScript basics, variables, functions, arrays</li>
+                    <li><strong>Week 7-8:</strong> DOM manipulation, events, projects</li>
+                    <li><strong>Week 9-10:</strong> Async JS, Fetch API, advanced projects</li>
+                    <li><strong>Week 11-12:</strong> Build portfolio, deploy projects</li>
+                </ol>
+            </div>
+
+            <h3>📚 Resources</h3>
+
+            <div class="concept-box">
+                <h4>Free Learning Resources:</h4>
+                <ul>
+                    <li><strong>MDN Web Docs:</strong> Best reference for HTML, CSS, JS</li>
+                    <li><strong>freeCodeCamp:</strong> Interactive tutorials and projects</li>
+                    <li><strong>JavaScript.info:</strong> Comprehensive JS guide</li>
+                    <li><strong>CSS-Tricks:</strong> CSS techniques and examples</li>
+                    <li><strong>Can I Use:</strong> Browser compatibility checker</li>
+                </ul>
+            </div>
+
+            <h3>✅ Checklist - Am I Ready?</h3>
+
+            <div class="visual-box">
+                <strong>HTML</strong>
+                <ul>
+                    <li>✓ Can create semantic HTML structure</li>
+                    <li>✓ Understand forms and inputs</li>
+                    <li>✓ Know semantic tags (header, nav, main, footer)</li>
+                </ul>
+                
+                <strong>CSS</strong>
+                <ul>
+                    <li>✓ Can style text, colors, spacing</li>
+                    <li>✓ Understand box model and positioning</li>
+                    <li>✓ Can use Flexbox/Grid for layout</li>
+                    <li>✓ Can make responsive designs</li>
+                </ul>
+                
+                <strong>JavaScript</strong>
+                <ul>
+                    <li>✓ Understand variables, functions, arrays</li>
+                    <li>✓ Can manipulate DOM elements</li>
+                    <li>✓ Can handle events</li>
+                    <li>✓ Understand async/await and Fetch</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // CSS Demo hover effect
+        document.querySelector('#cssDemo > div').addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05)';
+        });
+        document.querySelector('#cssDemo > div').addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+
+        // DOM Demo
+        let clickCount = 0;
+        document.getElementById('demoBtn').addEventListener('click', function() {
+            clickCount++;
+            document.getElementById('demoText').textContent = 'Click count: ' + clickCount;
+            this.style.background = clickCount % 2 === 0 ? '#4CAF50' : '#f44336';
+        });
+    </script>
+</body>
+</html>

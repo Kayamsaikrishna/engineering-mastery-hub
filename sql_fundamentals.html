@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Fundamentals - Master the Basics</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #764ba2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        h3 { color: #764ba2; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box {
+            background: #f8f9ff;
+            padding: 20px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .sql-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .sql-label {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .sql-keyword {
+            color: #569cd6;
+            font-weight: bold;
+        }
+        .sql-string {
+            color: #ce9178;
+        }
+        .sql-comment {
+            color: #6a9955;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9ff;
+        }
+        .sample-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        .sample-table th,
+        .sample-table td {
+            border: 2px solid #667eea;
+            padding: 10px;
+            text-align: left;
+        }
+        .sample-table th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        .sample-table tr:nth-child(even) {
+            background: #f8f9ff;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #667eea; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .diagram {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .join-visual {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .join-type {
+            background: #f8f9ff;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px;
+            min-width: 200px;
+            text-align: center;
+        }
+        .join-type h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🗄️ SQL Fundamentals Masterclass</h1>
+            <p class="subtitle">Master Database Queries from Zero to Hero</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('basics')">SQL Basics</button>
+                <button class="nav-btn" onclick="showSection('queries')">Query Operations</button>
+                <button class="nav-btn" onclick="showSection('joins')">JOINs & Relations</button>
+                <button class="nav-btn" onclick="showSection('advanced')">Advanced Concepts</button>
+                <button class="nav-btn" onclick="showSection('practice')">Practice Problems</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 What is SQL?</h2>
+            
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p><strong>SQL (Structured Query Language)</strong> is the standard language for managing and manipulating relational databases. It's used to store, retrieve, update, and delete data from databases.</p>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Critical Insight:</strong> SQL is <span class="highlight">DECLARATIVE</span> - you tell it WHAT you want, not HOW to get it. The database figures out the most efficient way.
+            </div>
+
+            <h3>Why Learn SQL?</h3>
+            <ul>
+                <li><strong>Universal:</strong> Used by 90%+ of companies - MySQL, PostgreSQL, Oracle, SQL Server</li>
+                <li><strong>Essential Skill:</strong> Required for data analysis, backend development, data science</li>
+                <li><strong>Interview Must-Have:</strong> Common in technical interviews</li>
+                <li><strong>Real-World Power:</strong> Query millions of records in seconds</li>
+                <li><strong>Career Growth:</strong> Database skills = higher salary potential</li>
+            </ul>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> Database = Digital Filing Cabinet
+                <ul>
+                    <li><strong>Database</strong> = The entire filing cabinet</li>
+                    <li><strong>Table</strong> = A drawer in the cabinet</li>
+                    <li><strong>Row</strong> = A single file/document</li>
+                    <li><strong>Column</strong> = Information field on the document</li>
+                </ul>
+            </div>
+
+            <h3>Database Structure Example</h3>
+
+            <div class="diagram">
+                <h4>Sample Database: Company</h4>
+                <table class="sample-table">
+                    <caption><strong>Employees Table</strong></caption>
+                    <tr>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>department</th>
+                        <th>salary</th>
+                        <th>hire_date</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Alice Johnson</td>
+                        <td>Engineering</td>
+                        <td>85000</td>
+                        <td>2020-01-15</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Bob Smith</td>
+                        <td>Sales</td>
+                        <td>65000</td>
+                        <td>2019-06-10</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Carol White</td>
+                        <td>Engineering</td>
+                        <td>90000</td>
+                        <td>2018-03-22</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>David Lee</td>
+                        <td>Marketing</td>
+                        <td>70000</td>
+                        <td>2021-09-01</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>SQL vs NoSQL</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>SQL (Relational)</th>
+                    <th>NoSQL (Non-Relational)</th>
+                </tr>
+                <tr>
+                    <td><strong>Structure</strong></td>
+                    <td>Tables with rows and columns</td>
+                    <td>Documents, key-value, graphs</td>
+                </tr>
+                <tr>
+                    <td><strong>Schema</strong></td>
+                    <td>Fixed schema (predefined)</td>
+                    <td>Flexible schema</td>
+                </tr>
+                <tr>
+                    <td><strong>Relationships</strong></td>
+                    <td>Strong relationships (JOINs)</td>
+                    <td>Weak or no relationships</td>
+                </tr>
+                <tr>
+                    <td><strong>Examples</strong></td>
+                    <td>MySQL, PostgreSQL, Oracle</td>
+                    <td>MongoDB, Redis, Cassandra</td>
+                </tr>
+                <tr>
+                    <td><strong>Best For</strong></td>
+                    <td>Complex queries, transactions</td>
+                    <td>Rapid development, scaling</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- BASICS SECTION -->
+        <div id="basics" class="section">
+            <h2>📚 SQL Basics</h2>
+
+            <h3>1. Database & Table Operations</h3>
+
+            <div class="sql-label">SQL - Create Database & Table</div>
+            <div class="sql-block">-- Create a new database
+CREATE DATABASE company_db;
+
+-- Use the database
+USE company_db;
+
+-- Create a table
+CREATE TABLE employees (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    department VARCHAR(50),
+    salary DECIMAL(10, 2),
+    hire_date DATE,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- View table structure
+DESCRIBE employees;
+-- or
+SHOW COLUMNS FROM employees;</div>
+
+            <div class="concept-box">
+                <h4>Common Data Types:</h4>
+                <ul>
+                    <li><strong>INT</strong> - Integer numbers</li>
+                    <li><strong>VARCHAR(n)</strong> - Variable-length string (max n characters)</li>
+                    <li><strong>TEXT</strong> - Long text</li>
+                    <li><strong>DECIMAL(p,s)</strong> - Decimal numbers (precision, scale)</li>
+                    <li><strong>DATE</strong> - Date (YYYY-MM-DD)</li>
+                    <li><strong>DATETIME</strong> - Date and time</li>
+                    <li><strong>BOOLEAN</strong> - True/False</li>
+                </ul>
+            </div>
+
+            <h3>2. INSERT - Adding Data</h3>
+
+            <div class="sql-label">SQL - INSERT Statements</div>
+            <div class="sql-block">-- Insert single row
+INSERT INTO employees (name, email, department, salary, hire_date)
+VALUES ('Alice Johnson', 'alice@company.com', 'Engineering', 85000, '2020-01-15');
+
+-- Insert multiple rows
+INSERT INTO employees (name, email, department, salary, hire_date)
+VALUES 
+    ('Bob Smith', 'bob@company.com', 'Sales', 65000, '2019-06-10'),
+    ('Carol White', 'carol@company.com', 'Engineering', 90000, '2018-03-22'),
+    ('David Lee', 'david@company.com', 'Marketing', 70000, '2021-09-01');
+
+-- Insert with selected columns (others will be NULL or default)
+INSERT INTO employees (name, department)
+VALUES ('Eve Brown', 'HR');</div>
+
+            <h3>3. SELECT - Retrieving Data</h3>
+
+            <div class="sql-label">SQL - SELECT Queries</div>
+            <div class="sql-block">-- Select all columns
+SELECT * FROM employees;
+
+-- Select specific columns
+SELECT name, department, salary FROM employees;
+
+-- Select with alias (rename columns in output)
+SELECT 
+    name AS employee_name,
+    salary AS annual_salary,
+    department AS dept
+FROM employees;
+
+-- Select distinct values (no duplicates)
+SELECT DISTINCT department FROM employees;
+
+-- Count rows
+SELECT COUNT(*) FROM employees;
+SELECT COUNT(*) AS total_employees FROM employees;</div>
+
+            <h3>4. WHERE - Filtering Data</h3>
+
+            <div class="sql-label">SQL - WHERE Clause</div>
+            <div class="sql-block">-- Basic filtering
+SELECT * FROM employees
+WHERE department = 'Engineering';
+
+SELECT * FROM employees
+WHERE salary > 70000;
+
+-- Multiple conditions (AND)
+SELECT * FROM employees
+WHERE department = 'Engineering' AND salary > 80000;
+
+-- Multiple conditions (OR)
+SELECT * FROM employees
+WHERE department = 'Engineering' OR department = 'Sales';
+
+-- NOT operator
+SELECT * FROM employees
+WHERE NOT department = 'Engineering';
+
+-- IN operator (multiple values)
+SELECT * FROM employees
+WHERE department IN ('Engineering', 'Sales', 'Marketing');
+
+-- BETWEEN operator
+SELECT * FROM employees
+WHERE salary BETWEEN 60000 AND 80000;
+
+-- LIKE operator (pattern matching)
+SELECT * FROM employees
+WHERE name LIKE 'A%';  -- Names starting with A
+
+SELECT * FROM employees
+WHERE email LIKE '%@company.com';  -- Emails ending with @company.com
+
+-- IS NULL / IS NOT NULL
+SELECT * FROM employees
+WHERE email IS NULL;
+
+SELECT * FROM employees
+WHERE email IS NOT NULL;</div>
+
+            <div class="key-point">
+                <strong>⚠️ Wildcards with LIKE:</strong>
+                <ul>
+                    <li><code>%</code> - Matches any sequence of characters</li>
+                    <li><code>_</code> - Matches exactly one character</li>
+                    <li><code>'A%'</code> - Starts with A</li>
+                    <li><code>'%son'</code> - Ends with son</li>
+                    <li><code>'%data%'</code> - Contains data</li>
+                    <li><code>'_ob'</code> - Three letters ending with ob (Bob, Rob)</li>
+                </ul>
+            </div>
+
+            <h3>5. ORDER BY - Sorting Results</h3>
+
+            <div class="sql-label">SQL - ORDER BY</div>
+            <div class="sql-block">-- Sort ascending (default)
+SELECT * FROM employees
+ORDER BY salary;
+
+-- Sort descending
+SELECT * FROM employees
+ORDER BY salary DESC;
+
+-- Sort by multiple columns
+SELECT * FROM employees
+ORDER BY department ASC, salary DESC;
+
+-- Sort with column alias
+SELECT name, salary * 12 AS yearly_salary
+FROM employees
+ORDER BY yearly_salary DESC;</div>
+
+            <h3>6. LIMIT - Restricting Results</h3>
+
+            <div class="sql-label">SQL - LIMIT</div>
+            <div class="sql-block">-- Get first 5 rows
+SELECT * FROM employees
+LIMIT 5;
+
+-- Get top 3 highest paid employees
+SELECT name, salary FROM employees
+ORDER BY salary DESC
+LIMIT 3;
+
+-- Pagination: Skip first 10, get next 5
+SELECT * FROM employees
+LIMIT 5 OFFSET 10;
+-- or
+SELECT * FROM employees
+LIMIT 10, 5;  -- MySQL syntax: offset, count</div>
+        </div>
+
+        <!-- QUERIES SECTION -->
+        <div id="queries" class="section">
+            <h2>⚙️ Query Operations</h2>
+
+            <h3>1. UPDATE - Modifying Data</h3>
+
+            <div class="sql-label">SQL - UPDATE Statements</div>
+            <div class="sql-block">-- Update single column
+UPDATE employees
+SET salary = 95000
+WHERE id = 1;
+
+-- Update multiple columns
+UPDATE employees
+SET salary = 72000, department = 'Sales'
+WHERE name = 'David Lee';
+
+-- Update with calculation
+UPDATE employees
+SET salary = salary * 1.10  -- 10% raise
+WHERE department = 'Engineering';
+
+-- Update all rows (BE CAREFUL!)
+UPDATE employees
+SET is_active = TRUE;</div>
+
+            <div class="key-point">
+                <strong>⚠️ CRITICAL WARNING:</strong> Always use WHERE with UPDATE! Without it, ALL rows will be updated. Test with SELECT first!
+            </div>
+
+            <h3>2. DELETE - Removing Data</h3>
+
+            <div class="sql-label">SQL - DELETE Statements</div>
+            <div class="sql-block">-- Delete specific rows
+DELETE FROM employees
+WHERE id = 5;
+
+DELETE FROM employees
+WHERE department = 'Marketing' AND salary < 50000;
+
+-- Delete all rows (BE VERY CAREFUL!)
+DELETE FROM employees;
+
+-- Safer deletion with LIMIT
+DELETE FROM employees
+WHERE department = 'Sales'
+LIMIT 1;  -- Delete only first matching row</div>
+
+            <div class="key-point">
+                <strong>⚠️ DELETE vs TRUNCATE vs DROP:</strong>
+                <ul>
+                    <li><code>DELETE</code> - Removes rows, can use WHERE, slower, can rollback</li>
+                    <li><code>TRUNCATE</code> - Removes all rows, faster, resets auto-increment, cannot rollback</li>
+                    <li><code>DROP</code> - Deletes entire table structure and data</li>
+                </ul>
+            </div>
+
+            <h3>3. Aggregate Functions</h3>
+
+            <div class="sql-label">SQL - Aggregate Functions</div>
+            <div class="sql-block">-- COUNT - Count rows
+SELECT COUNT(*) AS total_employees FROM employees;
+
+SELECT COUNT(DISTINCT department) AS num_departments FROM employees;
+
+-- SUM - Sum of values
+SELECT SUM(salary) AS total_payroll FROM employees;
+
+-- AVG - Average value
+SELECT AVG(salary) AS average_salary FROM employees;
+
+-- MIN - Minimum value
+SELECT MIN(salary) AS lowest_salary FROM employees;
+
+-- MAX - Maximum value
+SELECT MAX(salary) AS highest_salary FROM employees;
+
+-- Multiple aggregates
+SELECT 
+    COUNT(*) AS total_count,
+    AVG(salary) AS avg_salary,
+    MIN(salary) AS min_salary,
+    MAX(salary) AS max_salary,
+    SUM(salary) AS total_salary
+FROM employees;</div>
+
+            <h3>4. GROUP BY - Grouping Data</h3>
+
+            <div class="sql-label">SQL - GROUP BY</div>
+            <div class="sql-block">-- Count employees per department
+SELECT department, COUNT(*) AS employee_count
+FROM employees
+GROUP BY department;
+
+-- Average salary per department
+SELECT department, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department;
+
+-- Multiple columns grouping
+SELECT department, YEAR(hire_date) AS hire_year, COUNT(*) AS count
+FROM employees
+GROUP BY department, YEAR(hire_date);
+
+-- With ORDER BY
+SELECT department, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department
+ORDER BY avg_salary DESC;</div>
+
+            <div class="memory-tip">
+                <strong>💡 GROUP BY Rule:</strong> Every column in SELECT must either be:
+                <br>1. In the GROUP BY clause, OR
+                <br>2. Inside an aggregate function (COUNT, SUM, AVG, etc.)
+            </div>
+
+            <h3>5. HAVING - Filtering Groups</h3>
+
+            <div class="sql-label">SQL - HAVING Clause</div>
+            <div class="sql-block">-- WHERE filters rows, HAVING filters groups
+
+-- Departments with more than 2 employees
+SELECT department, COUNT(*) AS employee_count
+FROM employees
+GROUP BY department
+HAVING COUNT(*) > 2;
+
+-- Departments with average salary > 75000
+SELECT department, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department
+HAVING AVG(salary) > 75000;
+
+-- Combine WHERE and HAVING
+SELECT department, AVG(salary) AS avg_salary
+FROM employees
+WHERE hire_date >= '2019-01-01'  -- Filter individual rows
+GROUP BY department
+HAVING AVG(salary) > 70000;  -- Filter groups</div>
+
+            <div class="key-point">
+                <strong>WHERE vs HAVING:</strong>
+                <ul>
+                    <li><strong>WHERE</strong> - Filters rows BEFORE grouping</li>
+                    <li><strong>HAVING</strong> - Filters groups AFTER grouping</li>
+                    <li><strong>WHERE</strong> - Cannot use aggregate functions</li>
+                    <li><strong>HAVING</strong> - Can use aggregate functions</li>
+                </ul>
+            </div>
+
+            <h3>6. String Functions</h3>
+
+            <div class="sql-label">SQL - String Functions</div>
+            <div class="sql-block">-- CONCAT - Combine strings
+SELECT CONCAT(name, ' - ', department) AS employee_info
+FROM employees;
+
+-- UPPER / LOWER - Change case
+SELECT UPPER(name) AS uppercase_name FROM employees;
+SELECT LOWER(email) AS lowercase_email FROM employees;
+
+-- LENGTH - String length
+SELECT name, LENGTH(name) AS name_length FROM employees;
+
+-- SUBSTRING - Extract part of string
+SELECT name, SUBSTRING(name, 1, 3) AS first_three
+FROM employees;
+
+-- TRIM - Remove spaces
+SELECT TRIM('  hello  ') AS trimmed;
+
+-- REPLACE - Replace text
+SELECT name, REPLACE(name, 'Smith', 'Jones') AS modified
+FROM employees;</div>
+
+            <h3>7. Date Functions</h3>
+
+            <div class="sql-label">SQL - Date Functions</div>
+            <div class="sql-block">-- Current date and time
+SELECT NOW();  -- Current datetime
+SELECT CURDATE();  -- Current date
+SELECT CURTIME();  -- Current time
+
+-- Extract parts of date
+SELECT 
+    hire_date,
+    YEAR(hire_date) AS hire_year,
+    MONTH(hire_date) AS hire_month,
+    DAY(hire_date) AS hire_day
+FROM employees;
+
+-- Date calculations
+SELECT name, hire_date,
+    DATEDIFF(CURDATE(), hire_date) AS days_employed,
+    DATEDIFF(CURDATE(), hire_date) / 365 AS years_employed
+FROM employees;
+
+-- Add/subtract dates
+SELECT DATE_ADD(CURDATE(), INTERVAL 30 DAY) AS thirty_days_later;
+SELECT DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AS one_year_ago;
+
+-- Format dates
+SELECT DATE_FORMAT(hire_date, '%M %d, %Y') AS formatted_date
+FROM employees;</div>
+        </div>
+
+        <!-- JOINS SECTION -->
+        <div id="joins" class="section">
+            <h2>🔗 JOINs & Relations</h2>
+
+            <h3>Sample Tables for JOIN Examples</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                <table class="sample-table">
+                    <caption><strong>employees</strong></caption>
+                    <tr><th>id</th><th>name</th><th>dept_id</th></tr>
+                    <tr><td>1</td><td>Alice</td><td>101</td></tr>
+                    <tr><td>2</td><td>Bob</td><td>102</td></tr>
+                    <tr><td>3</td><td>Carol</td><td>101</td></tr>
+                    <tr><td>4</td><td>David</td><td>NULL</td></tr>
+                </table>
+
+                <table class="sample-table">
+                    <caption><strong>departments</strong></caption>
+                    <tr><th>dept_id</th><th>dept_name</th></tr>
+                    <tr><td>101</td><td>Engineering</td></tr>
+                    <tr><td>102</td><td>Sales</td></tr>
+                    <tr><td>103</td><td>Marketing</td></tr>
+                </table>
+            </div>
+
+            <h3>1. INNER JOIN</h3>
+
+            <div class="concept-box">
+                <p><strong>INNER JOIN</strong> returns only rows where there is a match in BOTH tables.</p>
+            </div>
+
+            <div class="sql-label">SQL - INNER JOIN</div>
+            <div class="sql-block">-- Basic INNER JOIN
+SELECT employees.name, departments.dept_name
+FROM employees
+INNER JOIN departments ON employees.dept_id = departments.dept_id;
+
+-- Using table aliases (cleaner)
+SELECT e.name, d.dept_name
+FROM employees e
+INNER JOIN departments d ON e.dept_id = d.dept_id;
+
+-- Result: Only Alice, Bob, Carol (David has no department match)</div>
+
+            <h3>2. LEFT JOIN (LEFT OUTER JOIN)</h3>
+
+            <div class="concept-box">
+                <p><strong>LEFT JOIN</strong> returns ALL rows from the left table, and matching rows from the right table. NULL for non-matches.</p>
+            </div>
+
+            <div class="sql-label">SQL - LEFT JOIN</div>
+            <div class="sql-block">-- LEFT JOIN
+SELECT e.name, d.dept_name
+FROM employees e
+LEFT JOIN departments d ON e.dept_id = d.dept_id;
+
+-- Result: Alice, Bob, Carol with departments + David with NULL department
+
+-- Find employees with no department
+SELECT e.name
+FROM employees e
+LEFT JOIN departments d ON e.dept_id = d.dept_id
+WHERE d.dept_id IS NULL;</div>
+
+            <h3>3. RIGHT JOIN (RIGHT OUTER JOIN)</h3>
+
+            <div class="concept-box">
+                <p><strong>RIGHT JOIN</strong> returns ALL rows from the right table, and matching rows from the left table. NULL for non-matches.</p>
+            </div>
+
+            <div class="sql-label">SQL - RIGHT JOIN</div>
+            <div class="sql-block">-- RIGHT JOIN
+SELECT e.name, d.dept_name
+FROM employees e
+RIGHT JOIN departments d ON e.dept_id = d.dept_id;
+
+-- Result: Alice, Bob, Carol + Marketing department with NULL employee
+
+-- Find departments with no employees
+SELECT d.dept_name
+FROM employees e
+RIGHT JOIN departments d ON e.dept_id = d.dept_id
+WHERE e.id IS NULL;</div>
+
+            <h3>4. FULL OUTER JOIN</h3>
+
+            <div class="concept-box">
+                <p><strong>FULL OUTER JOIN</strong> returns ALL rows from both tables, with NULLs where there's no match. (Not directly supported in MySQL, use UNION)</p>
+            </div>
+
+            <div class="sql-label">SQL - FULL OUTER JOIN (MySQL Workaround)</div>
+            <div class="sql-block">-- Simulate FULL OUTER JOIN in MySQL
+SELECT e.name, d.dept_name
+FROM employees e
+LEFT JOIN departments d ON e.dept_id = d.dept_id
+
+UNION
+
+SELECT e.name, d.dept_name
+FROM employees e
+RIGHT JOIN departments d ON e.dept_id = d.dept_id;</div>
+
+            <h3>5. CROSS JOIN</h3>
+
+            <div class="concept-box">
+                <p><strong>CROSS JOIN</strong> returns the Cartesian product - every combination of rows from both tables.</p>
+            </div>
+
+            <div class="sql-label">SQL - CROSS JOIN</div>
+            <div class="sql-block">-- CROSS JOIN
+SELECT e.name, d.dept_name
+FROM employees e
+CROSS JOIN departments d;
+
+-- Result: 4 employees × 3 departments = 12 rows</div>
+
+            <h3>6. SELF JOIN</h3>
+
+            <div class="concept-box">
+                <p><strong>SELF JOIN</strong> joins a table to itself, useful for hierarchical data.</p>
+            </div>
+
+            <div class="sql-label">SQL - SELF JOIN</div>
+            <div class="sql-block">-- Example: employees with manager_id column
+-- Find employee and their manager name
+
+SELECT 
+    e1.name AS employee,
+    e2.name AS manager
+FROM employees e1
+LEFT JOIN employees e2 ON e1.manager_id = e2.id;</div>
+
+            <div class="join-visual">
+                <div class="join-type">
+                    <h4>INNER JOIN</h4>
+                    <p>Only matching rows</p>
+                    <p>🔵 ∩ 🟢</p>
+                </div>
+                <div class="join-type">
+                    <h4>LEFT JOIN</h4>
+                    <p>All left + matches</p>
+                    <p>🔵 + 🔵∩🟢</p>
+                </div>
+                <div class="join-type">
+                    <h4>RIGHT JOIN</h4>
+                    <p>All right + matches</p>
+                    <p>🔵∩🟢 + 🟢</p>
+                </div>
+                <div class="join-type">
+                    <h4>FULL OUTER</h4>
+                    <p>All from both tables</p>
+                    <p>🔵 + 🟢</p>
+                </div>
+            </div>
+
+            <h3>7. Multiple JOINs</h3>
+
+            <div class="sql-label">SQL - Multiple JOINs</div>
+            <div class="sql-block">-- Join three tables: employees, departments, projects
+SELECT 
+    e.name AS employee_name,
+    d.dept_name,
+    p.project_name
+FROM employees e
+INNER JOIN departments d ON e.dept_id = d.dept_id
+INNER JOIN projects p ON e.id = p.employee_id;
+
+-- With WHERE clause
+SELECT 
+    e.name,
+    d.dept_name,
+    p.project_name
+FROM employees e
+INNER JOIN departments d ON e.dept_id = d.dept_id
+INNER JOIN projects p ON e.id = p.employee_id
+WHERE d.dept_name = 'Engineering'
+ORDER BY e.name;</div>
+
+            <div class="memory-tip">
+                <strong>💡 JOIN Memory Trick:</strong>
+                <ul>
+                    <li><strong>INNER JOIN</strong> = "Only matches" - like intersection ∩</li>
+                    <li><strong>LEFT JOIN</strong> = "Everything from left table"</li>
+                    <li><strong>RIGHT JOIN</strong> = "Everything from right table"</li>
+                    <li><strong>FULL OUTER</strong> = "Everything from both" - like union ∪</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ADVANCED SECTION -->
+        <div id="advanced" class="section">
+            <h2>🎓 Advanced Concepts</h2>
+
+            <h3>1. Subqueries (Nested Queries)</h3>
+
+            <div class="sql-label">SQL - Subqueries</div>
+            <div class="sql-block">-- Subquery in WHERE clause
+-- Find employees with salary above average
+SELECT name, salary
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);
+
+-- Subquery in FROM clause
+SELECT dept, avg_sal
+FROM (
+    SELECT department AS dept, AVG(salary) AS avg_sal
+    FROM employees
+    GROUP BY department
+) AS dept_stats
+WHERE avg_sal > 70000;
+
+-- Subquery with IN
+-- Find employees in departments with more than 5 people
+SELECT name, department
+FROM employees
+WHERE department IN (
+    SELECT department
+    FROM employees
+    GROUP BY department
+    HAVING COUNT(*) > 5
+);
+
+-- Correlated subquery (references outer query)
+SELECT name, salary, department
+FROM employees e1
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM employees e2
+    WHERE e2.department = e1.department
+);</div>
+
+            <h3>2. UNION & UNION ALL</h3>
+
+            <div class="concept-box">
+                <p><strong>UNION</strong> combines results from multiple SELECT statements, removing duplicates.</p>
+                <p><strong>UNION ALL</strong> includes duplicates.</p>
+            </div>
+
+            <div class="sql-label">SQL - UNION</div>
+            <div class="sql-block">-- UNION (removes duplicates)
+SELECT name FROM employees
+UNION
+SELECT name FROM contractors;
+
+-- UNION ALL (keeps duplicates, faster)
+SELECT name FROM employees
+UNION ALL
+SELECT name FROM contractors;
+
+-- Must have same number of columns
+SELECT name, 'Employee' AS type FROM employees
+UNION
+SELECT name, 'Contractor' AS type FROM contractors
+ORDER BY name;</div>
+
+            <h3>3. CASE Statements (Conditional Logic)</h3>
+
+            <div class="sql-label">SQL - CASE Statements</div>
+            <div class="sql-block">-- Simple CASE
+SELECT 
+    name,
+    salary,
+    CASE 
+        WHEN salary < 60000 THEN 'Low'
+        WHEN salary BETWEEN 60000 AND 80000 THEN 'Medium'
+        WHEN salary > 80000 THEN 'High'
+        ELSE 'Unknown'
+    END AS salary_category
+FROM employees;
+
+-- CASE in WHERE clause
+SELECT name, department
+FROM employees
+WHERE 
+    CASE 
+        WHEN department = 'Engineering' THEN salary > 80000
+        WHEN department = 'Sales' THEN salary > 60000
+        ELSE salary > 50000
+    END;
+
+-- CASE for custom sorting
+SELECT name, department
+FROM employees
+ORDER BY 
+    CASE department
+        WHEN 'Engineering' THEN 1
+        WHEN 'Sales' THEN 2
+        WHEN 'Marketing' THEN 3
+        ELSE 4
+    END;</div>
+
+            <h3>4. Window Functions (Analytic Functions)</h3>
+
+            <div class="concept-box">
+                <p><strong>Window Functions</strong> perform calculations across a set of rows related to the current row, without grouping.</p>
+            </div>
+
+            <div class="sql-label">SQL - Window Functions</div>
+            <div class="sql-block">-- ROW_NUMBER - Assign unique row numbers
+SELECT 
+    name,
+    department,
+    salary,
+    ROW_NUMBER() OVER (ORDER BY salary DESC) AS salary_rank
+FROM employees;
+
+-- RANK - Ranking with gaps for ties
+SELECT 
+    name,
+    department,
+    salary,
+    RANK() OVER (ORDER BY salary DESC) AS rank
+FROM employees;
+
+-- DENSE_RANK - Ranking without gaps
+SELECT 
+    name,
+    salary,
+    DENSE_RANK() OVER (ORDER BY salary DESC) AS dense_rank
+FROM employees;
+
+-- PARTITION BY - Rank within groups
+SELECT 
+    name,
+    department,
+    salary,
+    RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS dept_rank
+FROM employees;
+
+-- Running totals
+SELECT 
+    name,
+    salary,
+    SUM(salary) OVER (ORDER BY hire_date) AS running_total
+FROM employees;
+
+-- Moving average
+SELECT 
+    name,
+    salary,
+    AVG(salary) OVER (
+        ORDER BY hire_date 
+        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+    ) AS moving_avg
+FROM employees;</div>
+
+            <h3>5. Common Table Expressions (CTEs)</h3>
+
+            <div class="concept-box">
+                <p><strong>CTE (WITH clause)</strong> creates a temporary named result set that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement.</p>
+            </div>
+
+            <div class="sql-label">SQL - CTEs</div>
+            <div class="sql-block">-- Simple CTE
+WITH high_earners AS (
+    SELECT name, salary, department
+    FROM employees
+    WHERE salary > 80000
+)
+SELECT department, COUNT(*) AS count
+FROM high_earners
+GROUP BY department;
+
+-- Multiple CTEs
+WITH 
+engineering_emp AS (
+    SELECT * FROM employees WHERE department = 'Engineering'
+),
+sales_emp AS (
+    SELECT * FROM employees WHERE department = 'Sales'
+)
+SELECT 'Engineering' AS dept, COUNT(*) AS count FROM engineering_emp
+UNION ALL
+SELECT 'Sales' AS dept, COUNT(*) AS count FROM sales_emp;
+
+-- Recursive CTE (for hierarchical data)
+WITH RECURSIVE employee_hierarchy AS (
+    -- Base case: top-level employees
+    SELECT id, name, manager_id, 1 AS level
+    FROM employees
+    WHERE manager_id IS NULL
+    
+    UNION ALL
+    
+    -- Recursive case: employees with managers
+    SELECT e.id, e.name, e.manager_id, eh.level + 1
+    FROM employees e
+    INNER JOIN employee_hierarchy eh ON e.manager_id = eh.id
+)
+SELECT * FROM employee_hierarchy
+ORDER BY level, name;</div>
+
+            <h3>6. Indexes & Performance</h3>
+
+            <div class="concept-box">
+                <p><strong>Indexes</strong> speed up data retrieval but slow down INSERT/UPDATE/DELETE operations.</p>
+            </div>
+
+            <div class="sql-label">SQL - Indexes</div>
+            <div class="sql-block">-- Create index
+CREATE INDEX idx_department ON employees(department);
+
+-- Create unique index
+CREATE UNIQUE INDEX idx_email ON employees(email);
+
+-- Composite index (multiple columns)
+CREATE INDEX idx_dept_salary ON employees(department, salary);
+
+-- View indexes
+SHOW INDEX FROM employees;
+
+-- Drop index
+DROP INDEX idx_department ON employees;
+
+-- Primary key automatically creates index
+ALTER TABLE employees
+ADD PRIMARY KEY (id);
+
+-- Foreign key
+ALTER TABLE employees
+ADD FOREIGN KEY (dept_id) REFERENCES departments(dept_id);</div>
+
+            <h3>7. Transactions & ACID Properties</h3>
+
+            <div class="sql-label">SQL - Transactions</div>
+            <div class="sql-block">-- Start transaction
+START TRANSACTION;
+-- or
+BEGIN;
+
+-- Execute multiple operations
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+
+-- If everything is successful, commit
+COMMIT;
+
+-- If there's an error, rollback
+ROLLBACK;
+
+-- Example with error handling
+START TRANSACTION;
+
+UPDATE employees SET salary = salary * 1.1 WHERE department = 'Engineering';
+
+-- Check if update was successful
+-- If not, ROLLBACK; otherwise COMMIT;
+
+COMMIT;</div>
+
+            <div class="key-point">
+                <strong>ACID Properties:</strong>
+                <ul>
+                    <li><strong>Atomicity</strong> - All or nothing (complete or rollback)</li>
+                    <li><strong>Consistency</strong> - Data integrity maintained</li>
+                    <li><strong>Isolation</strong> - Concurrent transactions don't interfere</li>
+                    <li><strong>Durability</strong> - Committed data persists</li>
+                </ul>
+            </div>
+
+            <h3>8. Views</h3>
+
+            <div class="sql-label">SQL - Views</div>
+            <div class="sql-block">-- Create view (virtual table)
+CREATE VIEW engineering_employees AS
+SELECT id, name, salary, hire_date
+FROM employees
+WHERE department = 'Engineering';
+
+-- Query the view like a table
+SELECT * FROM engineering_employees
+WHERE salary > 80000;
+
+-- Create or replace view
+CREATE OR REPLACE VIEW high_earners AS
+SELECT name, department, salary
+FROM employees
+WHERE salary > 75000;
+
+-- Drop view
+DROP VIEW engineering_employees;</div>
+        </div>
+
+        <!-- PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Practice Problems</h2>
+
+            <h3>Sample Database Schema</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                <div>
+                    <table class="sample-table">
+                        <caption><strong>customers</strong></caption>
+                        <tr><th>customer_id</th><th>name</th><th>city</th></tr>
+                        <tr><td>1</td><td>Alice</td><td>NYC</td></tr>
+                        <tr><td>2</td><td>Bob</td><td>LA</td></tr>
+                        <tr><td>3</td><td>Carol</td><td>NYC</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <table class="sample-table">
+                        <caption><strong>orders</strong></caption>
+                        <tr><th>order_id</th><th>customer_id</th><th>amount</th><th>order_date</th></tr>
+                        <tr><td>101</td><td>1</td><td>250</td><td>2024-01-15</td></tr>
+                        <tr><td>102</td><td>2</td><td>150</td><td>2024-01-16</td></tr>
+                        <tr><td>103</td><td>1</td><td>300</td><td>2024-01-17</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 1: Find Second Highest Salary</strong>
+                <div class="sql-label">SQL Solution</div>
+                <div class="sql-block">-- Method 1: Using LIMIT with OFFSET
+SELECT DISTINCT salary
+FROM employees
+ORDER BY salary DESC
+LIMIT 1 OFFSET 1;
+
+-- Method 2: Using subquery
+SELECT MAX(salary) AS second_highest
+FROM employees
+WHERE salary < (SELECT MAX(salary) FROM employees);
+
+-- Method 3: Using window function
+WITH ranked_salaries AS (
+    SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS rank
+    FROM employees
+)
+SELECT salary
+FROM ranked_salaries
+WHERE rank = 2;</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 2: Find Duplicate Emails</strong>
+                <div class="sql-label">SQL Solution</div>
+                <div class="sql-block">-- Find emails that appear more than once
+SELECT email, COUNT(*) AS count
+FROM employees
+GROUP BY email
+HAVING COUNT(*) > 1;
+
+-- Get all records with duplicate emails
+SELECT *
+FROM employees
+WHERE email IN (
+    SELECT email
+    FROM employees
+    GROUP BY email
+    HAVING COUNT(*) > 1
+);</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 3: Customers Who Never Ordered</strong>
+                <div class="sql-label">SQL Solution</div>
+                <div class="sql-block">-- Method 1: Using LEFT JOIN
+SELECT c.name
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.order_id IS NULL;
+
+-- Method 2: Using NOT IN
+SELECT name
+FROM customers
+WHERE customer_id NOT IN (
+    SELECT DISTINCT customer_id FROM orders
+);
+
+-- Method 3: Using NOT EXISTS
+SELECT name
+FROM customers c
+WHERE NOT EXISTS (
+    SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id
+);</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 4: Nth Highest Value</strong>
+                <div class="sql-label">SQL Solution</div>
+                <div class="sql-block">-- Find Nth highest salary (N = 3)
+-- Method 1: Using LIMIT
+SELECT DISTINCT salary
+FROM employees
+ORDER BY salary DESC
+LIMIT 1 OFFSET 2;  -- N-1
+
+-- Method 2: Function approach
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+    DECLARE M INT;
+    SET M = N - 1;
+    RETURN (
+        SELECT DISTINCT salary
+        FROM employees
+        ORDER BY salary DESC
+        LIMIT 1 OFFSET M
+    );
+END;</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 5: Department with Highest Average Salary</strong>
+                <div class="sql-label">SQL Solution</div>
+                <div class="sql-block">SELECT department, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department
+ORDER BY avg_salary DESC
+LIMIT 1;
+
+-- Alternative: Using subquery
+SELECT department, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department
+HAVING AVG(salary) = (
+    SELECT MAX(avg_sal)
+    FROM (
+        SELECT AVG(salary) AS avg_sal
+        FROM employees
+        GROUP BY department
+    ) AS dept_averages
+);</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 6: Consecutive Numbers</strong>
+                <div class="sql-label">SQL Solution</div>
+                <div class="sql-block">-- Find numbers that appear at least 3 times consecutively
+-- Assuming a Logs table with id and num columns
+
+SELECT DISTINCT l1.num AS ConsecutiveNums
+FROM Logs l1
+JOIN Logs l2 ON l1.id = l2.id - 1
+JOIN Logs l3 ON l2.id = l3.id - 1
+WHERE l1.num = l2.num AND l2.num = l3.num;</div>
+            </div>
+
+            <h3>🎯 Key SQL Concepts to Master</h3>
+
+            <div class="memory-tip">
+                <strong>The 10 SQL Commandments:</strong>
+                <ol>
+                    <li><strong>Always use WHERE</strong> with UPDATE/DELETE</li>
+                    <li><strong>Test with SELECT</strong> before UPDATE/DELETE</li>
+                    <li><strong>Use LIMIT</strong> when testing queries on large tables</li>
+                    <li><strong>Index frequently queried columns</strong> for performance</li>
+                    <li><strong>Use JOINs wisely</strong> - understand LEFT vs INNER</li>
+                    <li><strong>GROUP BY all non-aggregated columns</strong> in SELECT</li>
+                    <li><strong>HAVING filters groups</strong>, WHERE filters rows</li>
+                    <li><strong>Use aliases</strong> for readability</li>
+                    <li><strong>Avoid SELECT *</strong> in production code</li>
+                    <li><strong>Use transactions</strong> for related operations</li>
+                </ol>
+            </div>
+
+            <h3>📊 SQL Query Order of Execution</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Order</th>
+                    <th>Clause</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>FROM</td>
+                    <td>Choose the table(s)</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>JOIN</td>
+                    <td>Combine tables</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>WHERE</td>
+                    <td>Filter rows</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>GROUP BY</td>
+                    <td>Group rows</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>HAVING</td>
+                    <td>Filter groups</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>SELECT</td>
+                    <td>Choose columns</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>DISTINCT</td>
+                    <td>Remove duplicates</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>ORDER BY</td>
+                    <td>Sort results</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>LIMIT</td>
+                    <td>Restrict number of rows</td>
+                </tr>
+            </table>
+
+            <h3>🔥 Common Interview Questions</h3>
+
+            <div class="concept-box">
+                <h4>Must Practice:</h4>
+                <ol>
+                    <li>Find second highest salary</li>
+                    <li>Find duplicate records</li>
+                    <li>Customers who never ordered</li>
+                    <li>Department-wise highest salary</li>
+                    <li>Employee with highest salary in each department</li>
+                    <li>Find Nth highest value</li>
+                    <li>Delete duplicate rows</li>
+                    <li>Find consecutive numbers</li>
+                    <li>Running totals</li>
+                    <li>Self joins (employee-manager relationships)</li>
+                </ol>
+            </div>
+
+            <h3>💡 SQL Best Practices</h3>
+
+            <div class="key-point">
+                <strong>Performance Tips:</strong>
+                <ul>
+                    <li>Use <code>EXISTS</code> instead of <code>IN</code> for large subqueries</li>
+                    <li>Use <code>UNION ALL</code> instead of <code>UNION</code> when duplicates don't matter</li>
+                    <li>Index columns used in WHERE, JOIN, and ORDER BY</li>
+                    <li>Avoid functions on indexed columns in WHERE (breaks index)</li>
+                    <li>Use <code>LIMIT</code> for pagination instead of loading all data</li>
+                    <li>Use <code>EXPLAIN</code> to analyze query performance</li>
+                </ul>
+            </div>
+
+            <h3>📚 Quick Reference Cheat Sheet</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Task</th>
+                    <th>SQL Syntax</th>
+                </tr>
+                <tr>
+                    <td>Select all</td>
+                    <td><code>SELECT * FROM table;</code></td>
+                </tr>
+                <tr>
+                    <td>Filter rows</td>
+                    <td><code>WHERE condition</code></td>
+                </tr>
+                <tr>
+                    <td>Sort results</td>
+                    <td><code>ORDER BY column DESC</code></td>
+                </tr>
+                <tr>
+                    <td>Limit results</td>
+                    <td><code>LIMIT 10</code></td>
+                </tr>
+                <tr>
+                    <td>Count rows</td>
+                    <td><code>SELECT COUNT(*) FROM table</code></td>
+                </tr>
+                <tr>
+                    <td>Group data</td>
+                    <td><code>GROUP BY column</code></td>
+                </tr>
+                <tr>
+                    <td>Filter groups</td>
+                    <td><code>HAVING COUNT(*) > 5</code></td>
+                </tr>
+                <tr>
+                    <td>Join tables</td>
+                    <td><code>INNER JOIN table2 ON t1.id = t2.id</code></td>
+                </tr>
+                <tr>
+                    <td>Pattern match</td>
+                    <td><code>WHERE name LIKE 'A%'</code></td>
+                </tr>
+                <tr>
+                    <td>In list</td>
+                    <td><code>WHERE id IN (1,2,3)</code></td>
+                </tr>
+                <tr>
+                    <td>Between range</td>
+                    <td><code>WHERE age BETWEEN 20 AND 30</code></td>
+                </tr>
+                <tr>
+                    <td>NULL check</td>
+                    <td><code>WHERE column IS NULL</code></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

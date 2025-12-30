@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Algorithms Masterclass</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #1e3c72; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 10px 18px;
+            background: #1e3c72;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #4a90e2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #4a90e2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #1e3c72;
+        }
+        h3 { color: #4a90e2; margin-top: 25px; margin-bottom: 15px; }
+        h4 { color: #1e3c72; margin-top: 20px; margin-bottom: 10px; }
+        .concept-box {
+            background: #e3f2fd;
+            padding: 20px;
+            border-left: 5px solid #1e3c72;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .warning-box {
+            background: #ffebee;
+            padding: 15px;
+            border-left: 5px solid #f44336;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+            font-size: 0.9em;
+        }
+        .code-label {
+            background: #1e3c72;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #1e3c72;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #e3f2fd;
+        }
+        .visualization {
+            background: white;
+            border: 2px solid #1e3c72;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .graph-visual {
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            line-height: 2;
+            font-size: 0.9em;
+            margin: 20px 0;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        .demo-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        input[type="number"], input[type="text"], select {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            width: 120px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #1e3c72; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+            border: 2px solid #1e3c72;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .complexity-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .complexity-badge.good {
+            background: #4caf50;
+            color: white;
+        }
+        .complexity-badge.medium {
+            background: #ff9800;
+            color: white;
+        }
+        .complexity-badge.bad {
+            background: #f44336;
+            color: white;
+        }
+        .algorithm-card {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #1e3c72;
+        }
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+        }
+        .step-by-step {
+            background: #e8f5e9;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🕸️ Graph Algorithms Masterclass</h1>
+            <p class="subtitle">Master Network & Path-Finding Algorithms</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('traversal')">BFS & DFS</button>
+                <button class="nav-btn" onclick="showSection('shortest')">Shortest Path</button>
+                <button class="nav-btn" onclick="showSection('mst')">MST</button>
+                <button class="nav-btn" onclick="showSection('topo')">Topological</button>
+                <button class="nav-btn" onclick="showSection('union')">Union Find</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 Introduction to Graphs</h2>
+            
+            <div class="concept-box">
+                <h3>What is a Graph?</h3>
+                <p>A <strong>Graph</strong> is a non-linear data structure consisting of <span class="highlight">vertices (nodes)</span> connected by <span class="highlight">edges</span>. Unlike trees, graphs can have cycles and multiple paths between nodes.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Graph Example</h4>
+                <div class="graph-visual">
+<pre>
+      A --- B
+      |  /  |
+      | /   |
+      C --- D
+
+Vertices: {A, B, C, D}
+Edges: {(A,B), (A,C), (B,C), (B,D), (C,D)}
+</pre>
+                </div>
+            </div>
+
+            <h3>Graph Terminology</h3>
+
+            <div class="concept-box">
+                <ul>
+                    <li><strong>Vertex/Node:</strong> A point in the graph</li>
+                    <li><strong>Edge:</strong> Connection between two vertices</li>
+                    <li><strong>Directed Graph (Digraph):</strong> Edges have direction (A→B)</li>
+                    <li><strong>Undirected Graph:</strong> Edges have no direction (A—B)</li>
+                    <li><strong>Weighted Graph:</strong> Edges have weights/costs</li>
+                    <li><strong>Degree:</strong> Number of edges connected to vertex</li>
+                    <li><strong>Path:</strong> Sequence of vertices connected by edges</li>
+                    <li><strong>Cycle:</strong> Path that starts and ends at same vertex</li>
+                    <li><strong>Connected Graph:</strong> Path exists between any two vertices</li>
+                    <li><strong>DAG:</strong> Directed Acyclic Graph (no cycles)</li>
+                </ul>
+            </div>
+
+            <h3>Graph Representation</h3>
+
+            <div class="concept-box">
+                <h4>1. Adjacency Matrix</h4>
+                <p>2D array where matrix[i][j] = 1 if edge exists between i and j</p>
+                <ul>
+                    <li><strong>Space:</strong> O(V²)</li>
+                    <li><strong>Check Edge:</strong> O(1)</li>
+                    <li><strong>Find Neighbors:</strong> O(V)</li>
+                    <li><strong>Good for:</strong> Dense graphs</li>
+                </ul>
+            </div>
+
+            <div class="code-label">Python - Adjacency Matrix</div>
+            <div class="code-block"># Graph with 4 vertices
+graph = [
+    [0, 1, 1, 0],  # A connects to B, C
+    [1, 0, 1, 1],  # B connects to A, C, D
+    [1, 1, 0, 1],  # C connects to A, B, D
+    [0, 1, 1, 0]   # D connects to B, C
+]
+
+# Check if edge exists
+has_edge = graph[0][1] == 1  # A-B edge exists</div>
+
+            <div class="concept-box">
+                <h4>2. Adjacency List</h4>
+                <p>Dictionary/array where each vertex stores list of neighbors</p>
+                <ul>
+                    <li><strong>Space:</strong> O(V + E)</li>
+                    <li><strong>Check Edge:</strong> O(degree)</li>
+                    <li><strong>Find Neighbors:</strong> O(1)</li>
+                    <li><strong>Good for:</strong> Sparse graphs (most real-world)</li>
+                </ul>
+            </div>
+
+            <div class="code-label">Python - Adjacency List</div>
+            <div class="code-block">from collections import defaultdict
+
+# Adjacency list representation
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'C', 'D'],
+    'C': ['A', 'B', 'D'],
+    'D': ['B', 'C']
+}
+
+# Or using defaultdict
+graph = defaultdict(list)
+graph['A'].extend(['B', 'C'])
+graph['B'].extend(['A', 'C', 'D'])
+
+# Check neighbors
+neighbors_of_A = graph['A']  # ['B', 'C']</div>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> Graph = Social Network
+                <ul>
+                    <li>Vertices = People</li>
+                    <li>Edges = Friendships</li>
+                    <li>Directed = Following (Twitter)</li>
+                    <li>Undirected = Friends (Facebook)</li>
+                    <li>Weighted = Strength of relationship</li>
+                </ul>
+            </div>
+
+            <h3>Graph Types & Applications</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Graph Type</th>
+                    <th>Properties</th>
+                    <th>Real-World Example</th>
+                </tr>
+                <tr>
+                    <td><strong>Undirected</strong></td>
+                    <td>Bidirectional edges</td>
+                    <td>Facebook friends, road network</td>
+                </tr>
+                <tr>
+                    <td><strong>Directed</strong></td>
+                    <td>One-way edges</td>
+                    <td>Twitter follows, web pages</td>
+                </tr>
+                <tr>
+                    <td><strong>Weighted</strong></td>
+                    <td>Edges have costs</td>
+                    <td>Road distances, flight prices</td>
+                </tr>
+                <tr>
+                    <td><strong>DAG</strong></td>
+                    <td>Directed, no cycles</td>
+                    <td>Task dependencies, course prereqs</td>
+                </tr>
+                <tr>
+                    <td><strong>Tree</strong></td>
+                    <td>Connected, no cycles, V-1 edges</td>
+                    <td>File system, org chart</td>
+                </tr>
+                <tr>
+                    <td><strong>Complete</strong></td>
+                    <td>Edge between every pair</td>
+                    <td>Tournament (everyone plays everyone)</td>
+                </tr>
+            </table>
+
+            <h3>Common Graph Problems</h3>
+
+            <div class="concept-box">
+                <ul>
+                    <li><strong>Traversal:</strong> Visit all vertices (BFS, DFS)</li>
+                    <li><strong>Shortest Path:</strong> Find minimum cost path (Dijkstra, Bellman-Ford)</li>
+                    <li><strong>Minimum Spanning Tree:</strong> Connect all vertices with min cost (Prim, Kruskal)</li>
+                    <li><strong>Cycle Detection:</strong> Check if graph has cycles</li>
+                    <li><strong>Connectivity:</strong> Check if graph is connected</li>
+                    <li><strong>Topological Sort:</strong> Order vertices in DAG</li>
+                    <li><strong>Strongly Connected Components:</strong> Find groups of mutually reachable vertices</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TRAVERSAL SECTION (BFS & DFS) -->
+        <div id="traversal" class="section">
+            <h2>🔍 Graph Traversal: BFS & DFS</h2>
+
+            <h3>1. Breadth-First Search (BFS)</h3>
+
+            <div class="concept-box">
+                <p><strong>BFS</strong> explores graph level by level, visiting all neighbors before moving deeper. Uses a <span class="highlight">queue</span>.</p>
+                <p><strong>Use Cases:</strong> Shortest path in unweighted graph, level-order traversal, peer-to-peer networks</p>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Key Idea:</strong> BFS finds shortest path in unweighted graphs because it explores all nodes at distance k before exploring nodes at distance k+1.
+            </div>
+
+            <div class="code-label">Python - BFS Implementation</div>
+            <div class="code-block">from collections import deque
+
+def bfs(graph, start):
+    """
+    BFS traversal of graph
+    Time: O(V + E), Space: O(V)
+    """
+    visited = set()
+    queue = deque([start])
+    visited.add(start)
+    result = []
+    
+    while queue:
+        vertex = queue.popleft()
+        result.append(vertex)
+        
+        # Visit all neighbors
+        for neighbor in graph[vertex]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+    
+    return result
+
+# Example graph
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+}
+
+print(bfs(graph, 'A'))  # ['A', 'B', 'C', 'D', 'E', 'F']</div>
+
+            <div class="code-label">Python - BFS Shortest Path</div>
+            <div class="code-block">def bfs_shortest_path(graph, start, goal):
+    """
+    Find shortest path using BFS
+    Returns path and distance
+    """
+    if start == goal:
+        return [start], 0
+    
+    visited = {start}
+    queue = deque([(start, [start])])
+    
+    while queue:
+        vertex, path = queue.popleft()
+        
+        for neighbor in graph[vertex]:
+            if neighbor == goal:
+                return path + [neighbor], len(path)
+            
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, path + [neighbor]))
+    
+    return None, -1  # No path found
+
+path, distance = bfs_shortest_path(graph, 'A', 'F')
+print(f"Path: {' -> '.join(path)}, Distance: {distance}")</div>
+
+            <h3>2. Depth-First Search (DFS)</h3>
+
+            <div class="concept-box">
+                <p><strong>DFS</strong> explores as deep as possible before backtracking. Uses a <span class="highlight">stack</span> (or recursion).</p>
+                <p><strong>Use Cases:</strong> Detect cycles, topological sort, maze solving, pathfinding</p>
+            </div>
+
+            <div class="code-label">Python - DFS Recursive</div>
+            <div class="code-block">def dfs_recursive(graph, vertex, visited=None):
+    """
+    DFS traversal (recursive)
+    Time: O(V + E), Space: O(V)
+    """
+    if visited is None:
+        visited = set()
+    
+    visited.add(vertex)
+    result = [vertex]
+    
+    for neighbor in graph[vertex]:
+        if neighbor not in visited:
+            result.extend(dfs_recursive(graph, neighbor, visited))
+    
+    return result
+
+print(dfs_recursive(graph, 'A'))  # ['A', 'B', 'D', 'E', 'F', 'C']</div>
+
+            <div class="code-label">Python - DFS Iterative</div>
+            <div class="code-block">def dfs_iterative(graph, start):
+    """
+    DFS traversal (iterative using stack)
+    Time: O(V + E), Space: O(V)
+    """
+    visited = set()
+    stack = [start]
+    result = []
+    
+    while stack:
+        vertex = stack.pop()
+        
+        if vertex not in visited:
+            visited.add(vertex)
+            result.append(vertex)
+            
+            # Add neighbors in reverse to maintain order
+            for neighbor in reversed(graph[vertex]):
+                if neighbor not in visited:
+                    stack.append(neighbor)
+    
+    return result
+
+print(dfs_iterative(graph, 'A'))</div>
+
+            <h3>BFS vs DFS Comparison</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>BFS</th>
+                    <th>DFS</th>
+                </tr>
+                <tr>
+                    <td><strong>Data Structure</strong></td>
+                    <td>Queue</td>
+                    <td>Stack / Recursion</td>
+                </tr>
+                <tr>
+                    <td><strong>Strategy</strong></td>
+                    <td>Level by level</td>
+                    <td>Deep first, then backtrack</td>
+                </tr>
+                <tr>
+                    <td><strong>Shortest Path</strong></td>
+                    <td>Yes (unweighted)</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td><strong>Time</strong></td>
+                    <td>O(V + E)</td>
+                    <td>O(V + E)</td>
+                </tr>
+                <tr>
+                    <td><strong>Space</strong></td>
+                    <td>O(V) - wide graphs worse</td>
+                    <td>O(h) - deep graphs worse</td>
+                </tr>
+                <tr>
+                    <td><strong>Complete</strong></td>
+                    <td>Yes</td>
+                    <td>No (infinite graphs)</td>
+                </tr>
+                <tr>
+                    <td><strong>Best For</strong></td>
+                    <td>Shortest path, level order</td>
+                    <td>Cycle detection, topological sort</td>
+                </tr>
+            </table>
+
+            <h3>Cycle Detection</h3>
+
+            <div class="code-label">Python - Detect Cycle (DFS)</div>
+            <div class="code-block">def has_cycle_undirected(graph):
+    """
+    Detect cycle in undirected graph using DFS
+    """
+    visited = set()
+    
+    def dfs(node, parent):
+        visited.add(node)
+        
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                if dfs(neighbor, node):
+                    return True
+            elif neighbor != parent:
+                # Found back edge (cycle)
+                return True
+        
+        return False
+    
+    # Check all components
+    for vertex in graph:
+        if vertex not in visited:
+            if dfs(vertex, None):
+                return True
+    
+    return False
+
+def has_cycle_directed(graph):
+    """
+    Detect cycle in directed graph
+    Use recursion stack to detect back edges
+    """
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color = {vertex: WHITE for vertex in graph}
+    
+    def dfs(node):
+        color[node] = GRAY  # Currently processing
+        
+        for neighbor in graph.get(node, []):
+            if color[neighbor] == GRAY:
+                return True  # Back edge found
+            if color[neighbor] == WHITE:
+                if dfs(neighbor):
+                    return True
+        
+        color[node] = BLACK  # Finished processing
+        return False
+    
+    for vertex in graph:
+        if color[vertex] == WHITE:
+            if dfs(vertex):
+                return True
+    
+    return False</div>
+        </div>
+
+        <!-- SHORTEST PATH SECTION -->
+        <div id="shortest" class="section">
+            <h2>🛣️ Shortest Path Algorithms</h2>
+
+            <h3>1. Dijkstra's Algorithm</h3>
+
+            <div class="concept-box">
+                <p><strong>Dijkstra's Algorithm</strong> finds shortest path from source to all vertices in weighted graph with <span class="highlight">non-negative weights</span>.</p>
+                <p><strong>Strategy:</strong> Greedy - always pick unvisited vertex with smallest distance</p>
+            </div>
+
+            <div class="key-point">
+                <strong>Time Complexity:</strong>
+                <ul>
+                    <li>Using min-heap: O((V + E) log V)</li>
+                    <li>Using array: O(V²)</li>
+                </ul>
+            </div>
+
+            <div class="code-label">Python - Dijkstra's Algorithm</div>
+            <div class="code-block">import heapq
+
+def dijkstra(graph, start):
+    """
+    Dijkstra's shortest path algorithm
+    graph: {vertex: [(neighbor, weight), ...]}
+    Returns: distances dict and predecessors
+    """
+    distances = {vertex: float('inf') for vertex in graph}
+    distances[start] = 0
+    predecessors = {vertex: None for vertex in graph}
+    
+    # Min heap: (distance, vertex)
+    pq = [(0, start)]
+    visited = set()
+    
+    while pq:
+        current_dist, current = heapq.heappop(pq)
+        
+        if current in visited:
+            continue
+        
+        visited.add(current)
+        
+        # Check all neighbors
+        for neighbor, weight in graph[current]:
+            distance = current_dist + weight
+            
+            # Found shorter path
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                predecessors[neighbor] = current
+                heapq.heappush(pq, (distance, neighbor))
+    
+    return distances, predecessors
+
+def reconstruct_path(predecessors, start, goal):
+    """Reconstruct path from predecessors"""
+    path = []
+    current = goal
+    
+    while current is not None:
+        path.append(current)
+        current = predecessors[current]
+    
+    path.reverse()
+    return path if path[0] == start else None
+
+# Example: Weighted graph
+graph = {
+    'A': [('B', 4), ('C', 2)],
+    'B': [('A', 4), ('C', 1), ('D', 5)],
+    'C': [('A', 2), ('B', 1), ('D', 8), ('E', 10)],
+    'D': [('B', 5), ('C', 8), ('E', 2)],
+    'E': [('C', 10), ('D', 2)]
+}
+
+distances, preds = dijkstra(graph, 'A')
+print("Distances from A:", distances)
+print("Path A to E:", reconstruct_path(preds, 'A', 'E'))
+# Output: Path A to E: ['A', 'C', 'B', 'D', 'E']</div>
+
+            <div class="warning-box">
+                <strong>⚠️ Dijkstra's Limitation:</strong> Cannot handle negative edge weights! Use Bellman-Ford for graphs with negative weights.
+            </div>
+
+            <h3>2. Bellman-Ford Algorithm</h3>
+
+            <div class="concept-box">
+                <p><strong>Bellman-Ford</strong> finds shortest paths even with <span class="highlight">negative weights</span>. Can also detect negative cycles.</p>
+                <p><strong>Strategy:</strong> Relax all edges V-1 times</p>
+            </div>
+
+            <div class="code-label">Python - Bellman-Ford Algorithm</div>
+            <div class="code-block">def bellman_ford(vertices, edges, start):
+    """
+    Bellman-Ford shortest path algorithm
+    vertices: list of vertices
+    edges: list of (u, v, weight) tuples
+    Returns: distances dict or None if negative cycle exists
+    
+    Time: O(VE), Space: O(V)
+    """
+    distances = {v: float('inf') for v in vertices}
+    distances[start] = 0
+    predecessors = {v: None for v in vertices}
+    
+    # Relax edges V-1 times
+    for _ in range(len(vertices) - 1):
+        for u, v, weight in edges:
+            if distances[u] + weight < distances[v]:
+                distances[v] = distances[u] + weight
+                predecessors[v] = u
+    
+    # Check for negative cycles
+    for u, v, weight in edges:
+        if distances[u] + weight < distances[v]:
+            print("Negative cycle detected!")
+            return None, None
+    
+    return distances, predecessors
+
+# Example with negative weights
+vertices = ['A', 'B', 'C', 'D', 'E']
+edges = [
+    ('A', 'B', 4),
+    ('A', 'C', 2),
+    ('B', 'C', -3),  # Negative weight!
+    ('C', 'D', 2),
+    ('C', 'E', 3),
+    ('D', 'E', -1)
+]
+
+distances, preds = bellman_ford(vertices, edges, 'A')
+if distances:
+    print("Distances from A:", distances)</div>
+
+            <h3>3. Floyd-Warshall Algorithm</h3>
+
+            <div class="concept-box">
+                <p><strong>Floyd-Warshall</strong> finds shortest paths between <span class="highlight">all pairs</span> of vertices. Works with negative weights but not negative cycles.</p>
+                <p><strong>Strategy:</strong> Dynamic Programming - consider all intermediate vertices</p>
+            </div>
+
+            <div class="code-label">Python - Floyd-Warshall Algorithm</div>
+            <div class="code-block">def floyd_warshall(vertices, edges):
+    """
+    Floyd-Warshall all-pairs shortest path
+    Returns: distance matrix
+    
+    Time: O(V³), Space: O(V²)
+    """
+    n = len(vertices)
+    vertex_to_index = {v: i for i, v in enumerate(vertices)}
+    
+    # Initialize distance matrix
+    INF = float('inf')
+    dist = [[INF] * n for _ in range(n)]
+    
+    # Distance from vertex to itself is 0
+    for i in range(n):
+        dist[i][i] = 0
+    
+    # Fill in edge weights
+    for u, v, weight in edges:
+        i, j = vertex_to_index[u], vertex_to_index[v]
+        dist[i][j] = weight
+    
+    # Floyd-Warshall: try all intermediate vertices
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                # Can we improve path from i to j through k?
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+    
+    # Check for negative cycles
+    for i in range(n):
+        if dist[i][i] < 0:
+            print("Negative cycle detected!")
+            return None
+    
+    return dist, vertices
+
+# Example
+vertices = ['A', 'B', 'C', 'D']
+edges = [
+    ('A', 'B', 3),
+    ('A', 'C', 8),
+    ('A', 'D', 7),
+    ('B', 'C', 2),
+    ('D', 'A', 2),
+    ('D', 'B', 1)
+]
+
+dist, verts = floyd_warshall(vertices, edges)
+if dist:
+    print("\nAll-pairs shortest distances:")
+    for i, v1 in enumerate(verts):
+        for j, v2 in enumerate(verts):
+            if dist[i][j] != float('inf'):
+                print(f"{v1} to {v2}: {dist[i][j]}")</div>
+
+            <h3>Shortest Path Algorithms Comparison</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Type</th>
+                    <th>Negative Weights</th>
+                    <th>Time Complexity</th>
+                    <th>Use Case</th>
+                </tr>
+                <tr>
+                    <td><strong>Dijkstra</strong></td>
+                    <td>Single-source</td>
+                    <td>❌ No</td>
+                    <td>O((V+E) log V)</td>
+                    <td>GPS, network routing</td>
+                </tr>
+                <tr>
+                    <td><strong>Bellman-Ford</strong></td>
+                    <td>Single-source</td>
+                    <td>✅ Yes</td>
+                    <td>O(VE)</td>
+                    <td>Currency exchange, negative weights</td>
+                </tr>
+                <tr>
+                    <td><strong>Floyd-Warshall</strong></td>
+                    <td>All-pairs</td>
+                    <td>✅ Yes</td>
+                    <td>O(V³)</td>
+                    <td>Small graphs, transitive closure</td>
+                </tr>
+                <tr>
+                    <td><strong>BFS</strong></td>
+                    <td>Single-source</td>
+                    <td>N/A (unweighted)</td>
+                    <td>O(V+E)</td>
+                    <td>Unweighted graphs</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- MST SECTION -->
+        <div id="mst" class="section">
+            <h2>🌲 Minimum Spanning Tree (MST)</h2>
+
+            <div class="concept-box">
+                <h3>What is MST?</h3>
+                <p>A <strong>Minimum Spanning Tree</strong> is a subset of edges that connects all vertices with minimum total edge weight, forming a tree (no cycles).</p>
+                <p><strong>Applications:</strong> Network design, circuit wiring, clustering</p>
+            </div>
+
+            <div class="key-point">
+                <strong>MST Properties:</strong>
+                <ul>
+                    <li>Contains V-1 edges (where V = vertices)</li>
+                    <li>No cycles (it's a tree)</li>
+                    <li>Connects all vertices</li>
+                    <li>Has minimum total weight</li>
+                </ul>
+            </div>
+
+            <h3>1. Prim's Algorithm</h3>
+
+            <div class="concept-box">
+                <p><strong>Prim's Algorithm</strong> grows MST one vertex at a time, always adding cheapest edge that connects tree to new vertex.</p>
+                <p><strong>Strategy:</strong> Greedy - start from any vertex, keep adding minimum edge</p>
+            </div>
+
+            <div class="code-label">Python - Prim's Algorithm</div>
+            <div class="code-block">import heapq
+
+def prims_mst(graph, start):
+    """
+    Prim's algorithm for MST
+    graph: {vertex: [(neighbor, weight), ...]}
+    Returns: MST edges and total weight
+    
+    Time: O((V+E) log V), Space: O(V)
+    """
+    mst_edges = []
+    total_weight = 0
+    visited = set([start])
+    
+    # Min heap: (weight, from_vertex, to_vertex)
+    edges = [(weight, start, neighbor) 
+             for neighbor, weight in graph[start]]
+    heapq.heapify(edges)
+    
+    while edges and len(visited) < len(graph):
+        weight, u, v = heapq.heappop(edges)
+        
+        if v in visited:
+            continue
+        
+        # Add edge to MST
+        visited.add(v)
+        mst_edges.append((u, v, weight))
+        total_weight += weight
+        
+        # Add new edges to heap
+        for neighbor, edge_weight in graph[v]:
+            if neighbor not in visited:
+                heapq.heappush(edges, (edge_weight, v, neighbor))
+    
+    return mst_edges, total_weight
+
+# Example graph
+graph = {
+    'A': [('B', 2), ('C', 3)],
+    'B': [('A', 2), ('C', 1), ('D', 1)],
+    'C': [('A', 3), ('B', 1), ('D', 4)],
+    'D': [('B', 1), ('C', 4), ('E', 2)],
+    'E': [('D', 2)]
+}
+
+mst, weight = prims_mst(graph, 'A')
+print("MST edges:", mst)
+print("Total weight:", weight)
+# Output: MST edges: [('A', 'B', 2), ('B', 'C', 1), ('B', 'D', 1), ('D', 'E', 2)]
+# Total weight: 6</div>
+
+            <h3>2. Kruskal's Algorithm</h3>
+
+            <div class="concept-box">
+                <p><strong>Kruskal's Algorithm</strong> sorts all edges by weight and adds them one by one if they don't create a cycle.</p>
+                <p><strong>Strategy:</strong> Greedy - process edges in order, use Union-Find to detect cycles</p>
+            </div>
+
+            <div class="code-label">Python - Kruskal's Algorithm</div>
+            <div class="code-block">class UnionFind:
+    """Union-Find data structure for Kruskal's"""
+    def __init__(self, vertices):
+        self.parent = {v: v for v in vertices}
+        self.rank = {v: 0 for v in vertices}
+    
+    def find(self, x):
+        """Find root with path compression"""
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+    
+    def union(self, x, y):
+        """Union by rank"""
+        root_x = self.find(x)
+        root_y = self.find(y)
+        
+        if root_x == root_y:
+            return False
+        
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += 1
+        
+        return True
+
+def kruskals_mst(vertices, edges):
+    """
+    Kruskal's algorithm for MST
+    edges: list of (u, v, weight) tuples
+    Returns: MST edges and total weight
+    
+    Time: O(E log E), Space: O(V)
+    """
+    # Sort edges by weight
+    edges.sort(key=lambda x: x[2])
+    
+    uf = UnionFind(vertices)
+    mst_edges = []
+    total_weight = 0
+    
+    for u, v, weight in edges:
+        # Add edge if it doesn't create cycle
+        if uf.union(u, v):
+            mst_edges.append((u, v, weight))
+            total_weight += weight
+            
+            # Stop if we have V-1 edges
+            if len(mst_edges) == len(vertices) - 1:
+                break
+    
+    return mst_edges, total_weight
+
+# Example
+vertices = ['A', 'B', 'C', 'D', 'E']
+edges = [
+    ('A', 'B', 2),
+    ('A', 'C', 3),
+    ('B', 'C', 1),
+    ('B', 'D', 1),
+    ('C', 'D', 4),
+    ('D', 'E', 2)
+]
+
+mst, weight = kruskals_mst(vertices, edges)
+print("MST edges:", mst)
+print("Total weight:", weight)</div>
+
+            <h3>Prim's vs Kruskal's</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Prim's</th>
+                    <th>Kruskal's</th>
+                </tr>
+                <tr>
+                    <td><strong>Strategy</strong></td>
+                    <td>Grows tree from vertex</td>
+                    <td>Adds edges in sorted order</td>
+                </tr>
+                <tr>
+                    <td><strong>Data Structure</strong></td>
+                    <td>Min heap</td>
+                    <td>Union-Find</td>
+                </tr>
+                <tr>
+                    <td><strong>Time</strong></td>
+                    <td>O((V+E) log V)</td>
+                    <td>O(E log E)</td>
+                </tr>
+                <tr>
+                    <td><strong>Good For</strong></td>
+                    <td>Dense graphs</td>
+                    <td>Sparse graphs</td>
+                </tr>
+                <tr>
+                    <td><strong>Implementation</strong></td>
+                    <td>Slightly simpler</td>
+                    <td>Requires Union-Find</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- TOPOLOGICAL SORT SECTION -->
+        <div id="topo" class="section">
+            <h2>📋 Topological Sort</h2>
+
+            <div class="concept-box">
+                <h3>What is Topological Sort?</h3>
+                <p><strong>Topological Sort</strong> is a linear ordering of vertices in a DAG where for every edge u→v, u comes before v in the ordering.</p>
+                <p><strong>Applications:</strong> Task scheduling, course prerequisites, build systems</p>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Important:</strong> Topological sort only exists for DAGs (Directed Acyclic Graphs). If graph has cycle, no valid ordering exists.
+            </div>
+
+            <div class="visualization">
+                <h4>Example: Course Prerequisites</h4>
+                <div class="graph-visual">
+<pre>
+Math101 → Math201 → Math301
+   ↓
+CS101 → CS201
+   ↓
+Physics
+
+Topological Order: Math101, CS101, Physics, Math201, CS201, Math301
+(Many valid orderings possible!)
+</pre>
+                </div>
+            </div>
+
+            <h3>Method 1: DFS-based (Most Common)</h3>
+
+            <div class="code-label">Python - Topological Sort (DFS)</div>
+            <div class="code-block">def topological_sort_dfs(graph):
+    """
+    Topological sort using DFS
+    Returns: ordered list or None if cycle exists
+    
+    Time: O(V+E), Space: O(V)
+    """
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color = {vertex: WHITE for vertex in graph}
+    result = []
+    
+    def dfs(vertex):
+        """Returns False if cycle detected"""
+        color[vertex] = GRAY  # Currently processing
+        
+        for neighbor in graph.get(vertex, []):
+            if color[neighbor] == GRAY:
+                # Back edge - cycle detected!
+                return False
+            if color[neighbor] == WHITE:
+                if not dfs(neighbor):
+                    return False
+        
+        color[vertex] = BLACK  # Finished
+        result.append(vertex)  # Add to result
+        return True
+    
+    # Process all vertices
+    for vertex in graph:
+        if color[vertex] == WHITE:
+            if not dfs(vertex):
+                return None  # Cycle detected
+    
+    return result[::-1]  # Reverse for correct order
+
+# Example: Course prerequisites
+courses = {
+    'Math101': ['Math201'],
+    'Math201': ['Math301'],
+    'Math301': [],
+    'CS101': ['CS201'],
+    'CS201': [],
+    'Physics': []
+}
+
+order = topological_sort_dfs(courses)
+print("Course order:", order)
+# Output: ['Math101', 'Math201', 'Math301', 'CS101', 'CS201', 'Physics']</div>
+
+            <h3>Method 2: Kahn's Algorithm (BFS-based)</h3>
+
+            <div class="concept-box">
+                <p><strong>Kahn's Algorithm</strong> repeatedly removes vertices with no incoming edges.</p>
+            </div>
+
+            <div class="code-label">Python - Kahn's Algorithm</div>
+            <div class="code-block">from collections import deque, defaultdict
+
+def topological_sort_kahns(vertices, edges):
+    """
+    Kahn's algorithm for topological sort
+    edges: list of (u, v) tuples (u -> v)
+    Returns: ordered list or None if cycle
+    
+    Time: O(V+E), Space: O(V)
+    """
+    # Build graph and compute in-degrees
+    graph = defaultdict(list)
+    in_degree = {v: 0 for v in vertices}
+    
+    for u, v in edges:
+        graph[u].append(v)
+        in_degree[v] += 1
+    
+    # Start with vertices having no incoming edges
+    queue = deque([v for v in vertices if in_degree[v] == 0])
+    result = []
+    
+    while queue:
+        vertex = queue.popleft()
+        result.append(vertex)
+        
+        # Remove edges from this vertex
+        for neighbor in graph[vertex]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+    
+    # Check if all vertices processed (no cycle)
+    if len(result) != len(vertices):
+        return None  # Cycle exists
+    
+    return result
+
+# Example
+vertices = ['A', 'B', 'C', 'D', 'E']
+edges = [('A', 'C'), ('B', 'C'), ('B', 'D'), ('C', 'E'), ('D', 'E')]
+
+order = topological_sort_kahns(vertices, edges)
+print("Topological order:", order)
+# Output: ['A', 'B', 'C', 'D', 'E'] (or ['B', 'A', 'C', 'D', 'E'])</div>
+
+            <h3>Applications of Topological Sort</h3>
+
+            <div class="concept-box">
+                <ul>
+                    <li><strong>Build Systems:</strong> Compile files in dependency order</li>
+                    <li><strong>Course Scheduling:</strong> Take prerequisite courses first</li>
+                    <li><strong>Task Scheduling:</strong> Execute tasks with dependencies</li>
+                    <li><strong>Maven/NPM:</strong> Install packages with dependencies</li>
+                    <li><strong>Spreadsheet Formulas:</strong> Calculate cells in order</li>
+                    <li><strong>Database Schema:</strong> Create tables with foreign keys</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- UNION FIND SECTION -->
+        <div id="union" class="section">
+            <h2>🔗 Union Find (Disjoint Set)</h2>
+
+            <div class="concept-box">
+                <h3>What is Union-Find?</h3>
+                <p><strong>Union-Find</strong> (Disjoint Set Union) is a data structure that tracks elements partitioned into non-overlapping sets. Supports two main operations:</p>
+                <ul>
+                    <li><strong>Find:</strong> Determine which set an element belongs to</li>
+                    <li><strong>Union:</strong> Merge two sets into one</li>
+                </ul>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Key Use Cases:</strong>
+                <ul>
+                    <li>Kruskal's MST algorithm</li>
+                    <li>Cycle detection in undirected graphs</li>
+                    <li>Network connectivity</li>
+                    <li>Image processing (connected components)</li>
+                </ul>
+            </div>
+
+            <h3>Implementation with Optimizations</h3>
+
+            <div class="code-label">Python - Union-Find with Path Compression & Union by Rank</div>
+            <div class="code-block">class UnionFind:
+    """
+    Optimized Union-Find with:
+    1. Path Compression (in find)
+    2. Union by Rank
+    
+    Both optimizations give nearly O(1) amortized time!
+    """
+    def __init__(self, size):
+        self.parent = list(range(size))
+        self.rank = [0] * size
+        self.count = size  # Number of disjoint sets
+    
+    def find(self, x):
+        """
+        Find root of x with path compression
+        Time: O(α(n)) amortized (inverse Ackermann, practically constant)
+        """
+        if self.parent[x] != x:
+            # Path compression: point directly to root
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+    
+    def union(self, x, y):
+        """
+        Union two sets by rank
+        Returns: True if sets were merged, False if already in same set
+        """
+        root_x = self.find(x)
+        root_y = self.find(y)
+        
+        if root_x == root_y:
+            return False  # Already in same set
+        
+        # Union by rank: attach smaller tree under larger
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += 1
+        
+        self.count -= 1
+        return True
+    
+    def connected(self, x, y):
+        """Check if x and y are in same set"""
+        return self.find(x) == self.find(y)
+    
+    def get_count(self):
+        """Return number of disjoint sets"""
+        return self.count
+
+# Example: Network connectivity
+uf = UnionFind(6)  # 6 nodes: 0,1,2,3,4,5
+
+# Connect some nodes
+uf.union(0, 1)
+uf.union(1, 2)
+uf.union(3, 4)
+
+print(f"0 and 2 connected: {uf.connected(0, 2)}")  # True
+print(f"0 and 3 connected: {uf.connected(0, 3)}")  # False
+print(f"Number of components: {uf.get_count()}")  # 3</div>
+
+            <h3>Applications</h3>
+
+            <h4>1. Detect Cycle in Undirected Graph</h4>
+
+            <div class="code-label">Python - Cycle Detection</div>
+            <div class="code-block">def has_cycle_uf(n, edges):
+    """
+    Detect cycle using Union-Find
+    n: number of vertices (0 to n-1)
+    edges: list of (u, v) tuples
+    """
+    uf = UnionFind(n)
+    
+    for u, v in edges:
+        # If u and v already in same set, adding edge creates cycle
+        if not uf.union(u, v):
+            return True
+    
+    return False
+
+# Example
+edges = [(0, 1), (1, 2), (2, 0)]  # Forms a cycle
+print(f"Has cycle: {has_cycle_uf(3, edges)}")  # True</div>
+
+            <h4>2. Number of Connected Components</h4>
+
+            <div class="code-label">Python - Count Components</div>
+            <div class="code-block">def count_components(n, edges):
+    """
+    Count number of connected components
+    """
+    uf = UnionFind(n)
+    
+    for u, v in edges:
+        uf.union(u, v)
+    
+    return uf.get_count()
+
+# Example
+edges = [(0, 1), (1, 2), (3, 4)]
+print(f"Components: {count_components(5, edges)}")  # 2</div>
+
+            <h4>3. Friend Circles</h4>
+
+            <div class="code-label">Python - Friend Circles Problem</div>
+            <div class="code-block">def find_circle_num(is_friend):
+    """
+    Find number of friend circles
+    is_friend[i][j] = 1 if i and j are friends
+    
+    Problem: Count number of disjoint friend groups
+    """
+    n = len(is_friend)
+    uf = UnionFind(n)
+    
+    for i in range(n):
+        for j in range(i + 1, n):
+            if is_friend[i][j] == 1:
+                uf.union(i, j)
+    
+    return uf.get_count()
+
+# Example
+friends = [
+    [1, 1, 0],
+    [1, 1, 0],
+    [0, 0, 1]
+]
+print(f"Friend circles: {find_circle_num(friends)}")  # 2</div>
+
+            <h3>Time Complexity Analysis</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operation</th>
+                    <th>Without Optimization</th>
+                    <th>With Optimizations</th>
+                </tr>
+                <tr>
+                    <td><strong>Find</strong></td>
+                    <td>O(n) worst case</td>
+                    <td>O(α(n)) amortized ≈ O(1)</td>
+                </tr>
+                <tr>
+                    <td><strong>Union</strong></td>
+                    <td>O(n) worst case</td>
+                    <td>O(α(n)) amortized ≈ O(1)</td>
+                </tr>
+                <tr>
+                    <td><strong>Connected</strong></td>
+                    <td>O(n) worst case</td>
+                    <td>O(α(n)) amortized ≈ O(1)</td>
+                </tr>
+            </table>
+
+            <div class="memory-tip">
+                <strong>💡 Union-Find Optimizations:</strong>
+                <ul>
+                    <li><strong>Path Compression:</strong> Make tree flat during find</li>
+                    <li><strong>Union by Rank:</strong> Always attach smaller tree to larger</li>
+                    <li><strong>Together:</strong> Give nearly constant time operations!</li>
+                    <li><strong>α(n):</strong> Inverse Ackermann function, grows extremely slowly (< 5 for all practical n)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- INTERACTIVE PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Interactive Graph Algorithms</h2>
+
+            <div class="interactive-demo">
+                <h3>BFS & DFS Visualizer</h3>
+                <p>Watch BFS and DFS traverse a graph!</p>
+
+                <div class="demo-controls">
+                    <button class="demo-btn" onclick="runBFS()">Run BFS</button>
+                    <button class="demo-btn" onclick="runDFS()">Run DFS</button>
+                    <button class="demo-btn" onclick="resetGraph()">Reset</button>
+                </div>
+
+                <div class="canvas-container">
+                    <canvas id="graphCanvas" width="600" height="400"></canvas>
+                </div>
+
+                <div id="output">Click 'Run BFS' or 'Run DFS' to see traversal!</div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3>Shortest Path Demo</h3>
+
+                <div class="demo-controls">
+                    <select id="algorithm">
+                        <option value="dijkstra">Dijkstra</option>
+                        <option value="bellman">Bellman-Ford</option>
+                    </select>
+                    <button class="demo-btn" onclick="findShortestPath()">Find Path</button>
+                </div>
+
+                <div id="pathOutput">Select algorithm and click to find shortest path from A to E!</div>
+            </div>
+
+            <h3>Algorithm Cheat Sheet</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Purpose</th>
+                    <th>Time</th>
+                    <th>When to Use</th>
+                </tr>
+                <tr>
+                    <td><strong>BFS</strong></td>
+                    <td>Traversal, shortest path (unweighted)</td>
+                    <td>O(V+E)</td>
+                    <td>Level-order, shortest path</td>
+                </tr>
+                <tr>
+                    <td><strong>DFS</strong></td>
+                    <td>Traversal, cycle detection</td>
+                    <td>O(V+E)</td>
+                    <td>Topological sort, cycles</td>
+                </tr>
+                <tr>
+                    <td><strong>Dijkstra</strong></td>
+                    <td>Shortest path (non-negative)</td>
+                    <td>O((V+E)log V)</td>
+                    <td>GPS, routing</td>
+                </tr>
+                <tr>
+                    <td><strong>Bellman-Ford</strong></td>
+                    <td>Shortest path (negative OK)</td>
+                    <td>O(VE)</td>
+                    <td>Negative weights, detect negative cycles</td>
+                </tr>
+                <tr>
+                    <td><strong>Floyd-Warshall</strong></td>
+                    <td>All-pairs shortest path</td>
+                    <td>O(V³)</td>
+                    <td>Dense small graphs</td>
+                </tr>
+                <tr>
+                    <td><strong>Prim's</strong></td>
+                    <td>Minimum Spanning Tree</td>
+                    <td>O((V+E)log V)</td>
+                    <td>Network design</td>
+                </tr>
+                <tr>
+                    <td><strong>Kruskal's</strong></td>
+                    <td>Minimum Spanning Tree</td>
+                    <td>O(E log E)</td>
+                    <td>Sparse graphs</td>
+                </tr>
+                <tr>
+                    <td><strong>Topological Sort</strong></td>
+                    <td>Linear ordering of DAG</td>
+                    <td>O(V+E)</td>
+                    <td>Task scheduling</td>
+                </tr>
+                <tr>
+                    <td><strong>Union-Find</strong></td>
+                    <td>Disjoint sets, cycle detection</td>
+                    <td>O(α(n)) ≈ O(1)</td>
+                    <td>Kruskal's, connectivity</td>
+                </tr>
+            </table>
+
+            <h3>Key Takeaways</h3>
+
+            <div class="key-point">
+                <strong>Remember:</strong>
+                <ul>
+                    <li><strong>BFS:</strong> Queue, level-by-level, shortest path in unweighted</li>
+                    <li><strong>DFS:</strong> Stack/recursion, go deep, detect cycles</li>
+                    <li><strong>Dijkstra:</strong> Min-heap, greedy, NO negative weights</li>
+                    <li><strong>Bellman-Ford:</strong> Relaxation, handles negative, slower</li>
+                    <li><strong>MST:</strong> Prim (vertex-based) or Kruskal (edge-based)</li>
+                    <li><strong>Topological:</strong> Only for DAGs, many valid orderings</li>
+                    <li><strong>Union-Find:</strong> Near constant time with optimizations</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            const buttons = document.querySelectorAll('.nav-btn');
+            
+            sections.forEach(section => section.classList.remove('active'));
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Graph representation
+        const graph = {
+            'A': {x: 100, y: 200, neighbors: ['B', 'C']},
+            'B': {x: 250, y: 100, neighbors: ['A', 'D']},
+            'C': {x: 250, y: 300, neighbors: ['A', 'D', 'E']},
+            'D': {x: 400, y: 100, neighbors: ['B', 'C', 'E']},
+            'E': {x: 500, y: 200, neighbors: ['C', 'D']}
+        };
+
+        function drawGraph(visited = new Set(), current = null) {
+            const canvas = document.getElementById('graphCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw edges
+            ctx.strokeStyle = '#1e3c72';
+            ctx.lineWidth = 2;
+            for (let node in graph) {
+                for (let neighbor of graph[node].neighbors) {
+                    ctx.beginPath();
+                    ctx.moveTo(graph[node].x, graph[node].y);
+                    ctx.lineTo(graph[neighbor].x, graph[neighbor].y);
+                    ctx.stroke();
+                }
+            }
+
+            // Draw nodes
+            for (let node in graph) {
+                ctx.beginPath();
+                ctx.arc(graph[node].x, graph[node].y, 25, 0, 2 * Math.PI);
+                
+                if (node === current) {
+                    ctx.fillStyle = '#ff9800';
+                } else if (visited.has(node)) {
+                    ctx.fillStyle = '#4caf50';
+                } else {
+                    ctx.fillStyle = '#4a90e2';
+                }
+                
+                ctx.fill();
+                ctx.strokeStyle = '#1e3c72';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 16px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(node, graph[node].x, graph[node].y);
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function runBFS() {
+            const visited = new Set();
+            const queue = ['A'];
+            visited.add('A');
+            const order = [];
+
+            while (queue.length > 0) {
+                const node = queue.shift();
+                order.push(node);
+                
+                drawGraph(visited, node);
+                await sleep(800);
+
+                for (let neighbor of graph[node].neighbors) {
+                    if (!visited.has(neighbor)) {
+                        visited.add(neighbor);
+                        queue.push(neighbor);
+                    }
+                }
+            }
+
+            drawGraph(visited);
+            document.getElementById('output').innerHTML = 
+                `<strong>BFS Order:</strong> ${order.join(' → ')}<br>` +
+                `<strong>Strategy:</strong> Level by level using queue`;
+        }
+
+        async function runDFS() {
+            const visited = new Set();
+            const order = [];
+
+            async function dfs(node) {
+                visited.add(node);
+                order.push(node);
+                
+                drawGraph(visited, node);
+                await sleep(800);
+
+                for (let neighbor of graph[node].neighbors) {
+                    if (!visited.has(neighbor)) {
+                        await dfs(neighbor);
+                    }
+                }
+            }
+
+            await dfs('A');
+            drawGraph(visited);
+            document.getElementById('output').innerHTML = 
+                `<strong>DFS Order:</strong> ${order.join(' → ')}<br>` +
+                `<strong>Strategy:</strong> Go deep first using recursion/stack`;
+        }
+
+        function resetGraph() {
+            drawGraph();
+            document.getElementById('output').innerHTML = 
+                'Click \'Run BFS\' or \'Run DFS\' to see traversal!';
+        }
+
+        function findShortestPath() {
+            const algo = document.getElementById('algorithm').value;
+            
+            // Simple example path
+            const paths = {
+                'dijkstra': {
+                    path: ['A', 'C', 'E'],
+                    distance: 5,
+                    desc: 'Dijkstra\'s algorithm found shortest path using greedy approach'
+                },
+                'bellman': {
+                    path: ['A', 'C', 'E'],
+                    distance: 5,
+                    desc: 'Bellman-Ford relaxed all edges V-1 times'
+                }
+            };
+
+            const result = paths[algo];
+            document.getElementById('pathOutput').innerHTML = 
+                `<strong>Algorithm:</strong> ${algo === 'dijkstra' ? 'Dijkstra\'s' : 'Bellman-Ford'}<br>` +
+                `<strong>Path:</strong> ${result.path.join(' → ')}<br>` +
+                `<strong>Distance:</strong> ${result.distance}<br>` +
+                `<strong>Note:</strong> ${result.desc}`;
+        }
+
+        // Initialize
+        drawGraph();
+    </script>
+</body>
+</html>

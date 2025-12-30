@@ -1,0 +1,2065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Algorithms - Master the Basics</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #764ba2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        h3 { color: #764ba2; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box {
+            background: #f8f9ff;
+            padding: 20px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9ff;
+        }
+        .visual-array {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        .array-bar {
+            width: 40px;
+            background: #667eea;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .array-bar.comparing {
+            background: #ff9800;
+        }
+        .array-bar.swapping {
+            background: #f44336;
+        }
+        .array-bar.sorted {
+            background: #4caf50;
+        }
+        .bar-value {
+            color: white;
+            font-size: 0.9em;
+            font-weight: bold;
+            padding: 5px;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        .demo-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #667eea; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+            border: 2px solid #667eea;
+        }
+        .complexity-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin: 5px;
+        }
+        .time-best { background: #c8e6c9; color: #2e7d32; }
+        .time-avg { background: #fff9c4; color: #f57c00; }
+        .time-worst { background: #ffcdd2; color: #c62828; }
+        .space { background: #e1bee7; color: #6a1b9a; }
+        .stable-yes { background: #c8e6c9; color: #2e7d32; }
+        .stable-no { background: #ffcdd2; color: #c62828; }
+        .visualization {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .step-visual {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            align-items: center;
+        }
+        .step-label {
+            min-width: 80px;
+            font-weight: bold;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Sorting Algorithms Masterclass</h1>
+            <p class="subtitle">Master All Essential Sorting Techniques</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('simple')">Simple Sorts</button>
+                <button class="nav-btn" onclick="showSection('efficient')">Efficient Sorts</button>
+                <button class="nav-btn" onclick="showSection('special')">Special Sorts</button>
+                <button class="nav-btn" onclick="showSection('comparison')">Comparison</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 What is Sorting?</h2>
+            
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p><strong>Sorting</strong> is the process of arranging elements in a specific order (ascending or descending). It's one of the most fundamental operations in computer science.</p>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Critical Insight:</strong> The right sorting algorithm can make the difference between <span class="highlight">O(n²) and O(n log n)</span> - that's 1,000,000 operations vs 20,000 for n=1000!
+            </div>
+
+            <h3>Why Learn Sorting?</h3>
+            <ul>
+                <li><strong>Fundamental:</strong> Foundation for many other algorithms (search, merge, etc.)</li>
+                <li><strong>Interview Essential:</strong> 60%+ of coding interviews involve sorting</li>
+                <li><strong>Real-World:</strong> Databases, file systems, e-commerce, social media feeds</li>
+                <li><strong>Performance Critical:</strong> Can speed up applications dramatically</li>
+                <li><strong>Algorithm Design:</strong> Teaches divide-and-conquer, recursion, optimization</li>
+            </ul>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> Sorting = Organizing Books
+                <ul>
+                    <li><strong>Bubble Sort</strong> = Repeatedly swap adjacent books</li>
+                    <li><strong>Selection Sort</strong> = Find smallest, place at start</li>
+                    <li><strong>Insertion Sort</strong> = Pick up books one by one, insert in right place</li>
+                    <li><strong>Merge Sort</strong> = Divide books in half, sort each, merge</li>
+                    <li><strong>Quick Sort</strong> = Pick a book, partition around it</li>
+                </ul>
+            </div>
+
+            <h3>Complete Sorting Algorithm Comparison</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Best</th>
+                    <th>Average</th>
+                    <th>Worst</th>
+                    <th>Space</th>
+                    <th>Stable</th>
+                    <th>Method</th>
+                </tr>
+                <tr>
+                    <td><strong>Bubble Sort</strong></td>
+                    <td>O(n)</td>
+                    <td>O(n²)</td>
+                    <td>O(n²)</td>
+                    <td>O(1)</td>
+                    <td>✅ Yes</td>
+                    <td>Comparison</td>
+                </tr>
+                <tr>
+                    <td><strong>Selection Sort</strong></td>
+                    <td>O(n²)</td>
+                    <td>O(n²)</td>
+                    <td>O(n²)</td>
+                    <td>O(1)</td>
+                    <td>❌ No</td>
+                    <td>Comparison</td>
+                </tr>
+                <tr>
+                    <td><strong>Insertion Sort</strong></td>
+                    <td>O(n)</td>
+                    <td>O(n²)</td>
+                    <td>O(n²)</td>
+                    <td>O(1)</td>
+                    <td>✅ Yes</td>
+                    <td>Comparison</td>
+                </tr>
+                <tr>
+                    <td><strong>Merge Sort</strong></td>
+                    <td>O(n log n)</td>
+                    <td>O(n log n)</td>
+                    <td>O(n log n)</td>
+                    <td>O(n)</td>
+                    <td>✅ Yes</td>
+                    <td>Divide & Conquer</td>
+                </tr>
+                <tr>
+                    <td><strong>Quick Sort</strong></td>
+                    <td>O(n log n)</td>
+                    <td>O(n log n)</td>
+                    <td>O(n²)</td>
+                    <td>O(log n)</td>
+                    <td>❌ No</td>
+                    <td>Divide & Conquer</td>
+                </tr>
+                <tr>
+                    <td><strong>Heap Sort</strong></td>
+                    <td>O(n log n)</td>
+                    <td>O(n log n)</td>
+                    <td>O(n log n)</td>
+                    <td>O(1)</td>
+                    <td>❌ No</td>
+                    <td>Comparison</td>
+                </tr>
+                <tr>
+                    <td><strong>Counting Sort</strong></td>
+                    <td>O(n+k)</td>
+                    <td>O(n+k)</td>
+                    <td>O(n+k)</td>
+                    <td>O(k)</td>
+                    <td>✅ Yes</td>
+                    <td>Non-comparison</td>
+                </tr>
+                <tr>
+                    <td><strong>Radix Sort</strong></td>
+                    <td>O(nk)</td>
+                    <td>O(nk)</td>
+                    <td>O(nk)</td>
+                    <td>O(n+k)</td>
+                    <td>✅ Yes</td>
+                    <td>Non-comparison</td>
+                </tr>
+            </table>
+
+            <h3>Key Concepts</h3>
+
+            <div class="concept-box">
+                <h4>Stability</h4>
+                <p><strong>Stable sort:</strong> Maintains relative order of equal elements.</p>
+                <p>Example: [(5,a), (3,b), (5,c)] → After stable sort: [(3,b), (5,a), (5,c)]</p>
+                <p>Note: (5,a) still comes before (5,c)</p>
+            </div>
+
+            <div class="concept-box">
+                <h4>In-Place vs Out-of-Place</h4>
+                <p><strong>In-place:</strong> Sorts using O(1) extra space (modifies original array)</p>
+                <p><strong>Out-of-place:</strong> Uses O(n) extra space (creates new array)</p>
+            </div>
+
+            <div class="concept-box">
+                <h4>Adaptive</h4>
+                <p><strong>Adaptive sort:</strong> Performance improves if input is partially sorted.</p>
+                <p>Examples: Insertion Sort, Bubble Sort (with optimization)</p>
+            </div>
+
+            <h3>When to Use Which Sort?</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Scenario</th>
+                    <th>Best Algorithm</th>
+                    <th>Why?</th>
+                </tr>
+                <tr>
+                    <td>Small array (n < 50)</td>
+                    <td>Insertion Sort</td>
+                    <td>Simple, low overhead, fast for small n</td>
+                </tr>
+                <tr>
+                    <td>Nearly sorted</td>
+                    <td>Insertion Sort</td>
+                    <td>O(n) in best case, adaptive</td>
+                </tr>
+                <tr>
+                    <td>General purpose</td>
+                    <td>Quick Sort / Merge Sort</td>
+                    <td>O(n log n), efficient</td>
+                </tr>
+                <tr>
+                    <td>Guaranteed O(n log n)</td>
+                    <td>Merge Sort / Heap Sort</td>
+                    <td>No worst case O(n²)</td>
+                </tr>
+                <tr>
+                    <td>Need stability</td>
+                    <td>Merge Sort</td>
+                    <td>Stable and O(n log n)</td>
+                </tr>
+                <tr>
+                    <td>Limited memory</td>
+                    <td>Heap Sort / Quick Sort</td>
+                    <td>O(1) or O(log n) space</td>
+                </tr>
+                <tr>
+                    <td>Integers, small range</td>
+                    <td>Counting Sort / Radix</td>
+                    <td>O(n) possible with non-comparison</td>
+                </tr>
+                <tr>
+                    <td>Linked List</td>
+                    <td>Merge Sort</td>
+                    <td>No random access needed</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- SIMPLE SORTS SECTION -->
+        <div id="simple" class="section">
+            <h2>📚 Simple Sorting Algorithms</h2>
+
+            <h3>1. Bubble Sort</h3>
+
+            <div class="concept-box">
+                <p><strong>Bubble Sort</strong> repeatedly steps through the list, compares adjacent elements and swaps them if they're in wrong order. Largest elements "bubble" to the end.</p>
+                <p><strong>Analogy:</strong> Like bubbles rising to the surface.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Visual Example: [5, 2, 8, 1, 9]</h4>
+                <div class="step-visual">
+                    <div class="step-label">Pass 1:</div>
+                    <span>5,2 → 2,5 → 2,5,8 → 2,5,1,8 → 2,5,1,8,9</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Pass 2:</div>
+                    <span>2,5 → 2,1,5 → 2,1,5,8,9</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Pass 3:</div>
+                    <span>2,1 → 1,2,5,8,9</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Result:</div>
+                    <span><strong>[1, 2, 5, 8, 9]</strong></span>
+                </div>
+            </div>
+
+            <div class="code-label">Python - Bubble Sort</div>
+            <div class="code-block">def bubble_sort(arr):
+    """
+    Bubble Sort - repeatedly swap adjacent elements
+    """
+    n = len(arr)
+    
+    # Traverse through all elements
+    for i in range(n):
+        # Last i elements are already sorted
+        for j in range(0, n - i - 1):
+            # Swap if element is greater than next
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    
+    return arr
+
+# Example
+arr = [64, 34, 25, 12, 22, 11, 90]
+print(bubble_sort(arr))  # [11, 12, 22, 25, 34, 64, 90]</div>
+
+            <div class="code-label">Python - Optimized Bubble Sort</div>
+            <div class="code-block">def bubble_sort_optimized(arr):
+    """
+    Optimized Bubble Sort - stops if no swaps made
+    Best case: O(n) for already sorted array
+    """
+    n = len(arr)
+    
+    for i in range(n):
+        swapped = False
+        
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        
+        # If no swaps, array is sorted
+        if not swapped:
+            break
+    
+    return arr
+
+# Already sorted - only 1 pass!
+arr = [1, 2, 3, 4, 5]
+print(bubble_sort_optimized(arr))  # [1, 2, 3, 4, 5]</div>
+
+            <div class="pseudocode">PSEUDOCODE: Bubble Sort
+
+FUNCTION bubbleSort(arr):
+    n = LENGTH(arr)
+    
+    FOR i = 0 TO n - 1:
+        FOR j = 0 TO n - i - 2:
+            IF arr[j] > arr[j + 1]:
+                SWAP arr[j] AND arr[j + 1]
+            END IF
+        END FOR
+    END FOR
+    
+    RETURN arr
+END FUNCTION
+
+Time Complexity:
+- Best: O(n) - with optimization, already sorted
+- Average: O(n²)
+- Worst: O(n²) - reverse sorted
+
+Space Complexity: O(1) - in-place
+Stable: Yes
+Adaptive: Yes (with optimization)</div>
+
+            <h3>2. Selection Sort</h3>
+
+            <div class="concept-box">
+                <p><strong>Selection Sort</strong> finds the minimum element and places it at the beginning. Repeat for remaining unsorted portion.</p>
+                <p><strong>Analogy:</strong> Selecting the smallest card from hand repeatedly.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Visual Example: [64, 25, 12, 22, 11]</h4>
+                <div class="step-visual">
+                    <div class="step-label">Step 1:</div>
+                    <span>Find min (11), swap with first → [11, 25, 12, 22, 64]</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Step 2:</div>
+                    <span>Find min (12), swap → [11, 12, 25, 22, 64]</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Step 3:</div>
+                    <span>Find min (22), swap → [11, 12, 22, 25, 64]</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Step 4:</div>
+                    <span>Find min (25), already in place → [11, 12, 22, 25, 64]</span>
+                </div>
+            </div>
+
+            <div class="code-label">Python - Selection Sort</div>
+            <div class="code-block">def selection_sort(arr):
+    """
+    Selection Sort - find minimum and place at start
+    """
+    n = len(arr)
+    
+    # Traverse unsorted portion
+    for i in range(n):
+        # Find minimum element in unsorted array
+        min_idx = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        
+        # Swap minimum with first unsorted element
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    
+    return arr
+
+# Example
+arr = [64, 25, 12, 22, 11]
+print(selection_sort(arr))  # [11, 12, 22, 25, 64]</div>
+
+            <div class="pseudocode">PSEUDOCODE: Selection Sort
+
+FUNCTION selectionSort(arr):
+    n = LENGTH(arr)
+    
+    FOR i = 0 TO n - 1:
+        min_idx = i
+        
+        FOR j = i + 1 TO n - 1:
+            IF arr[j] < arr[min_idx]:
+                min_idx = j
+            END IF
+        END FOR
+        
+        SWAP arr[i] AND arr[min_idx]
+    END FOR
+    
+    RETURN arr
+END FUNCTION
+
+Time Complexity:
+- Best: O(n²) - always makes same comparisons
+- Average: O(n²)
+- Worst: O(n²)
+
+Space Complexity: O(1) - in-place
+Stable: No (can be made stable with extra space)
+Adaptive: No</div>
+
+            <h3>3. Insertion Sort</h3>
+
+            <div class="concept-box">
+                <p><strong>Insertion Sort</strong> builds sorted array one element at a time by inserting each element into its correct position.</p>
+                <p><strong>Analogy:</strong> Like sorting playing cards in your hand.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Visual Example: [12, 11, 13, 5, 6]</h4>
+                <div class="step-visual">
+                    <div class="step-label">Start:</div>
+                    <span>[12] | 11, 13, 5, 6 (sorted | unsorted)</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Insert 11:</div>
+                    <span>[11, 12] | 13, 5, 6</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Insert 13:</div>
+                    <span>[11, 12, 13] | 5, 6</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Insert 5:</div>
+                    <span>[5, 11, 12, 13] | 6</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Insert 6:</div>
+                    <span>[5, 6, 11, 12, 13]</span>
+                </div>
+            </div>
+
+            <div class="code-label">Python - Insertion Sort</div>
+            <div class="code-block">def insertion_sort(arr):
+    """
+    Insertion Sort - insert each element in correct position
+    """
+    n = len(arr)
+    
+    # Start from second element
+    for i in range(1, n):
+        key = arr[i]
+        j = i - 1
+        
+        # Move elements greater than key one position ahead
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+        
+        # Insert key at correct position
+        arr[j + 1] = key
+    
+    return arr
+
+# Example
+arr = [12, 11, 13, 5, 6]
+print(insertion_sort(arr))  # [5, 6, 11, 12, 13]</div>
+
+            <div class="pseudocode">PSEUDOCODE: Insertion Sort
+
+FUNCTION insertionSort(arr):
+    n = LENGTH(arr)
+    
+    FOR i = 1 TO n - 1:
+        key = arr[i]
+        j = i - 1
+        
+        WHILE j >= 0 AND arr[j] > key:
+            arr[j + 1] = arr[j]
+            j = j - 1
+        END WHILE
+        
+        arr[j + 1] = key
+    END FOR
+    
+    RETURN arr
+END FUNCTION
+
+Time Complexity:
+- Best: O(n) - already sorted
+- Average: O(n²)
+- Worst: O(n²) - reverse sorted
+
+Space Complexity: O(1) - in-place
+Stable: Yes
+Adaptive: Yes - fast for nearly sorted data</div>
+
+            <div class="key-point">
+                <strong>When to Use Simple Sorts:</strong>
+                <ul>
+                    <li><strong>Bubble Sort:</strong> Educational purposes, rarely in production</li>
+                    <li><strong>Selection Sort:</strong> When memory writes are expensive</li>
+                    <li><strong>Insertion Sort:</strong> Small arrays (< 50), nearly sorted data, online sorting</li>
+                </ul>
+            </div>
+
+            <div class="memory-tip">
+                <strong>💡 Remember the Difference:</strong>
+                <ul>
+                    <li><strong>Bubble:</strong> Compare adjacent, swap if needed (bubbles up)</li>
+                    <li><strong>Selection:</strong> Find minimum, swap with first unsorted</li>
+                    <li><strong>Insertion:</strong> Take element, insert in correct position in sorted part</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- EFFICIENT SORTS SECTION -->
+        <div id="efficient" class="section">
+            <h2>⚡ Efficient Sorting Algorithms</h2>
+
+            <h3>1. Merge Sort</h3>
+
+            <div class="concept-box">
+                <p><strong>Merge Sort</strong> uses divide-and-conquer: divide array in half, recursively sort each half, then merge.</p>
+                <p><strong>Analogy:</strong> Sorting two decks of cards then merging them.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Visual Example: [38, 27, 43, 3, 9, 82, 10]</h4>
+                <div class="step-visual">
+                    <div class="step-label">Divide:</div>
+                    <span>[38, 27, 43, 3] | [9, 82, 10]</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Divide:</div>
+                    <span>[38, 27] [43, 3] | [9, 82] [10]</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Divide:</div>
+                    <span>[38] [27] [43] [3] | [9] [82] [10]</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Merge:</div>
+                    <span>[27, 38] [3, 43] | [9, 82] [10]</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Merge:</div>
+                    <span>[3, 27, 38, 43] | [9, 10, 82]</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Final:</div>
+                    <span>[3, 9, 10, 27, 38, 43, 82]</span>
+                </div>
+            </div>
+
+            <div class="code-label">Python - Merge Sort</div>
+            <div class="code-block">def merge_sort(arr):
+    """
+    Merge Sort - divide and conquer
+    """
+    if len(arr) <= 1:
+        return arr
+    
+    # Divide
+    mid = len(arr) // 2
+    left = merge_sort(arr[:mid])
+    right = merge_sort(arr[mid:])
+    
+    # Conquer (merge)
+    return merge(left, right)
+
+def merge(left, right):
+    """
+    Merge two sorted arrays
+    """
+    result = []
+    i = j = 0
+    
+    # Compare elements from left and right
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    
+    # Add remaining elements
+    result.extend(left[i:])
+    result.extend(right[j:])
+    
+    return result
+
+# Example
+arr = [38, 27, 43, 3, 9, 82, 10]
+print(merge_sort(arr))  # [3, 9, 10, 27, 38, 43, 82]</div>
+
+            <div class="code-label">Python - In-Place Merge Sort</div>
+            <div class="code-block">def merge_sort_inplace(arr, left=0, right=None):
+    """
+    In-place merge sort (more memory efficient)
+    """
+    if right is None:
+        right = len(arr) - 1
+    
+    if left < right:
+        mid = (left + right) // 2
+        
+        # Sort first and second halves
+        merge_sort_inplace(arr, left, mid)
+        merge_sort_inplace(arr, mid + 1, right)
+        
+        # Merge the sorted halves
+        merge_inplace(arr, left, mid, right)
+    
+    return arr
+
+def merge_inplace(arr, left, mid, right):
+    """
+    Merge two sorted subarrays arr[left..mid] and arr[mid+1..right]
+    """
+    # Create temp arrays
+    L = arr[left:mid + 1]
+    R = arr[mid + 1:right + 1]
+    
+    i = j = 0
+    k = left
+    
+    # Merge back to arr
+    while i < len(L) and j < len(R):
+        if L[i] <= R[j]:
+            arr[k] = L[i]
+            i += 1
+        else:
+            arr[k] = R[j]
+            j += 1
+        k += 1
+    
+    # Copy remaining elements
+    while i < len(L):
+        arr[k] = L[i]
+        i += 1
+        k += 1
+    
+    while j < len(R):
+        arr[k] = R[j]
+        j += 1
+        k += 1
+
+arr = [38, 27, 43, 3, 9, 82, 10]
+print(merge_sort_inplace(arr))  # [3, 9, 10, 27, 38, 43, 82]</div>
+
+            <div class="pseudocode">PSEUDOCODE: Merge Sort
+
+FUNCTION mergeSort(arr):
+    IF LENGTH(arr) <= 1:
+        RETURN arr
+    END IF
+    
+    mid = LENGTH(arr) / 2
+    left = mergeSort(arr[0..mid-1])
+    right = mergeSort(arr[mid..end])
+    
+    RETURN merge(left, right)
+END FUNCTION
+
+FUNCTION merge(left, right):
+    result = []
+    i = 0, j = 0
+    
+    WHILE i < LENGTH(left) AND j < LENGTH(right):
+        IF left[i] <= right[j]:
+            APPEND left[i] to result
+            i = i + 1
+        ELSE:
+            APPEND right[j] to result
+            j = j + 1
+        END IF
+    END WHILE
+    
+    APPEND remaining elements from left
+    APPEND remaining elements from right
+    
+    RETURN result
+END FUNCTION
+
+Time Complexity:
+- Best: O(n log n)
+- Average: O(n log n)
+- Worst: O(n log n) - guaranteed!
+
+Space Complexity: O(n) - temporary arrays
+Stable: Yes
+Divide & Conquer: Yes</div>
+
+            <h3>2. Quick Sort</h3>
+
+            <div class="concept-box">
+                <p><strong>Quick Sort</strong> picks a pivot element, partitions array around pivot, then recursively sorts partitions.</p>
+                <p><strong>Analogy:</strong> Organizing items: smaller on left, larger on right of a reference item.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Visual Example: [10, 7, 8, 9, 1, 5]</h4>
+                <div class="step-visual">
+                    <div class="step-label">Pivot = 5:</div>
+                    <span>[1] 5 [10, 7, 8, 9] (partition)</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Pivot = 9:</div>
+                    <span>[1] 5 [7, 8] 9 [10]</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Pivot = 8:</div>
+                    <span>[1] 5 [7] 8 [9, 10]</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Result:</div>
+                    <span>[1, 5, 7, 8, 9, 10]</span>
+                </div>
+            </div>
+
+            <div class="code-label">Python - Quick Sort</div>
+            <div class="code-block">def quick_sort(arr):
+    """
+    Quick Sort - partition around pivot
+    """
+    if len(arr) <= 1:
+        return arr
+    
+    # Choose pivot (last element)
+    pivot = arr[-1]
+    
+    # Partition into smaller, equal, and larger
+    smaller = [x for x in arr[:-1] if x < pivot]
+    equal = [x for x in arr if x == pivot]
+    larger = [x for x in arr[:-1] if x > pivot]
+    
+    # Recursively sort and combine
+    return quick_sort(smaller) + equal + quick_sort(larger)
+
+# Example
+arr = [10, 7, 8, 9, 1, 5]
+print(quick_sort(arr))  # [1, 5, 7, 8, 9, 10]</div>
+
+            <div class="code-label">Python - In-Place Quick Sort</div>
+            <div class="code-block">def quick_sort_inplace(arr, low=0, high=None):
+    """
+    In-place Quick Sort (more efficient)
+    """
+    if high is None:
+        high = len(arr) - 1
+    
+    if low < high:
+        # Partition and get pivot index
+        pi = partition(arr, low, high)
+        
+        # Sort elements before and after partition
+        quick_sort_inplace(arr, low, pi - 1)
+        quick_sort_inplace(arr, pi + 1, high)
+    
+    return arr
+
+def partition(arr, low, high):
+    """
+    Lomuto partition scheme
+    """
+    # Choose rightmost element as pivot
+    pivot = arr[high]
+    i = low - 1  # Index of smaller element
+    
+    for j in range(low, high):
+        # If current element is smaller than pivot
+        if arr[j] < pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    
+    # Place pivot in correct position
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+
+arr = [10, 7, 8, 9, 1, 5]
+print(quick_sort_inplace(arr))  # [1, 5, 7, 8, 9, 10]</div>
+
+            <div class="code-label">Python - Optimized Quick Sort (Random Pivot)</div>
+            <div class="code-block">import random
+
+def quick_sort_randomized(arr, low=0, high=None):
+    """
+    Randomized Quick Sort - avoids worst case
+    """
+    if high is None:
+        high = len(arr) - 1
+    
+    if low < high:
+        pi = partition_random(arr, low, high)
+        quick_sort_randomized(arr, low, pi - 1)
+        quick_sort_randomized(arr, pi + 1, high)
+    
+    return arr
+
+def partition_random(arr, low, high):
+    """
+    Partition with random pivot
+    """
+    # Choose random pivot
+    random_idx = random.randint(low, high)
+    arr[random_idx], arr[high] = arr[high], arr[random_idx]
+    
+    return partition(arr, low, high)
+
+arr = [10, 7, 8, 9, 1, 5]
+print(quick_sort_randomized(arr))  # [1, 5, 7, 8, 9, 10]</div>
+
+            <div class="pseudocode">PSEUDOCODE: Quick Sort
+
+FUNCTION quickSort(arr, low, high):
+    IF low < high:
+        pi = partition(arr, low, high)
+        quickSort(arr, low, pi - 1)
+        quickSort(arr, pi + 1, high)
+    END IF
+END FUNCTION
+
+FUNCTION partition(arr, low, high):
+    pivot = arr[high]
+    i = low - 1
+    
+    FOR j = low TO high - 1:
+        IF arr[j] < pivot:
+            i = i + 1
+            SWAP arr[i] AND arr[j]
+        END IF
+    END FOR
+    
+    SWAP arr[i + 1] AND arr[high]
+    RETURN i + 1
+END FUNCTION
+
+Time Complexity:
+- Best: O(n log n) - balanced partitions
+- Average: O(n log n)
+- Worst: O(n²) - already sorted (bad pivot choice)
+
+Space Complexity: O(log n) - recursion stack
+Stable: No (standard implementation)
+Fastest in practice: Yes (good cache locality)</div>
+
+            <h3>3. Heap Sort</h3>
+
+            <div class="concept-box">
+                <p><strong>Heap Sort</strong> builds a max heap, then repeatedly extracts the maximum element.</p>
+                <p><strong>Uses:</strong> Binary heap data structure</p>
+            </div>
+
+            <div class="code-label">Python - Heap Sort</div>
+            <div class="code-block">def heap_sort(arr):
+    """
+    Heap Sort - build max heap, extract max repeatedly
+    """
+    n = len(arr)
+    
+    # Build max heap
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i)
+    
+    # Extract elements from heap one by one
+    for i in range(n - 1, 0, -1):
+        # Move current root to end
+        arr[0], arr[i] = arr[i], arr[0]
+        
+        # Heapify the reduced heap
+        heapify(arr, i, 0)
+    
+    return arr
+
+def heapify(arr, n, i):
+    """
+    Heapify subtree rooted at index i
+    """
+    largest = i
+    left = 2 * i + 1
+    right = 2 * i + 2
+    
+    # Check if left child exists and is greater
+    if left < n and arr[left] > arr[largest]:
+        largest = left
+    
+    # Check if right child exists and is greater
+    if right < n and arr[right] > arr[largest]:
+        largest = right
+    
+    # If largest is not root
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]
+        # Recursively heapify the affected subtree
+        heapify(arr, n, largest)
+
+# Example
+arr = [12, 11, 13, 5, 6, 7]
+print(heap_sort(arr))  # [5, 6, 7, 11, 12, 13]</div>
+
+            <div class="pseudocode">PSEUDOCODE: Heap Sort
+
+FUNCTION heapSort(arr):
+    n = LENGTH(arr)
+    
+    // Build max heap
+    FOR i = n/2 - 1 DOWN TO 0:
+        heapify(arr, n, i)
+    END FOR
+    
+    // Extract elements from heap
+    FOR i = n - 1 DOWN TO 1:
+        SWAP arr[0] AND arr[i]
+        heapify(arr, i, 0)
+    END FOR
+END FUNCTION
+
+FUNCTION heapify(arr, n, i):
+    largest = i
+    left = 2 * i + 1
+    right = 2 * i + 2
+    
+    IF left < n AND arr[left] > arr[largest]:
+        largest = left
+    END IF
+    
+    IF right < n AND arr[right] > arr[largest]:
+        largest = right
+    END IF
+    
+    IF largest != i:
+        SWAP arr[i] AND arr[largest]
+        heapify(arr, n, largest)
+    END IF
+END FUNCTION
+
+Time Complexity: O(n log n) - all cases
+Space Complexity: O(1) - in-place
+Stable: No</div>
+
+            <div class="key-point">
+                <strong>Merge Sort vs Quick Sort:</strong>
+                <ul>
+                    <li><strong>Merge Sort:</strong> Guaranteed O(n log n), stable, O(n) space, better for linked lists</li>
+                    <li><strong>Quick Sort:</strong> Average O(n log n), faster in practice, O(log n) space, in-place</li>
+                    <li><strong>Heap Sort:</strong> Guaranteed O(n log n), O(1) space, but slower than Quick Sort in practice</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SPECIAL SORTS SECTION -->
+        <div id="special" class="section">
+            <h2>🎯 Special Sorting Algorithms</h2>
+
+            <h3>1. Counting Sort</h3>
+
+            <div class="concept-box">
+                <p><strong>Counting Sort</strong> counts occurrences of each value, then reconstructs sorted array.</p>
+                <p><strong>Best for:</strong> Small range of integers (0 to k)</p>
+                <p><strong>Non-comparison based!</strong></p>
+            </div>
+
+            <div class="code-label">Python - Counting Sort</div>
+            <div class="code-block">def counting_sort(arr):
+    """
+    Counting Sort - count occurrences of each value
+    Works for non-negative integers
+    """
+    if not arr:
+        return arr
+    
+    # Find range
+    max_val = max(arr)
+    min_val = min(arr)
+    range_size = max_val - min_val + 1
+    
+    # Count occurrences
+    count = [0] * range_size
+    output = [0] * len(arr)
+    
+    # Store count of each element
+    for num in arr:
+        count[num - min_val] += 1
+    
+    # Change count[i] to contain actual position
+    for i in range(1, len(count)):
+        count[i] += count[i - 1]
+    
+    # Build output array
+    for i in range(len(arr) - 1, -1, -1):
+        output[count[arr[i] - min_val] - 1] = arr[i]
+        count[arr[i] - min_val] -= 1
+    
+    return output
+
+# Example
+arr = [4, 2, 2, 8, 3, 3, 1]
+print(counting_sort(arr))  # [1, 2, 2, 3, 3, 4, 8]</div>
+
+            <div class="code-label">Python - Simple Counting Sort</div>
+            <div class="code-block">def counting_sort_simple(arr):
+    """
+    Simplified counting sort (not stable)
+    """
+    if not arr:
+        return arr
+    
+    max_val = max(arr)
+    count = [0] * (max_val + 1)
+    
+    # Count each element
+    for num in arr:
+        count[num] += 1
+    
+    # Reconstruct array
+    result = []
+    for num in range(len(count)):
+        result.extend([num] * count[num])
+    
+    return result
+
+arr = [4, 2, 2, 8, 3, 3, 1]
+print(counting_sort_simple(arr))  # [1, 2, 2, 3, 3, 4, 8]</div>
+
+            <div class="pseudocode">PSEUDOCODE: Counting Sort
+
+FUNCTION countingSort(arr):
+    max_val = MAX(arr)
+    count = ARRAY of size (max_val + 1) initialized to 0
+    
+    // Count occurrences
+    FOR each num IN arr:
+        count[num] = count[num] + 1
+    END FOR
+    
+    // Reconstruct sorted array
+    result = []
+    FOR i = 0 TO max_val:
+        APPEND i to result count[i] times
+    END FOR
+    
+    RETURN result
+END FUNCTION
+
+Time Complexity: O(n + k) where k is range
+Space Complexity: O(k)
+Stable: Yes (with proper implementation)
+Best when: k = O(n)</div>
+
+            <h3>2. Radix Sort</h3>
+
+            <div class="concept-box">
+                <p><strong>Radix Sort</strong> sorts by processing digits from least significant to most significant.</p>
+                <p><strong>Uses:</strong> Counting sort as subroutine</p>
+                <p><strong>Best for:</strong> Integers, strings</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Example: [170, 45, 75, 90, 802, 24, 2, 66]</h4>
+                <div class="step-visual">
+                    <div class="step-label">By 1s:</div>
+                    <span>[170, 90, 802, 2, 24, 45, 75, 66]</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">By 10s:</div>
+                    <span>[802, 2, 24, 45, 66, 170, 75, 90]</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">By 100s:</div>
+                    <span>[2, 24, 45, 66, 75, 90, 170, 802]</span>
+                </div>
+            </div>
+
+            <div class="code-label">Python - Radix Sort</div>
+            <div class="code-block">def radix_sort(arr):
+    """
+    Radix Sort - sort by each digit using counting sort
+    """
+    if not arr:
+        return arr
+    
+    # Find maximum number to know number of digits
+    max_num = max(arr)
+    
+    # Do counting sort for every digit
+    exp = 1
+    while max_num // exp > 0:
+        counting_sort_by_digit(arr, exp)
+        exp *= 10
+    
+    return arr
+
+def counting_sort_by_digit(arr, exp):
+    """
+    Counting sort based on digit represented by exp
+    """
+    n = len(arr)
+    output = [0] * n
+    count = [0] * 10
+    
+    # Store count of occurrences
+    for i in range(n):
+        index = arr[i] // exp
+        count[index % 10] += 1
+    
+    # Change count[i] to actual position
+    for i in range(1, 10):
+        count[i] += count[i - 1]
+    
+    # Build output array
+    for i in range(n - 1, -1, -1):
+        index = arr[i] // exp
+        output[count[index % 10] - 1] = arr[i]
+        count[index % 10] -= 1
+    
+    # Copy output to arr
+    for i in range(n):
+        arr[i] = output[i]
+
+# Example
+arr = [170, 45, 75, 90, 802, 24, 2, 66]
+print(radix_sort(arr))  # [2, 24, 45, 66, 75, 90, 170, 802]</div>
+
+            <div class="pseudocode">PSEUDOCODE: Radix Sort
+
+FUNCTION radixSort(arr):
+    max_num = MAX(arr)
+    exp = 1
+    
+    WHILE max_num / exp > 0:
+        countingSortByDigit(arr, exp)
+        exp = exp * 10
+    END WHILE
+END FUNCTION
+
+Time Complexity: O(d * (n + k))
+- d = number of digits
+- k = range of digits (10 for decimal)
+- Usually O(n) when d is constant
+
+Space Complexity: O(n + k)
+Stable: Yes
+Non-comparison based: Yes</div>
+
+            <h3>3. Bucket Sort</h3>
+
+            <div class="concept-box">
+                <p><strong>Bucket Sort</strong> distributes elements into buckets, sorts each bucket, then concatenates.</p>
+                <p><strong>Best for:</strong> Uniformly distributed data</p>
+            </div>
+
+            <div class="code-label">Python - Bucket Sort</div>
+            <div class="code-block">def bucket_sort(arr):
+    """
+    Bucket Sort - distribute into buckets, sort each
+    Works well for uniformly distributed floats [0, 1)
+    """
+    if len(arr) == 0:
+        return arr
+    
+    # Create buckets
+    bucket_count = len(arr)
+    buckets = [[] for _ in range(bucket_count)]
+    
+    # Distribute elements into buckets
+    for num in arr:
+        index = int(bucket_count * num)  # For floats in [0, 1)
+        if index == bucket_count:
+            index -= 1
+        buckets[index].append(num)
+    
+    # Sort individual buckets (using insertion sort)
+    for bucket in buckets:
+        insertion_sort_bucket(bucket)
+    
+    # Concatenate all buckets
+    result = []
+    for bucket in buckets:
+        result.extend(bucket)
+    
+    return result
+
+def insertion_sort_bucket(arr):
+    """Helper insertion sort for bucket"""
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
+
+# Example - floats in [0, 1)
+arr = [0.897, 0.565, 0.656, 0.1234, 0.665, 0.3434]
+print(bucket_sort(arr))  # [0.1234, 0.3434, 0.565, 0.656, 0.665, 0.897]</div>
+
+            <div class="code-label">Python - Bucket Sort for Integers</div>
+            <div class="code-block">def bucket_sort_integers(arr):
+    """
+    Bucket sort for integers
+    """
+    if not arr:
+        return arr
+    
+    # Find min and max
+    min_val, max_val = min(arr), max(arr)
+    bucket_range = (max_val - min_val) / len(arr)
+    
+    # Create buckets
+    buckets = [[] for _ in range(len(arr))]
+    
+    # Distribute elements
+    for num in arr:
+        index = int((num - min_val) / bucket_range)
+        if index == len(arr):
+            index -= 1
+        buckets[index].append(num)
+    
+    # Sort each bucket and concatenate
+    result = []
+    for bucket in buckets:
+        result.extend(sorted(bucket))
+    
+    return result
+
+arr = [29, 25, 3, 49, 9, 37, 21, 43]
+print(bucket_sort_integers(arr))  # [3, 9, 21, 25, 29, 37, 43, 49]</div>
+
+            <div class="key-point">
+                <strong>When to Use Special Sorts:</strong>
+                <ul>
+                    <li><strong>Counting Sort:</strong> Small range of integers (k ≈ n)</li>
+                    <li><strong>Radix Sort:</strong> Fixed-length integers or strings</li>
+                    <li><strong>Bucket Sort:</strong> Uniformly distributed floats</li>
+                    <li><strong>All three:</strong> Can achieve O(n) under right conditions!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- COMPARISON SECTION -->
+        <div id="comparison" class="section">
+            <h2>📊 Complete Algorithm Comparison</h2>
+
+            <h3>Complexity Comparison</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Best</th>
+                    <th>Average</th>
+                    <th>Worst</th>
+                    <th>Space</th>
+                    <th>Stable</th>
+                    <th>Adaptive</th>
+                </tr>
+                <tr>
+                    <td><strong>Bubble Sort</strong></td>
+                    <td class="time-best">O(n)</td>
+                    <td class="time-worst">O(n²)</td>
+                    <td class="time-worst">O(n²)</td>
+                    <td class="space">O(1)</td>
+                    <td class="stable-yes">✅</td>
+                    <td>✅</td>
+                </tr>
+                <tr>
+                    <td><strong>Selection Sort</strong></td>
+                    <td class="time-worst">O(n²)</td>
+                    <td class="time-worst">O(n²)</td>
+                    <td class="time-worst">O(n²)</td>
+                    <td class="space">O(1)</td>
+                    <td class="stable-no">❌</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Insertion Sort</strong></td>
+                    <td class="time-best">O(n)</td>
+                    <td class="time-worst">O(n²)</td>
+                    <td class="time-worst">O(n²)</td>
+                    <td class="space">O(1)</td>
+                    <td class="stable-yes">✅</td>
+                    <td>✅</td>
+                </tr>
+                <tr>
+                    <td><strong>Merge Sort</strong></td>
+                    <td class="time-avg">O(n log n)</td>
+                    <td class="time-avg">O(n log n)</td>
+                    <td class="time-avg">O(n log n)</td>
+                    <td class="space">O(n)</td>
+                    <td class="stable-yes">✅</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Quick Sort</strong></td>
+                    <td class="time-avg">O(n log n)</td>
+                    <td class="time-avg">O(n log n)</td>
+                    <td class="time-worst">O(n²)</td>
+                    <td class="space">O(log n)</td>
+                    <td class="stable-no">❌</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Heap Sort</strong></td>
+                    <td class="time-avg">O(n log n)</td>
+                    <td class="time-avg">O(n log n)</td>
+                    <td class="time-avg">O(n log n)</td>
+                    <td class="space">O(1)</td>
+                    <td class="stable-no">❌</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Counting Sort</strong></td>
+                    <td class="time-best">O(n+k)</td>
+                    <td class="time-best">O(n+k)</td>
+                    <td class="time-best">O(n+k)</td>
+                    <td class="space">O(k)</td>
+                    <td class="stable-yes">✅</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>Radix Sort</strong></td>
+                    <td class="time-best">O(nk)</td>
+                    <td class="time-best">O(nk)</td>
+                    <td class="time-best">O(nk)</td>
+                    <td class="space">O(n+k)</td>
+                    <td class="stable-yes">✅</td>
+                    <td>❌</td>
+                </tr>
+            </table>
+
+            <h3>Decision Tree</h3>
+
+            <div class="visualization">
+                <h4>Which Sort Should I Use?</h4>
+                <div class="step-visual">
+                    <div class="step-label">Small array (< 50)?</div>
+                    <span>→ <strong>Insertion Sort</strong></span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Nearly sorted?</div>
+                    <span>→ <strong>Insertion Sort</strong></span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Need guaranteed O(n log n)?</div>
+                    <span>→ <strong>Merge Sort</strong> or <strong>Heap Sort</strong></span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Need stability?</div>
+                    <span>→ <strong>Merge Sort</strong></span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Limited memory?</div>
+                    <span>→ <strong>Heap Sort</strong> or <strong>Quick Sort</strong></span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Fast in practice?</div>
+                    <span>→ <strong>Quick Sort</strong> (with random pivot)</span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Small range integers?</div>
+                    <span>→ <strong>Counting Sort</strong></span>
+                </div>
+                <div class="step-visual">
+                    <div class="step-label">Fixed-length integers?</div>
+                    <span>→ <strong>Radix Sort</strong></span>
+                </div>
+            </div>
+
+            <h3>Pros and Cons</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Pros</th>
+                    <th>Cons</th>
+                </tr>
+                <tr>
+                    <td><strong>Bubble Sort</strong></td>
+                    <td>Simple, detects sorted array</td>
+                    <td>Very slow, O(n²)</td>
+                </tr>
+                <tr>
+                    <td><strong>Selection Sort</strong></td>
+                    <td>Simple, few writes</td>
+                    <td>Always O(n²), not adaptive</td>
+                </tr>
+                <tr>
+                    <td><strong>Insertion Sort</strong></td>
+                    <td>Fast for small/sorted, online</td>
+                    <td>O(n²) for random data</td>
+                </tr>
+                <tr>
+                    <td><strong>Merge Sort</strong></td>
+                    <td>Guaranteed O(n log n), stable</td>
+                    <td>Needs O(n) extra space</td>
+                </tr>
+                <tr>
+                    <td><strong>Quick Sort</strong></td>
+                    <td>Fast in practice, in-place</td>
+                    <td>Worst case O(n²), not stable</td>
+                </tr>
+                <tr>
+                    <td><strong>Heap Sort</strong></td>
+                    <td>Guaranteed O(n log n), O(1) space</td>
+                    <td>Slower than Quick Sort, not stable</td>
+                </tr>
+                <tr>
+                    <td><strong>Counting Sort</strong></td>
+                    <td>O(n) when k = O(n)</td>
+                    <td>Only for integers, needs extra space</td>
+                </tr>
+                <tr>
+                    <td><strong>Radix Sort</strong></td>
+                    <td>O(n) for fixed digits</td>
+                    <td>Only for integers/strings</td>
+                </tr>
+            </table>
+
+            <div class="memory-tip">
+                <strong>💡 Real-World Usage:</strong>
+                <ul>
+                    <li><strong>Python's sort():</strong> Timsort (hybrid of Merge + Insertion)</li>
+                    <li><strong>Java's Arrays.sort():</strong> Dual-Pivot Quick Sort (primitives), Timsort (objects)</li>
+                    <li><strong>C++ std::sort():</strong> Introsort (hybrid of Quick + Heap + Insertion)</li>
+                    <li><strong>Databases:</strong> External Merge Sort for large datasets</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Interactive Practice</h2>
+
+            <div class="interactive-demo">
+                <h3>Sorting Visualizer</h3>
+                <p>Watch different sorting algorithms in action!</p>
+                
+                <div class="demo-controls">
+                    <button class="demo-btn" onclick="runBubbleSort()">Bubble Sort</button>
+                    <button class="demo-btn" onclick="runSelectionSort()">Selection Sort</button>
+                    <button class="demo-btn" onclick="runInsertionSort()">Insertion Sort</button>
+                    <button class="demo-btn" onclick="generateNewArray()">Generate New Array</button>
+                </div>
+                
+                <div id="visualArray" class="visual-array"></div>
+                <div id="output"></div>
+            </div>
+
+            <h3>🏋️ Practice Problems</h3>
+
+            <div class="key-point">
+                <strong>Problem 1: Sort Colors (Dutch National Flag)</strong>
+                <p>Given array with 0s, 1s, and 2s. Sort in-place.</p>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def sort_colors(nums):
+    """
+    Sort array of 0s, 1s, 2s in one pass
+    Three-way partitioning
+    """
+    low = mid = 0
+    high = len(nums) - 1
+    
+    while mid <= high:
+        if nums[mid] == 0:
+            nums[low], nums[mid] = nums[mid], nums[low]
+            low += 1
+            mid += 1
+        elif nums[mid] == 1:
+            mid += 1
+        else:  # nums[mid] == 2
+            nums[mid], nums[high] = nums[high], nums[mid]
+            high -= 1
+    
+    return nums
+
+# Example
+nums = [2, 0, 2, 1, 1, 0]
+print(sort_colors(nums))  # [0, 0, 1, 1, 2, 2]
+
+# Time: O(n), Space: O(1)</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 2: Merge Sorted Arrays</strong>
+                <p>Merge two sorted arrays into one sorted array.</p>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def merge_sorted_arrays(arr1, arr2):
+    """
+    Merge two sorted arrays
+    """
+    result = []
+    i = j = 0
+    
+    while i < len(arr1) and j < len(arr2):
+        if arr1[i] <= arr2[j]:
+            result.append(arr1[i])
+            i += 1
+        else:
+            result.append(arr2[j])
+            j += 1
+    
+    # Add remaining elements
+    result.extend(arr1[i:])
+    result.extend(arr2[j:])
+    
+    return result
+
+arr1 = [1, 3, 5, 7]
+arr2 = [2, 4, 6, 8]
+print(merge_sorted_arrays(arr1, arr2))
+# [1, 2, 3, 4, 5, 6, 7, 8]
+
+# Time: O(n + m), Space: O(n + m)</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 3: Kth Largest Element</strong>
+                <p>Find kth largest element using Quick Select (related to Quick Sort).</p>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">import random
+
+def find_kth_largest(nums, k):
+    """
+    Find kth largest element using Quick Select
+    Average O(n), Worst O(n²)
+    """
+    # Convert to kth smallest (from end)
+    return quick_select(nums, 0, len(nums) - 1, len(nums) - k)
+
+def quick_select(nums, left, right, k):
+    """
+    Quick Select algorithm
+    """
+    if left == right:
+        return nums[left]
+    
+    # Random pivot for better average case
+    pivot_idx = random.randint(left, right)
+    pivot_idx = partition(nums, left, right, pivot_idx)
+    
+    if k == pivot_idx:
+        return nums[k]
+    elif k < pivot_idx:
+        return quick_select(nums, left, pivot_idx - 1, k)
+    else:
+        return quick_select(nums, pivot_idx + 1, right, k)
+
+def partition(nums, left, right, pivot_idx):
+    """Partition around pivot"""
+    pivot = nums[pivot_idx]
+    nums[pivot_idx], nums[right] = nums[right], nums[pivot_idx]
+    
+    store_idx = left
+    for i in range(left, right):
+        if nums[i] < pivot:
+            nums[i], nums[store_idx] = nums[store_idx], nums[i]
+            store_idx += 1
+    
+    nums[store_idx], nums[right] = nums[right], nums[store_idx]
+    return store_idx
+
+# Example
+nums = [3, 2, 1, 5, 6, 4]
+print(find_kth_largest(nums, 2))  # 5 (2nd largest)</div>
+            </div>
+
+            <h3>🎯 Key Takeaways</h3>
+
+            <div class="memory-tip">
+                <strong>The 10 Commandments of Sorting:</strong>
+                <ol>
+                    <li><strong>Small data (< 50):</strong> Use Insertion Sort</li>
+                    <li><strong>General purpose:</strong> Use Quick Sort or Merge Sort</li>
+                    <li><strong>Guaranteed O(n log n):</strong> Use Merge Sort or Heap Sort</li>
+                    <li><strong>Stability matters:</strong> Use Merge Sort or Insertion Sort</li>
+                    <li><strong>Limited memory:</strong> Use Heap Sort or in-place Quick Sort</li>
+                    <li><strong>Nearly sorted:</strong> Use Insertion Sort (O(n))</li>
+                    <li><strong>Small range integers:</strong> Use Counting Sort</li>
+                    <li><strong>Fixed digits:</strong> Use Radix Sort</li>
+                    <li><strong>Uniform distribution:</strong> Use Bucket Sort</li>
+                    <li><strong>In production:</strong> Use language built-ins (highly optimized)</li>
+                </ol>
+            </div>
+
+            <h3>🔥 Common Interview Questions</h3>
+
+            <div class="concept-box">
+                <h4>Must Practice:</h4>
+                <ol>
+                    <li>Implement Merge Sort</li>
+                    <li>Implement Quick Sort (with random pivot)</li>
+                    <li>Sort Colors (Dutch National Flag)</li>
+                    <li>Merge K Sorted Lists</li>
+                    <li>Kth Largest Element</li>
+                    <li>Sort Array by Parity</li>
+                    <li>Wiggle Sort</li>
+                    <li>Custom Sort String</li>
+                    <li>Largest Number (custom comparator)</li>
+                    <li>Sort Characters by Frequency</li>
+                </ol>
+            </div>
+
+            <h3>📚 Quick Reference Card</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Question</th>
+                    <th>Answer</th>
+                </tr>
+                <tr>
+                    <td>Fastest average case?</td>
+                    <td>Quick Sort O(n log n)</td>
+                </tr>
+                <tr>
+                    <td>Best worst case?</td>
+                    <td>Merge Sort, Heap Sort O(n log n)</td>
+                </tr>
+                <tr>
+                    <td>Least space?</td>
+                    <td>Heap Sort O(1)</td>
+                </tr>
+                <tr>
+                    <td>Most stable?</td>
+                    <td>Merge Sort, Insertion Sort</td>
+                </tr>
+                <tr>
+                    <td>Best for small data?</td>
+                    <td>Insertion Sort O(n²) but low overhead</td>
+                </tr>
+                <tr>
+                    <td>Best for nearly sorted?</td>
+                    <td>Insertion Sort O(n)</td>
+                </tr>
+                <tr>
+                    <td>Can achieve O(n)?</td>
+                    <td>Counting, Radix, Bucket (special cases)</td>
+                </tr>
+                <tr>
+                    <td>Used in Python?</td>
+                    <td>Timsort (Merge + Insertion hybrid)</td>
+                </tr>
+            </table>
+
+            <div class="key-point">
+                <strong>⚠️ Common Mistakes to Avoid:</strong>
+                <ul>
+                    <li>Using Bubble/Selection Sort for large data</li>
+                    <li>Forgetting Quick Sort's O(n²) worst case</li>
+                    <li>Not considering stability when needed</li>
+                    <li>Using comparison sorts for integer-only data with small range</li>
+                    <li>Implementing sorting from scratch in production (use built-ins!)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let visualArray = [64, 34, 25, 12, 22, 11, 90, 88, 45];
+        let isSorting = false;
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function renderArray(comparingIndices = [], swappingIndices = [], sortedIndices = []) {
+            const container = document.getElementById('visualArray');
+            container.innerHTML = '';
+            
+            const maxVal = Math.max(...visualArray);
+            
+            visualArray.forEach((val, idx) => {
+                const bar = document.createElement('div');
+                bar.className = 'array-bar';
+                bar.style.height = `${(val / maxVal) * 200}px`;
+                
+                if (sortedIndices.includes(idx)) {
+                    bar.classList.add('sorted');
+                } else if (swappingIndices.includes(idx)) {
+                    bar.classList.add('swapping');
+                } else if (comparingIndices.includes(idx)) {
+                    bar.classList.add('comparing');
+                }
+                
+                bar.innerHTML = `<div class="bar-value">${val}</div>`;
+                container.appendChild(bar);
+            });
+        }
+
+        function displayOutput(msg) {
+            document.getElementById('output').innerHTML = msg;
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function runBubbleSort() {
+            if (isSorting) return;
+            isSorting = true;
+            
+            displayOutput('Running Bubble Sort...');
+            const arr = [...visualArray];
+            const n = arr.length;
+            let swaps = 0;
+            let comparisons = 0;
+            
+            for (let i = 0; i < n; i++) {
+                let swapped = false;
+                
+                for (let j = 0; j < n - i - 1; j++) {
+                    comparisons++;
+                    renderArray([j, j + 1], [], []);
+                    await sleep(300);
+                    
+                    if (arr[j] > arr[j + 1]) {
+                        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+                        visualArray = [...arr];
+                        swaps++;
+                        swapped = true;
+                        
+                        renderArray([], [j, j + 1], []);
+                        await sleep(300);
+                    }
+                }
+                
+                if (!swapped) break;
+            }
+            
+            renderArray([], [], Array.from({length: n}, (_, i) => i));
+            displayOutput(`✅ Sorted! Comparisons: ${comparisons}, Swaps: ${swaps}`);
+            isSorting = false;
+        }
+
+        async function runSelectionSort() {
+            if (isSorting) return;
+            isSorting = true;
+            
+            displayOutput('Running Selection Sort...');
+            const arr = [...visualArray];
+            const n = arr.length;
+            let swaps = 0;
+            let comparisons = 0;
+            
+            for (let i = 0; i < n; i++) {
+                let minIdx = i;
+                
+                for (let j = i + 1; j < n; j++) {
+                    comparisons++;
+                    renderArray([minIdx, j], [], Array.from({length: i}, (_, k) => k));
+                    await sleep(200);
+                    
+                    if (arr[j] < arr[minIdx]) {
+                        minIdx = j;
+                    }
+                }
+                
+                if (minIdx !== i) {
+                    [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+                    visualArray = [...arr];
+                    swaps++;
+                    
+                    renderArray([], [i, minIdx], Array.from({length: i}, (_, k) => k));
+                    await sleep(300);
+                }
+            }
+            
+            renderArray([], [], Array.from({length: n}, (_, i) => i));
+            displayOutput(`✅ Sorted! Comparisons: ${comparisons}, Swaps: ${swaps}`);
+            isSorting = false;
+        }
+
+        async function runInsertionSort() {
+            if (isSorting) return;
+            isSorting = true;
+            
+            displayOutput('Running Insertion Sort...');
+            const arr = [...visualArray];
+            const n = arr.length;
+            let shifts = 0;
+            let comparisons = 0;
+            
+            for (let i = 1; i < n; i++) {
+                let key = arr[i];
+                let j = i - 1;
+                
+                renderArray([i], [], Array.from({length: i}, (_, k) => k));
+                await sleep(300);
+                
+                while (j >= 0 && arr[j] > key) {
+                    comparisons++;
+                    arr[j + 1] = arr[j];
+                    visualArray = [...arr];
+                    shifts++;
+                    
+                    renderArray([j], [j + 1], []);
+                    await sleep(200);
+                    
+                    j--;
+                }
+                
+                arr[j + 1] = key;
+                visualArray = [...arr];
+            }
+            
+            renderArray([], [], Array.from({length: n}, (_, i) => i));
+            displayOutput(`✅ Sorted! Comparisons: ${comparisons}, Shifts: ${shifts}`);
+            isSorting = false;
+        }
+
+        function generateNewArray() {
+            if (isSorting) return;
+            
+            visualArray = Array.from({length: 9}, () => Math.floor(Math.random() * 90) + 10);
+            renderArray();
+            displayOutput('New array generated! Click a sort button to visualize.');
+        }
+
+        // Initialize
+        renderArray();
+        displayOutput('Ready! Click a sort button to see the algorithm in action.');
+    </script>
+</body>
+</html>

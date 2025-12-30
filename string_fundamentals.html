@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Fundamentals - Master the Basics</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #f5576c; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #f5576c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #f093fb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #f093fb;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #f5576c;
+        }
+        h3 { color: #f093fb; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box {
+            background: #fff0f5;
+            padding: 20px;
+            border-left: 5px solid #f5576c;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #f5576c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .visual-string {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .char-cell {
+            width: 50px;
+            height: 70px;
+            border: 2px solid #f5576c;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            background: white;
+            transition: all 0.3s;
+        }
+        .char-cell:hover {
+            background: #fff0f5;
+            transform: scale(1.1);
+        }
+        .char-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #f5576c;
+        }
+        .char-index {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #f5576c;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #fff0f5;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            flex: 1;
+            min-width: 200px;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #f5576c; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 String Fundamentals Masterclass</h1>
+            <p class="subtitle">Master Strings for DSA Success</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('basics')">String Basics</button>
+                <button class="nav-btn" onclick="showSection('operations')">Operations</button>
+                <button class="nav-btn" onclick="showSection('methods')">Built-in Methods</button>
+                <button class="nav-btn" onclick="showSection('patterns')">Common Patterns</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive Practice</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 What is a String?</h2>
+            
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>A <strong>string</strong> is a sequence of characters. Think of it as an array of characters, where each character has a specific position (index).</p>
+            </div>
+
+            <div class="visual-string">
+                <div class="char-cell"><div class="char-value">H</div><div class="char-index">[0]</div></div>
+                <div class="char-cell"><div class="char-value">e</div><div class="char-index">[1]</div></div>
+                <div class="char-cell"><div class="char-value">l</div><div class="char-index">[2]</div></div>
+                <div class="char-cell"><div class="char-value">l</div><div class="char-index">[3]</div></div>
+                <div class="char-cell"><div class="char-value">o</div><div class="char-index">[4]</div></div>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Key Insight:</strong> Strings are <span class="highlight">IMMUTABLE</span> in Python - once created, they cannot be changed! Any modification creates a new string.
+            </div>
+
+            <h3>Why Learn Strings?</h3>
+            <ul>
+                <li><strong>Text Processing:</strong> Most real-world data is text-based</li>
+                <li><strong>Interview Favorite:</strong> 40%+ of coding problems involve strings</li>
+                <li><strong>Pattern Matching:</strong> Search engines, DNA sequencing, text editors</li>
+                <li><strong>Data Validation:</strong> Email validation, password checks, parsing</li>
+            </ul>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> String = "Chain of Letters"
+                <br>Each letter is a link in the chain, connected in order, but the chain itself is permanent (immutable).
+            </div>
+
+            <h3>String vs Array: Key Differences</h3>
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>String</th>
+                    <th>Array</th>
+                </tr>
+                <tr>
+                    <td><strong>Mutability</strong></td>
+                    <td>Immutable (cannot change)</td>
+                    <td>Mutable (can change)</td>
+                </tr>
+                <tr>
+                    <td><strong>Elements</strong></td>
+                    <td>Characters only</td>
+                    <td>Any data type</td>
+                </tr>
+                <tr>
+                    <td><strong>Indexing</strong></td>
+                    <td>Zero-based (0 to n-1)</td>
+                    <td>Zero-based (0 to n-1)</td>
+                </tr>
+                <tr>
+                    <td><strong>Concatenation</strong></td>
+                    <td>Creates new string</td>
+                    <td>Modifies array</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- BASICS SECTION -->
+        <div id="basics" class="section">
+            <h2>📚 String Basics in Python</h2>
+
+            <h3>1. Creating Strings</h3>
+
+            <div class="code-label">Python - String Creation</div>
+            <div class="code-block"># Method 1: Single quotes
+s1 = 'Hello'
+
+# Method 2: Double quotes
+s2 = "World"
+
+# Method 3: Triple quotes (multi-line)
+s3 = '''This is a
+multi-line
+string'''
+
+s4 = """Another
+multi-line string"""
+
+# Method 4: Empty string
+s5 = ""
+s6 = ''
+
+# Method 5: String constructor
+s7 = str(123)  # "123"
+s8 = str([1, 2, 3])  # "[1, 2, 3]"
+
+# Method 6: Raw strings (ignore escape sequences)
+s9 = r"C:\new\folder"  # No newline interpretation</div>
+
+            <div class="pseudocode">PSEUDOCODE: String Creation
+
+DECLARE string s
+SET s = "Hello World"
+SET length = LENGTH(s)</div>
+
+            <h3>2. Accessing Characters</h3>
+
+            <div class="code-label">Python - Character Access</div>
+            <div class="code-block">s = "Python"
+
+# Positive indexing (left to right)
+print(s[0])    # 'P' (first)
+print(s[2])    # 't'
+print(s[5])    # 'n' (last)
+
+# Negative indexing (right to left)
+print(s[-1])   # 'n' (last)
+print(s[-2])   # 'o' (second last)
+print(s[-6])   # 'P' (first)
+
+# Get length
+length = len(s)  # 6
+
+# Check if index is valid
+index = 10
+if 0 <= index < len(s):
+    print(s[index])
+else:
+    print("Index out of bounds!")
+
+# Iterate through characters
+for char in s:
+    print(char)
+
+# Iterate with index
+for i in range(len(s)):
+    print(f"s[{i}] = {s[i]}")</div>
+
+            <div class="pseudocode">PSEUDOCODE: Access Character
+
+FUNCTION accessChar(s, index):
+    IF index >= 0 AND index < LENGTH(s):
+        RETURN s[index]
+    ELSE:
+        RETURN "Index out of bounds"
+    END IF
+END FUNCTION
+
+Time Complexity: O(1)
+Space Complexity: O(1)</div>
+
+            <div class="key-point">
+                <strong>⚠️ Important:</strong> Strings are immutable! You cannot do <code>s[0] = 'J'</code>. This will cause an error!
+            </div>
+
+            <h3>3. String Slicing</h3>
+
+            <div class="concept-box">
+                <p><strong>Syntax:</strong> s[start:end:step]</p>
+                <ul>
+                    <li><strong>start:</strong> Starting index (inclusive)</li>
+                    <li><strong>end:</strong> Ending index (exclusive)</li>
+                    <li><strong>step:</strong> Increment (default 1)</li>
+                </ul>
+            </div>
+
+            <div class="code-label">Python - String Slicing</div>
+            <div class="code-block">s = "Python Programming"
+
+# Basic slicing
+print(s[0:6])      # "Python"
+print(s[7:18])     # "Programming"
+
+# From start
+print(s[:6])       # "Python"
+
+# To end
+print(s[7:])       # "Programming"
+
+# With step
+print(s[::2])      # "Pto rgamn" (every 2nd char)
+print(s[1::2])     # "yhnPormig" (every 2nd from index 1)
+
+# Reverse string
+print(s[::-1])     # "gnimmargorP nohtyP"
+
+# Extract portion
+print(s[7:11])     # "Prog"
+
+# Negative indices
+print(s[-11:-1])   # "Programmin"
+
+# Copy string
+copy = s[:]        # Creates a copy</div>
+
+            <div class="memory-tip">
+                <strong>💡 Slicing Memory Trick:</strong> Remember "up to but not including"
+                <br>s[0:5] gives you indices 0, 1, 2, 3, 4 (stops BEFORE 5)
+            </div>
+
+            <h3>4. String Immutability</h3>
+
+            <div class="code-label">Python - Understanding Immutability</div>
+            <div class="code-block">s = "Hello"
+
+# This DOES NOT work (error!)
+# s[0] = 'J'  # TypeError: 'str' object does not support item assignment
+
+# To "modify", create a new string
+s = 'J' + s[1:]  # "Jello"
+print(s)
+
+# Another example
+original = "Python"
+# Cannot change to "Jython" directly
+
+# Method 1: Slicing
+new_str = 'J' + original[1:]  # "Jython"
+
+# Method 2: Replace
+new_str = original.replace('P', 'J')  # "Jython"
+
+# Method 3: List conversion (for multiple changes)
+chars = list(original)  # ['P', 'y', 't', 'h', 'o', 'n']
+chars[0] = 'J'
+new_str = ''.join(chars)  # "Jython"</div>
+
+            <div class="key-point">
+                <strong>Why Immutability Matters:</strong>
+                <ul>
+                    <li><strong>Security:</strong> Strings can't be changed accidentally</li>
+                    <li><strong>Hashability:</strong> Can be used as dictionary keys</li>
+                    <li><strong>Thread-safe:</strong> Multiple threads can use same string</li>
+                    <li><strong>Memory:</strong> Python can reuse identical strings</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- OPERATIONS SECTION -->
+        <div id="operations" class="section">
+            <h2>⚙️ Core String Operations</h2>
+
+            <h3>1. Concatenation (Joining Strings)</h3>
+
+            <div class="code-label">Python - String Concatenation</div>
+            <div class="code-block"># Method 1: Using + operator
+s1 = "Hello"
+s2 = "World"
+result = s1 + " " + s2  # "Hello World"
+
+# Method 2: Using += operator
+s = "Hello"
+s += " World"  # "Hello World"
+
+# Method 3: Using join() - BEST for multiple strings
+words = ["Hello", "World", "Python"]
+result = " ".join(words)  # "Hello World Python"
+
+# Method 4: Using f-strings (Python 3.6+)
+name = "Alice"
+age = 25
+message = f"My name is {name} and I'm {age}"
+
+# Method 5: Using format()
+message = "My name is {} and I'm {}".format(name, age)
+
+# Method 6: Using % operator (old style)
+message = "My name is %s and I'm %d" % (name, age)</div>
+
+            <div class="pseudocode">PSEUDOCODE: String Concatenation
+
+FUNCTION concatenate(s1, s2):
+    RETURN s1 + s2
+END FUNCTION
+
+Time Complexity: O(n + m) where n, m are lengths
+Space Complexity: O(n + m) - creates new string</div>
+
+            <div class="key-point">
+                <strong>⚠️ Performance Warning:</strong> Avoid using + in loops! Use join() instead.
+                <br><code>result = "".join(list_of_strings)</code> is much faster than repeated +=
+            </div>
+
+            <h3>2. String Repetition</h3>
+
+            <div class="code-label">Python - String Repetition</div>
+            <div class="code-block">s = "Ha"
+repeated = s * 3  # "HaHaHa"
+
+# Create separators
+line = "-" * 50  # "--------------------------------------------------"
+
+# Create patterns
+pattern = "01" * 5  # "0101010101"
+
+# Empty string repetition
+empty = "" * 100  # "" (still empty)</div>
+
+            <h3>3. String Comparison</h3>
+
+            <div class="code-label">Python - Comparing Strings</div>
+            <div class="code-block"># Equality
+s1 = "hello"
+s2 = "hello"
+s3 = "Hello"
+
+print(s1 == s2)  # True
+print(s1 == s3)  # False (case-sensitive)
+
+# Case-insensitive comparison
+print(s1.lower() == s3.lower())  # True
+
+# Lexicographic comparison (dictionary order)
+print("apple" < "banana")  # True
+print("abc" < "abd")       # True
+print("Apple" < "apple")   # True (uppercase comes first)
+
+# Compare with operators
+s1 = "abc"
+s2 = "xyz"
+print(s1 < s2)   # True
+print(s1 > s2)   # False
+print(s1 != s2)  # True
+
+# Check if string starts/ends with
+text = "Hello World"
+print(text.startswith("Hello"))  # True
+print(text.endswith("World"))    # True</div>
+
+            <div class="pseudocode">PSEUDOCODE: String Comparison
+
+FUNCTION compareStrings(s1, s2):
+    IF LENGTH(s1) != LENGTH(s2):
+        RETURN False
+    END IF
+    
+    FOR i = 0 TO LENGTH(s1) - 1:
+        IF s1[i] != s2[i]:
+            RETURN False
+        END IF
+    END FOR
+    
+    RETURN True
+END FUNCTION
+
+Time Complexity: O(n)
+Space Complexity: O(1)</div>
+
+            <h3>4. Searching in Strings</h3>
+
+            <div class="code-label">Python - String Search</div>
+            <div class="code-block">s = "Python Programming Language"
+
+# Check if substring exists
+print("Python" in s)  # True
+print("Java" in s)    # False
+print("python" in s)  # False (case-sensitive)
+
+# Find index of substring
+index = s.find("Programming")  # 7
+print(index)
+
+# Find returns -1 if not found
+index = s.find("Java")  # -1
+
+# index() method (raises error if not found)
+try:
+    index = s.index("Programming")  # 7
+    print(index)
+except ValueError:
+    print("Substring not found")
+
+# Find from right (last occurrence)
+s = "hello world hello"
+print(s.rfind("hello"))  # 12 (last occurrence)
+print(s.find("hello"))   # 0 (first occurrence)
+
+# Count occurrences
+count = s.count("hello")  # 2
+print(count)</div>
+
+            <div class="pseudocode">PSEUDOCODE: Search Substring
+
+FUNCTION findSubstring(text, pattern):
+    n = LENGTH(text)
+    m = LENGTH(pattern)
+    
+    FOR i = 0 TO n - m:
+        match = True
+        FOR j = 0 TO m - 1:
+            IF text[i + j] != pattern[j]:
+                match = False
+                BREAK
+            END IF
+        END FOR
+        IF match:
+            RETURN i
+        END IF
+    END FOR
+    
+    RETURN -1  // Not found
+END FUNCTION
+
+Time Complexity: O(n * m)
+Space Complexity: O(1)</div>
+
+            <h3>5. String Traversal</h3>
+
+            <div class="code-label">Python - Traversing Strings</div>
+            <div class="code-block">s = "Python"
+
+# Method 1: Character by character
+for char in s:
+    print(char)
+
+# Method 2: Using index
+for i in range(len(s)):
+    print(f"s[{i}] = {s[i]}")
+
+# Method 3: Using enumerate
+for index, char in enumerate(s):
+    print(f"Index {index}: {char}")
+
+# Method 4: Reverse traversal
+for i in range(len(s) - 1, -1, -1):
+    print(s[i])
+
+# Method 5: While loop
+i = 0
+while i < len(s):
+    print(s[i])
+    i += 1</div>
+
+            <h3>6. Reversing Strings</h3>
+
+            <div class="code-label">Python - String Reversal</div>
+            <div class="code-block">s = "Python"
+
+# Method 1: Slicing (easiest)
+reversed_s = s[::-1]  # "nohtyP"
+
+# Method 2: Using reversed() function
+reversed_s = ''.join(reversed(s))  # "nohtyP"
+
+# Method 3: Using loop (manual)
+def reverse_string(s):
+    result = ""
+    for char in s:
+        result = char + result
+    return result
+
+# Method 4: Using list and reverse
+chars = list(s)
+chars.reverse()
+reversed_s = ''.join(chars)
+
+# Method 5: Two pointer (on list)
+def reverse_two_pointer(s):
+    chars = list(s)
+    left, right = 0, len(chars) - 1
+    
+    while left < right:
+        chars[left], chars[right] = chars[right], chars[left]
+        left += 1
+        right -= 1
+    
+    return ''.join(chars)
+
+print(reverse_two_pointer("Python"))  # "nohtyP"</div>
+
+            <div class="pseudocode">PSEUDOCODE: Reverse String
+
+FUNCTION reverseString(s):
+    result = ""
+    FOR i = LENGTH(s) - 1 DOWN TO 0:
+        result = result + s[i]
+    END FOR
+    RETURN result
+END FUNCTION
+
+Time Complexity: O(n)
+Space Complexity: O(n) - new string created</div>
+        </div>
+
+        <!-- METHODS SECTION -->
+        <div id="methods" class="section">
+            <h2>🛠️ Essential String Methods</h2>
+
+            <h3>1. Case Conversion</h3>
+
+            <div class="code-label">Python - Case Methods</div>
+            <div class="code-block">s = "Hello World"
+
+# Convert to uppercase
+print(s.upper())  # "HELLO WORLD"
+
+# Convert to lowercase
+print(s.lower())  # "hello world"
+
+# Title case (first letter of each word)
+print(s.title())  # "Hello World"
+
+# Capitalize (first letter only)
+s = "hello world"
+print(s.capitalize())  # "Hello world"
+
+# Swap case
+s = "Hello World"
+print(s.swapcase())  # "hELLO wORLD"
+
+# Check case
+print("HELLO".isupper())  # True
+print("hello".islower())  # True
+print("Hello".istitle())  # True</div>
+
+            <h3>2. Whitespace Handling</h3>
+
+            <div class="code-label">Python - Whitespace Methods</div>
+            <div class="code-block">s = "   Hello World   "
+
+# Remove leading and trailing whitespace
+print(s.strip())   # "Hello World"
+
+# Remove leading whitespace only
+print(s.lstrip())  # "Hello World   "
+
+# Remove trailing whitespace only
+print(s.rstrip())  # "   Hello World"
+
+# Remove specific characters
+s = "***Hello***"
+print(s.strip('*'))  # "Hello"
+
+# Split by whitespace
+s = "Hello World Python"
+words = s.split()  # ["Hello", "World", "Python"]
+
+# Split by specific delimiter
+s = "apple,banana,orange"
+fruits = s.split(',')  # ["apple", "banana", "orange"]
+
+# Split with limit
+s = "a-b-c-d-e"
+parts = s.split('-', 2)  # ["a", "b", "c-d-e"]</div>
+
+            <h3>3. String Validation</h3>
+
+            <div class="code-label">Python - Validation Methods</div>
+            <div class="code-block">s = "Hello123"
+
+# Check if alphanumeric
+print(s.isalnum())  # True (letters and numbers)
+
+# Check if alphabetic
+print("Hello".isalpha())  # True (only letters)
+
+# Check if numeric
+print("12345".isdigit())  # True (only digits)
+print("123.45".isdigit())  # False (has dot)
+
+# Check if decimal
+print("12345".isdecimal())  # True
+
+# Check if space
+print("   ".isspace())  # True
+
+# Check if starts/ends with
+s = "Hello World"
+print(s.startswith("Hello"))  # True
+print(s.endswith("World"))    # True
+print(s.startswith(("Hi", "Hello")))  # True (tuple of options)</div>
+
+            <h3>4. String Replacement</h3>
+
+            <div class="code-label">Python - Replace Methods</div>
+            <div class="code-block">s = "Hello World World"
+
+# Replace all occurrences
+new_s = s.replace("World", "Python")
+print(new_s)  # "Hello Python Python"
+
+# Replace with count limit
+new_s = s.replace("World", "Python", 1)
+print(new_s)  # "Hello Python World"
+
+# Remove substring (replace with empty)
+s = "Hello@World"
+clean = s.replace("@", "")
+print(clean)  # "HelloWorld"
+
+# Multiple replacements
+s = "I like apples and apples are great"
+s = s.replace("apples", "oranges")
+print(s)  # "I like oranges and oranges are great"</div>
+
+            <h3>5. String Alignment</h3>
+
+            <div class="code-label">Python - Alignment Methods</div>
+            <div class="code-block">s = "Python"
+
+# Center align (width 20)
+print(s.center(20))  # "       Python       "
+print(s.center(20, '*'))  # "*******Python*******"
+
+# Left align
+print(s.ljust(20))  # "Python              "
+print(s.ljust(20, '-'))  # "Python--------------"
+
+# Right align
+print(s.rjust(20))  # "              Python"
+print(s.rjust(20, '='))  # "==============Python"
+
+# Zero padding (for numbers)
+num = "42"
+print(num.zfill(5))  # "00042"</div>
+
+            <h3>6. String Joining and Splitting</h3>
+
+            <div class="code-label">Python - Join and Split</div>
+            <div class="code-block"># Join list of strings
+words = ["Hello", "World", "Python"]
+sentence = " ".join(words)  # "Hello World Python"
+
+# Join with different delimiter
+csv = ",".join(words)  # "Hello,World,Python"
+
+# Join characters
+chars = ['P', 'y', 't', 'h', 'o', 'n']
+word = ''.join(chars)  # "Python"
+
+# Split into characters
+s = "Python"
+char_list = list(s)  # ['P', 'y', 't', 'h', 'o', 'n']
+
+# Split by lines
+text = "Line 1\nLine 2\nLine 3"
+lines = text.splitlines()  # ["Line 1", "Line 2", "Line 3"]
+
+# Partition (split into 3 parts)
+s = "Hello-World-Python"
+parts = s.partition('-')  # ("Hello", "-", "World-Python")
+
+# Right partition
+parts = s.rpartition('-')  # ("Hello-World", "-", "Python")</div>
+
+            <h3>7. String Formatting</h3>
+
+            <div class="code-label">Python - String Formatting</div>
+            <div class="code-block">name = "Alice"
+age = 25
+score = 95.5
+
+# Method 1: f-strings (Python 3.6+, BEST)
+message = f"Name: {name}, Age: {age}, Score: {score:.2f}"
+print(message)  # "Name: Alice, Age: 25, Score: 95.50"
+
+# Method 2: format() method
+message = "Name: {}, Age: {}, Score: {:.2f}".format(name, age, score)
+print(message)
+
+# With named placeholders
+message = "Name: {n}, Age: {a}".format(n=name, a=age)
+
+# Method 3: % operator (old style)
+message = "Name: %s, Age: %d, Score: %.2f" % (name, age, score)
+
+# Formatting numbers
+num = 1234567
+print(f"{num:,}")  # "1,234,567" (with commas)
+print(f"{num:_}")  # "1_234_567" (with underscores)
+
+# Alignment in f-strings
+print(f"{name:>10}")  # Right align (width 10)
+print(f"{name:<10}")  # Left align
+print(f"{name:^10}")  # Center align</div>
+        </div>
+
+        <!-- PATTERNS SECTION -->
+        <div id="patterns" class="section">
+            <h2>🎨 Common String Patterns</h2>
+
+            <h3>Pattern 1: Character Frequency Count</h3>
+
+            <div class="code-label">Python - Frequency Counter</div>
+            <div class="code-block">from collections import Counter
+
+s = "hello world"
+
+# Method 1: Using dictionary
+def count_chars(s):
+    freq = {}
+    for char in s:
+        freq[char] = freq.get(char, 0) + 1
+    return freq
+
+print(count_chars(s))  # {'h': 1, 'e': 1, 'l': 3, 'o': 2, ...}
+
+# Method 2: Using Counter (easiest)
+freq = Counter(s)
+print(freq)  # Counter({'l': 3, 'o': 2, ...})
+
+# Most common character
+print(freq.most_common(1))  # [('l', 3)]</div>
+
+            <div class="pseudocode">PSEUDOCODE: Character Frequency
+
+FUNCTION countFrequency(s):
+    freq = DICTIONARY()
+    
+    FOR each char IN s:
+        IF char IN freq:
+            freq[char] = freq[char] + 1
+        ELSE:
+            freq[char] = 1
+        END IF
+    END FOR
+    
+    RETURN freq
+END FUNCTION
+
+Time Complexity: O(n)
+Space Complexity: O(k) where k = unique characters</div>
+
+            <h3>Pattern 2: Palindrome Check</h3>
+
+            <div class="code-label">Python - Palindrome</div>
+            <div class="code-block"># Method 1: Using slicing (simplest)
+def is_palindrome(s):
+    return s == s[::-1]
+
+print(is_palindrome("racecar"))  # True
+print(is_palindrome("hello"))    # False
+
+# Method 2: Two pointer
+def is_palindrome_two_pointer(s):
+    left, right = 0, len(s) - 1
+    
+    while left < right:
+        if s[left] != s[right]:
+            return False
+        left += 1
+        right -= 1
+    
+    return True
+
+# Method 3: Ignore case and spaces
+def is_palindrome_clean(s):
+    # Remove spaces and convert to lowercase
+    s = s.replace(" ", "").lower()
+    return s == s[::-1]
+
+print(is_palindrome_clean("A man a plan a canal Panama"))  # True</div>
+
+            <div class="pseudocode">PSEUDOCODE: Palindrome Check
+
+FUNCTION isPalindrome(s):
+    left = 0
+    right = LENGTH(s) - 1
+    
+    WHILE left < right:
+        IF s[left] != s[right]:
+            RETURN False
+        END IF
+        left = left + 1
+        right = right - 1
+    END WHILE
+    
+    RETURN True
+END FUNCTION
+
+Time Complexity: O(n)
+Space Complexity: O(1)</div>
+
+            <h3>Pattern 3: Anagram Check</h3>
+
+            <div class="code-label">Python - Anagram Detection</div>
+            <div class="code-block"># Method 1: Sort and compare
+def is_anagram(s1, s2):
+    return sorted(s1) == sorted(s2)
+
+print(is_anagram("listen", "silent"))  # True
+print(is_anagram("hello", "world"))    # False
+
+# Method 2: Frequency count
+def is_anagram_freq(s1, s2):
+    if len(s1) != len(s2):
+        return False
+    
+    from collections import Counter
+    return Counter(s1) == Counter(s2)
+
+# Method 3: Manual frequency
+def is_anagram_manual(s1, s2):
+    if len(s1) != len(s2):
+        return False
+    
+    freq = {}
+    
+    # Count characters in s1
+    for char in s1:
+        freq[char] = freq.get(char, 0) + 1
+    
+    # Subtract characters from s2
+    for char in s2:
+        if char not in freq:
+            return False
+        freq[char] -= 1
+        if freq[char] < 0:
+            return False
+    
+    return True</div>
+
+            <h3>Pattern 4: Substring Search (Pattern Matching)</h3>
+
+            <div class="code-label">Python - Find All Occurrences</div>
+            <div class="code-block">def find_all_occurrences(text, pattern):
+    indices = []
+    start = 0
+    
+    while True:
+        index = text.find(pattern, start)
+        if index == -1:
+            break
+        indices.append(index)
+        start = index + 1
+    
+    return indices
+
+text = "hello world hello python hello"
+pattern = "hello"
+print(find_all_occurrences(text, pattern))  # [0, 12, 25]</div>
+
+            <h3>Pattern 5: String Reversal Variations</h3>
+
+            <div class="code-label">Python - Reverse Words</div>
+            <div class="code-block"># Reverse entire string
+s = "Hello World"
+print(s[::-1])  # "dlroW olleH"
+
+# Reverse word order
+def reverse_words(s):
+    words = s.split()
+    return ' '.join(reversed(words))
+
+print(reverse_words("Hello World Python"))  # "Python World Hello"
+
+# Reverse each word individually
+def reverse_each_word(s):
+    words = s.split()
+    reversed_words = [word[::-1] for word in words]
+    return ' '.join(reversed_words)
+
+print(reverse_each_word("Hello World"))  # "olleH dlroW"</div>
+
+            <h3>Pattern 6: Remove Duplicates</h3>
+
+            <div class="code-label">Python - Remove Duplicate Characters</div>
+            <div class="code-block"># Method 1: Using set (doesn't preserve order)
+def remove_duplicates_set(s):
+    return ''.join(set(s))
+
+# Method 2: Preserve order (dict)
+def remove_duplicates_ordered(s):
+    seen = {}
+    result = []
+    for char in s:
+        if char not in seen:
+            seen[char] = True
+            result.append(char)
+    return ''.join(result)
+
+s = "programming"
+print(remove_duplicates_ordered(s))  # "progamin"
+
+# Method 3: Using dict.fromkeys (Python 3.7+)
+def remove_duplicates_v3(s):
+    return ''.join(dict.fromkeys(s))
+
+print(remove_duplicates_v3("hello"))  # "helo"</div>
+
+            <h3>Pattern 7: First Non-Repeating Character</h3>
+
+            <div class="code-label">Python - First Unique Character</div>
+            <div class="code-block">def first_non_repeating(s):
+    from collections import Counter
+    
+    # Count frequency
+    freq = Counter(s)
+    
+    # Find first character with frequency 1
+    for char in s:
+        if freq[char] == 1:
+            return char
+    
+    return None
+
+s = "leetcode"
+print(first_non_repeating(s))  # "l"
+
+s = "aabbcc"
+print(first_non_repeating(s))  # None</div>
+
+            <h3>Pattern 8: Longest Common Prefix</h3>
+
+            <div class="code-label">Python - Common Prefix</div>
+            <div class="code-block">def longest_common_prefix(strings):
+    if not strings:
+        return ""
+    
+    # Start with first string
+    prefix = strings[0]
+    
+    for s in strings[1:]:
+        # Reduce prefix until it matches
+        while not s.startswith(prefix):
+            prefix = prefix[:-1]
+            if not prefix:
+                return ""
+    
+    return prefix
+
+words = ["flower", "flow", "flight"]
+print(longest_common_prefix(words))  # "fl"
+
+words = ["dog", "racecar", "car"]
+print(longest_common_prefix(words))  # ""</div>
+
+            <div class="memory-tip">
+                <strong>💡 Pattern Recognition Guide:</strong>
+                <ul>
+                    <li><strong>Frequency:</strong> Use dictionary/Counter - O(n)</li>
+                    <li><strong>Palindrome:</strong> Two pointers or slicing - O(n)</li>
+                    <li><strong>Anagram:</strong> Sort or frequency count - O(n log n) or O(n)</li>
+                    <li><strong>Substring:</strong> Use find() in loop - O(n*m)</li>
+                    <li><strong>Duplicates:</strong> Use set/dict to track seen - O(n)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Interactive String Practice</h2>
+
+            <div class="interactive-demo">
+                <h3>String Visualizer</h3>
+                <input type="text" id="stringInput" placeholder="Enter a string..." value="Hello">
+                
+                <div class="demo-controls">
+                    <button class="demo-btn" onclick="visualizeString()">Visualize</button>
+                    <button class="demo-btn" onclick="reverseString()">Reverse</button>
+                    <button class="demo-btn" onclick="upperCase()">Uppercase</button>
+                    <button class="demo-btn" onclick="lowerCase()">Lowercase</button>
+                    <button class="demo-btn" onclick="checkPalindrome()">Check Palindrome</button>
+                    <button class="demo-btn" onclick="countChars()">Count Characters</button>
+                    <button class="demo-btn" onclick="removeDuplicates()">Remove Duplicates</button>
+                </div>
+                
+                <div id="visualString" class="visual-string"></div>
+                <div id="output"></div>
+            </div>
+
+            <h3>🏋️ Practice Problems</h3>
+
+            <div class="key-point">
+                <strong>Problem 1: Count Vowels</strong>
+                <div class="pseudocode">FUNCTION countVowels(s):
+    vowels = "aeiouAEIOU"
+    count = 0
+    
+    FOR each char IN s:
+        IF char IN vowels:
+            count = count + 1
+        END IF
+    END FOR
+    
+    RETURN count
+END FUNCTION</div>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def count_vowels(s):
+    vowels = "aeiouAEIOU"
+    count = 0
+    for char in s:
+        if char in vowels:
+            count += 1
+    return count
+
+# Or using list comprehension
+def count_vowels_v2(s):
+    return sum(1 for char in s if char in "aeiouAEIOU")
+
+print(count_vowels("Hello World"))  # 3</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 2: Reverse Words in Sentence</strong>
+                <div class="pseudocode">FUNCTION reverseWords(s):
+    words = SPLIT(s, " ")
+    reversed_words = REVERSE(words)
+    RETURN JOIN(reversed_words, " ")
+END FUNCTION</div>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def reverse_words(s):
+    words = s.split()
+    return ' '.join(reversed(words))
+
+print(reverse_words("Hello World Python"))  # "Python World Hello"</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 3: Check if Strings are Rotations</strong>
+                <div class="pseudocode">FUNCTION isRotation(s1, s2):
+    IF LENGTH(s1) != LENGTH(s2):
+        RETURN False
+    END IF
+    
+    concatenated = s1 + s1
+    RETURN s2 IN concatenated
+END FUNCTION</div>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def is_rotation(s1, s2):
+    if len(s1) != len(s2):
+        return False
+    return s2 in (s1 + s1)
+
+print(is_rotation("waterbottle", "erbottlewat"))  # True
+print(is_rotation("hello", "lohel"))  # True
+print(is_rotation("hello", "world"))  # False</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 4: Remove Spaces</strong>
+                <div class="pseudocode">FUNCTION removeSpaces(s):
+    result = ""
+    FOR each char IN s:
+        IF char != " ":
+            result = result + char
+        END IF
+    END FOR
+    RETURN result
+END FUNCTION</div>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def remove_spaces(s):
+    return s.replace(" ", "")
+
+# Or manual
+def remove_spaces_manual(s):
+    result = ""
+    for char in s:
+        if char != " ":
+            result += char
+    return result
+
+# Or using filter
+def remove_spaces_filter(s):
+    return ''.join(filter(lambda x: x != ' ', s))
+
+print(remove_spaces("Hello World Python"))  # "HelloWorldPython"</div>
+            </div>
+
+            <h3>🎯 Key Takeaways to Remember Forever</h3>
+
+            <div class="memory-tip">
+                <strong>The 10 Commandments of Strings:</strong>
+                <ol>
+                    <li><strong>Immutable:</strong> Can't change, only create new strings</li>
+                    <li><strong>Zero-indexed:</strong> First character at index 0</li>
+                    <li><strong>Slicing is exclusive:</strong> s[1:4] = indices 1, 2, 3</li>
+                    <li><strong>Use join() not +:</strong> For concatenating multiple strings</li>
+                    <li><strong>Case matters:</strong> "Hello" != "hello"</li>
+                    <li><strong>f-strings are best:</strong> For formatting in Python 3.6+</li>
+                    <li><strong>in operator:</strong> Fast substring/character checking</li>
+                    <li><strong>Reverse with [::-1]:</strong> Simplest way to reverse</li>
+                    <li><strong>Count frequency:</strong> Use Counter or dictionary</li>
+                    <li><strong>Validate input:</strong> Check length and bounds</li>
+                </ol>
+            </div>
+
+            <h3>📊 Time Complexity Cheat Sheet</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operation</th>
+                    <th>Time Complexity</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>Access s[i]</td>
+                    <td>O(1)</td>
+                    <td>Direct index access</td>
+                </tr>
+                <tr>
+                    <td>Search (in)</td>
+                    <td>O(n)</td>
+                    <td>Linear search through string</td>
+                </tr>
+                <tr>
+                    <td>Concatenation (+)</td>
+                    <td>O(n + m)</td>
+                    <td>Creates new string</td>
+                </tr>
+                <tr>
+                    <td>Slicing s[i:j]</td>
+                    <td>O(j - i)</td>
+                    <td>Copies substring</td>
+                </tr>
+                <tr>
+                    <td>find()</td>
+                    <td>O(n * m)</td>
+                    <td>n = string length, m = pattern</td>
+                </tr>
+                <tr>
+                    <td>replace()</td>
+                    <td>O(n)</td>
+                    <td>Creates new string</td>
+                </tr>
+                <tr>
+                    <td>split()</td>
+                    <td>O(n)</td>
+                    <td>Creates list of strings</td>
+                </tr>
+                <tr>
+                    <td>join()</td>
+                    <td>O(n)</td>
+                    <td>Concatenates list efficiently</td>
+                </tr>
+            </table>
+
+            <h3>🔥 Common Interview Questions</h3>
+
+            <div class="concept-box">
+                <h4>Must Practice:</h4>
+                <ol>
+                    <li>Reverse a string</li>
+                    <li>Check if palindrome</li>
+                    <li>Check if two strings are anagrams</li>
+                    <li>Find first non-repeating character</li>
+                    <li>Count character frequency</li>
+                    <li>Remove duplicates from string</li>
+                    <li>Check if string contains only digits</li>
+                    <li>Find longest common prefix</li>
+                    <li>Reverse words in a sentence</li>
+                    <li>Check if one string is rotation of another</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function visualizeString() {
+            const input = document.getElementById('stringInput').value;
+            const container = document.getElementById('visualString');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < input.length; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'char-cell';
+                cell.innerHTML = `
+                    <div class="char-value">${input[i] === ' ' ? '␣' : input[i]}</div>
+                    <div class="char-index">[${i}]</div>
+                `;
+                container.appendChild(cell);
+            }
+            
+            displayOutput(`String visualized! Length: ${input.length}`);
+        }
+
+        function displayOutput(msg) {
+            document.getElementById('output').innerHTML = `<strong>${msg}</strong>`;
+        }
+
+        function reverseString() {
+            const input = document.getElementById('stringInput').value;
+            const reversed = input.split('').reverse().join('');
+            document.getElementById('stringInput').value = reversed;
+            visualizeString();
+            displayOutput(`✅ String reversed: "${reversed}"`);
+        }
+
+        function upperCase() {
+            const input = document.getElementById('stringInput').value;
+            const upper = input.toUpperCase();
+            document.getElementById('stringInput').value = upper;
+            visualizeString();
+            displayOutput(`✅ Converted to uppercase: "${upper}"`);
+        }
+
+        function lowerCase() {
+            const input = document.getElementById('stringInput').value;
+            const lower = input.toLowerCase();
+            document.getElementById('stringInput').value = lower;
+            visualizeString();
+            displayOutput(`✅ Converted to lowercase: "${lower}"`);
+        }
+
+        function checkPalindrome() {
+            const input = document.getElementById('stringInput').value;
+            const reversed = input.split('').reverse().join('');
+            const isPalindrome = input === reversed;
+            
+            if (isPalindrome) {
+                displayOutput(`✅ "${input}" IS a palindrome!`);
+            } else {
+                displayOutput(`❌ "${input}" is NOT a palindrome. Reversed: "${reversed}"`);
+            }
+        }
+
+        function countChars() {
+            const input = document.getElementById('stringInput').value;
+            const freq = {};
+            
+            for (let char of input) {
+                freq[char] = (freq[char] || 0) + 1;
+            }
+            
+            let result = '<strong>Character Frequency:</strong><br>';
+            for (let char in freq) {
+                const display = char === ' ' ? '(space)' : char;
+                result += `${display}: ${freq[char]}<br>`;
+            }
+            
+            displayOutput(result);
+        }
+
+        function removeDuplicates() {
+            const input = document.getElementById('stringInput').value;
+            const seen = new Set();
+            let result = '';
+            
+            for (let char of input) {
+                if (!seen.has(char)) {
+                    seen.add(char);
+                    result += char;
+                }
+            }
+            
+            document.getElementById('stringInput').value = result;
+            visualizeString();
+            displayOutput(`✅ Duplicates removed: "${result}"`);
+        }
+
+        // Initialize
+        visualizeString();
+    </script>
+</body>
+</html>

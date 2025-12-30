@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue Data Structure - Master the Basics</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #f5576c; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #f5576c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #f093fb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #f093fb;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #f5576c;
+        }
+        h3 { color: #f093fb; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box {
+            background: #fff0f5;
+            padding: 20px;
+            border-left: 5px solid #f5576c;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #f5576c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #f5576c;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #fff0f5;
+        }
+        .queue-visual {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border: 3px solid #f5576c;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .queue-item {
+            min-width: 80px;
+            padding: 15px;
+            margin: 0 5px;
+            background: #f5576c;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .queue-item.highlight {
+            background: #ff9800;
+            transform: scale(1.1);
+        }
+        .queue-arrow {
+            font-size: 2em;
+            color: #f5576c;
+            margin: 0 10px;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        .demo-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            min-width: 150px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #f5576c; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+            border: 2px solid #f5576c;
+        }
+        .visualization {
+            background: white;
+            border: 2px solid #f5576c;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .step-visual {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            align-items: center;
+        }
+        .step-label {
+            min-width: 100px;
+            font-weight: bold;
+            color: #f5576c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎫 Queue Data Structure Masterclass</h1>
+            <p class="subtitle">Master FIFO Operations & Applications</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('implementation')">Implementation</button>
+                <button class="nav-btn" onclick="showSection('types')">Queue Types</button>
+                <button class="nav-btn" onclick="showSection('applications')">Applications</button>
+                <button class="nav-btn" onclick="showSection('problems')">Problems</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 What is a Queue?</h2>
+            
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>A <strong>Queue</strong> is a linear data structure that follows the <span class="highlight">FIFO (First In, First Out)</span> principle. The first element added is the first one to be removed.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Queue Visualization</h4>
+                <div class="queue-visual">
+                    <span style="font-weight: bold; color: #f5576c;">FRONT →</span>
+                    <div class="queue-item">10</div>
+                    <div class="queue-item">20</div>
+                    <div class="queue-item">30</div>
+                    <div class="queue-item highlight">40</div>
+                    <span style="font-weight: bold; color: #f5576c;">← REAR</span>
+                </div>
+                <p style="text-align: center; margin-top: 10px;">
+                    Enqueue adds to rear, Dequeue removes from front
+                </p>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Critical Insight:</strong> Queue is <span class="highlight">FIFO</span> - like a line at a ticket counter. First person in line gets served first!
+            </div>
+
+            <h3>Why Learn Queues?</h3>
+            <ul>
+                <li><strong>Fundamental:</strong> Used in scheduling, buffering, breadth-first search</li>
+                <li><strong>Interview Essential:</strong> Common in algorithm problems</li>
+                <li><strong>Real-World:</strong> Print queue, task scheduling, message queues</li>
+                <li><strong>Algorithm Building Block:</strong> BFS, level-order traversal, caching</li>
+                <li><strong>System Design:</strong> Request handling, event processing</li>
+            </ul>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> Queue = Line at Store
+                <ul>
+                    <li>First person joins line (ENQUEUE at rear)</li>
+                    <li>First person gets served and leaves (DEQUEUE from front)</li>
+                    <li>New people join at the back</li>
+                    <li>People leave from the front</li>
+                    <li>First In, First Out (FIFO)</li>
+                </ul>
+            </div>
+
+            <h3>Core Operations</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operation</th>
+                    <th>Description</th>
+                    <th>Time Complexity</th>
+                </tr>
+                <tr>
+                    <td><strong>enqueue(item)</strong></td>
+                    <td>Add item to rear of queue</td>
+                    <td>O(1)</td>
+                </tr>
+                <tr>
+                    <td><strong>dequeue()</strong></td>
+                    <td>Remove and return front item</td>
+                    <td>O(1)</td>
+                </tr>
+                <tr>
+                    <td><strong>peek()/front()</strong></td>
+                    <td>Return front item without removing</td>
+                    <td>O(1)</td>
+                </tr>
+                <tr>
+                    <td><strong>isEmpty()</strong></td>
+                    <td>Check if queue is empty</td>
+                    <td>O(1)</td>
+                </tr>
+                <tr>
+                    <td><strong>size()</strong></td>
+                    <td>Return number of elements</td>
+                    <td>O(1)</td>
+                </tr>
+            </table>
+
+            <h3>Queue vs Stack</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Queue</th>
+                    <th>Stack</th>
+                </tr>
+                <tr>
+                    <td><strong>Principle</strong></td>
+                    <td>FIFO (First In First Out)</td>
+                    <td>LIFO (Last In First Out)</td>
+                </tr>
+                <tr>
+                    <td><strong>Add</strong></td>
+                    <td>Rear (enqueue)</td>
+                    <td>Top (push)</td>
+                </tr>
+                <tr>
+                    <td><strong>Remove</strong></td>
+                    <td>Front (dequeue)</td>
+                    <td>Top (pop)</td>
+                </tr>
+                <tr>
+                    <td><strong>Access</strong></td>
+                    <td>Front only</td>
+                    <td>Top only</td>
+                </tr>
+                <tr>
+                    <td><strong>Use Case</strong></td>
+                    <td>BFS, scheduling, buffering</td>
+                    <td>DFS, undo, recursion</td>
+                </tr>
+                <tr>
+                    <td><strong>Analogy</strong></td>
+                    <td>Line at store</td>
+                    <td>Stack of plates</td>
+                </tr>
+            </table>
+
+            <h3>Real-World Examples</h3>
+
+            <div class="concept-box">
+                <h4>Where Queues Are Used:</h4>
+                <ul>
+                    <li><strong>Print Queue:</strong> Documents print in order received</li>
+                    <li><strong>CPU Scheduling:</strong> Processes wait in queue for execution</li>
+                    <li><strong>Breadth-First Search:</strong> Level-by-level tree/graph traversal</li>
+                    <li><strong>Message Queues:</strong> RabbitMQ, Kafka for async processing</li>
+                    <li><strong>Call Center:</strong> Customers wait in queue for next agent</li>
+                    <li><strong>Keyboard Buffer:</strong> Keystrokes stored in queue</li>
+                    <li><strong>Network Packets:</strong> Routers use queues for traffic</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- IMPLEMENTATION SECTION -->
+        <div id="implementation" class="section">
+            <h2>💻 Queue Implementation</h2>
+
+            <h3>1. Using Python List (Simple)</h3>
+
+            <div class="concept-box">
+                <p>Simple but <strong>inefficient</strong> - dequeue is O(n) because removing from front shifts all elements.</p>
+            </div>
+
+            <div class="code-label">Python - Queue Using List (Not Recommended)</div>
+            <div class="code-block">class QueueList:
+    """
+    Queue using Python list
+    PROBLEM: dequeue is O(n) due to shifting
+    """
+    def __init__(self):
+        self.items = []
+    
+    def enqueue(self, item):
+        """Add to rear - O(1)"""
+        self.items.append(item)
+    
+    def dequeue(self):
+        """Remove from front - O(n)"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self.items.pop(0)  # O(n) - BAD!
+    
+    def peek(self):
+        """View front element"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self.items[0]
+    
+    def is_empty(self):
+        return len(self.items) == 0
+    
+    def size(self):
+        return len(self.items)
+
+# Example
+queue = QueueList()
+queue.enqueue(10)
+queue.enqueue(20)
+queue.enqueue(30)
+print(queue.dequeue())  # 10 (FIFO)</div>
+
+            <h3>2. Using collections.deque (Best)</h3>
+
+            <div class="concept-box">
+                <p><strong>Recommended!</strong> Both enqueue and dequeue are O(1). Deque = Double-Ended Queue</p>
+            </div>
+
+            <div class="code-label">Python - Queue Using deque (BEST)</div>
+            <div class="code-block">from collections import deque
+
+class Queue:
+    """
+    Queue using collections.deque
+    ALL operations O(1) - EFFICIENT!
+    """
+    def __init__(self):
+        self.items = deque()
+    
+    def enqueue(self, item):
+        """Add to rear - O(1)"""
+        self.items.append(item)
+    
+    def dequeue(self):
+        """Remove from front - O(1)"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self.items.popleft()  # O(1) - GOOD!
+    
+    def peek(self):
+        """View front element"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self.items[0]
+    
+    def is_empty(self):
+        return len(self.items) == 0
+    
+    def size(self):
+        return len(self.items)
+    
+    def __str__(self):
+        return str(list(self.items))
+
+# Example
+queue = Queue()
+queue.enqueue(10)
+queue.enqueue(20)
+queue.enqueue(30)
+print(queue)            # [10, 20, 30]
+print(queue.dequeue())  # 10
+print(queue.peek())     # 20
+print(queue.size())     # 2</div>
+
+            <div class="pseudocode">PSEUDOCODE: Queue Class
+
+CLASS Queue:
+    CONSTRUCTOR():
+        items = deque()
+    
+    FUNCTION enqueue(item):
+        APPEND item to items
+    END FUNCTION
+    
+    FUNCTION dequeue():
+        IF isEmpty():
+            RAISE error "Queue is empty"
+        END IF
+        RETURN REMOVE_FIRST(items)
+    END FUNCTION
+    
+    FUNCTION peek():
+        IF isEmpty():
+            RAISE error "Queue is empty"
+        END IF
+        RETURN items[0]
+    END FUNCTION
+    
+    FUNCTION isEmpty():
+        RETURN LENGTH(items) == 0
+    END FUNCTION
+    
+    FUNCTION size():
+        RETURN LENGTH(items)
+    END FUNCTION
+END CLASS
+
+All operations: O(1) time complexity</div>
+
+            <h3>3. Using Linked List</h3>
+
+            <div class="code-label">Python - Queue Using Linked List</div>
+            <div class="code-block">class Node:
+    """Node for linked list"""
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class QueueLinkedList:
+    """
+    Queue using linked list
+    Efficient O(1) operations, no fixed size
+    """
+    def __init__(self):
+        self.front = None  # Remove from here
+        self.rear = None   # Add to here
+        self._size = 0
+    
+    def enqueue(self, item):
+        """Add to rear"""
+        new_node = Node(item)
+        
+        if self.rear is None:
+            # Queue was empty
+            self.front = self.rear = new_node
+        else:
+            self.rear.next = new_node
+            self.rear = new_node
+        
+        self._size += 1
+    
+    def dequeue(self):
+        """Remove from front"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        
+        item = self.front.data
+        self.front = self.front.next
+        
+        if self.front is None:
+            # Queue is now empty
+            self.rear = None
+        
+        self._size -= 1
+        return item
+    
+    def peek(self):
+        """View front element"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self.front.data
+    
+    def is_empty(self):
+        return self.front is None
+    
+    def size(self):
+        return self._size
+
+# Example
+queue = QueueLinkedList()
+queue.enqueue(10)
+queue.enqueue(20)
+queue.enqueue(30)
+print(queue.dequeue())  # 10
+print(queue.peek())     # 20</div>
+
+            <h3>4. Circular Queue (Fixed Size)</h3>
+
+            <div class="concept-box">
+                <p><strong>Circular Queue:</strong> Fixed-size array where rear wraps around to beginning. Efficient use of space.</p>
+            </div>
+
+            <div class="code-label">Python - Circular Queue</div>
+            <div class="code-block">class CircularQueue:
+    """
+    Circular Queue with fixed size
+    Efficient space usage, no shifting needed
+    """
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.items = [None] * capacity
+        self.front = 0
+        self.rear = -1
+        self._size = 0
+    
+    def enqueue(self, item):
+        """Add to rear"""
+        if self.is_full():
+            raise OverflowError("Queue is full")
+        
+        self.rear = (self.rear + 1) % self.capacity  # Wrap around
+        self.items[self.rear] = item
+        self._size += 1
+    
+    def dequeue(self):
+        """Remove from front"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        
+        item = self.items[self.front]
+        self.items[self.front] = None  # Clear reference
+        self.front = (self.front + 1) % self.capacity  # Wrap around
+        self._size -= 1
+        return item
+    
+    def peek(self):
+        """View front element"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self.items[self.front]
+    
+    def is_empty(self):
+        return self._size == 0
+    
+    def is_full(self):
+        return self._size == self.capacity
+    
+    def size(self):
+        return self._size
+
+# Example
+queue = CircularQueue(5)
+queue.enqueue(10)
+queue.enqueue(20)
+queue.enqueue(30)
+print(queue.dequeue())  # 10
+queue.enqueue(40)
+queue.enqueue(50)
+print(queue.size())     # 4</div>
+
+            <div class="key-point">
+                <strong>Implementation Comparison:</strong>
+                <ul>
+                    <li><strong>List (pop(0)):</strong> Simple but slow dequeue O(n) - avoid!</li>
+                    <li><strong>deque:</strong> Fast O(1) operations, dynamic size - BEST for general use</li>
+                    <li><strong>Linked List:</strong> O(1) operations, no size limit, extra memory for pointers</li>
+                    <li><strong>Circular Queue:</strong> Fixed size, O(1) operations, efficient space usage</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TYPES SECTION -->
+        <div id="types" class="section">
+            <h2>🔄 Types of Queues</h2>
+
+            <h3>1. Simple Queue (Linear Queue)</h3>
+
+            <div class="concept-box">
+                <p>Standard FIFO queue - enqueue at rear, dequeue from front.</p>
+            </div>
+
+            <h3>2. Circular Queue</h3>
+
+            <div class="concept-box">
+                <p>Rear wraps around to start when it reaches end. Efficient space usage.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Circular Queue</h4>
+                <p>Array indices: [0] [1] [2] [3] [4]</p>
+                <p>When rear reaches index 4, it wraps to index 0 if space available.</p>
+            </div>
+
+            <h3>3. Priority Queue</h3>
+
+            <div class="concept-box">
+                <p>Elements dequeued based on <strong>priority</strong>, not insertion order. Higher priority = dequeued first.</p>
+            </div>
+
+            <div class="code-label">Python - Priority Queue</div>
+            <div class="code-block">import heapq
+
+class PriorityQueue:
+    """
+    Priority Queue using heapq (min-heap)
+    Lower number = higher priority
+    """
+    def __init__(self):
+        self.items = []
+    
+    def enqueue(self, item, priority):
+        """Add with priority"""
+        heapq.heappush(self.items, (priority, item))
+    
+    def dequeue(self):
+        """Remove highest priority (lowest number)"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return heapq.heappop(self.items)[1]
+    
+    def peek(self):
+        """View highest priority"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        return self.items[0][1]
+    
+    def is_empty(self):
+        return len(self.items) == 0
+    
+    def size(self):
+        return len(self.items)
+
+# Example
+pq = PriorityQueue()
+pq.enqueue("Low priority task", 3)
+pq.enqueue("High priority task", 1)
+pq.enqueue("Medium priority task", 2)
+
+print(pq.dequeue())  # "High priority task" (priority 1)
+print(pq.dequeue())  # "Medium priority task" (priority 2)
+print(pq.dequeue())  # "Low priority task" (priority 3)</div>
+
+            <h3>4. Deque (Double-Ended Queue)</h3>
+
+            <div class="concept-box">
+                <p>Can add/remove from <strong>both ends</strong>. Combination of stack and queue.</p>
+            </div>
+
+            <div class="code-label">Python - Deque Operations</div>
+            <div class="code-block">from collections import deque
+
+dq = deque()
+
+# Add to rear (like queue)
+dq.append(10)
+dq.append(20)
+
+# Add to front
+dq.appendleft(5)
+
+# Remove from front (like queue)
+print(dq.popleft())  # 5
+
+# Remove from rear (like stack)
+print(dq.pop())  # 20
+
+# Result: [10]
+print(list(dq))  # [10]
+
+# Use cases:
+# - Sliding window problems
+# - Palindrome checking
+# - Browser history (back/forward)</div>
+
+            <h3>Comparison of Queue Types</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Type</th>
+                    <th>Add</th>
+                    <th>Remove</th>
+                    <th>Use Case</th>
+                </tr>
+                <tr>
+                    <td><strong>Simple Queue</strong></td>
+                    <td>Rear only</td>
+                    <td>Front only</td>
+                    <td>General FIFO tasks</td>
+                </tr>
+                <tr>
+                    <td><strong>Circular Queue</strong></td>
+                    <td>Rear (wrap)</td>
+                    <td>Front (wrap)</td>
+                    <td>Fixed-size buffering</td>
+                </tr>
+                <tr>
+                    <td><strong>Priority Queue</strong></td>
+                    <td>By priority</td>
+                    <td>Highest priority</td>
+                    <td>Task scheduling, Dijkstra</td>
+                </tr>
+                <tr>
+                    <td><strong>Deque</strong></td>
+                    <td>Both ends</td>
+                    <td>Both ends</td>
+                    <td>Sliding window, palindrome</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- APPLICATIONS SECTION -->
+        <div id="applications" class="section">
+            <h2>🎯 Queue Applications</h2>
+
+            <h3>1. Breadth-First Search (BFS)</h3>
+
+            <div class="concept-box">
+                <p>BFS explores tree/graph level by level using a queue.</p>
+            </div>
+
+            <div class="code-label">Python - BFS on Tree</div>
+            <div class="code-block">from collections import deque
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def bfs_tree(root):
+    """
+    Level-order traversal using queue
+    """
+    if not root:
+        return []
+    
+    result = []
+    queue = deque([root])
+    
+    while queue:
+        node = queue.popleft()
+        result.append(node.val)
+        
+        if node.left:
+            queue.append(node.left)
+        if node.right:
+            queue.append(node.right)
+    
+    return result
+
+# Example tree:
+#       1
+#      / \
+#     2   3
+#    / \
+#   4   5
+
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+
+print(bfs_tree(root))  # [1, 2, 3, 4, 5]</div>
+
+            <h3>2. Level Order Traversal</h3>
+
+            <div class="code-label">Python - Level Order (by level)</div>
+            <div class="code-block">def level_order_traversal(root):
+    """
+    Return nodes grouped by level
+    """
+    if not root:
+        return []
+    
+    result = []
+    queue = deque([root])
+    
+    while queue:
+        level_size = len(queue)
+        current_level = []
+        
+        for _ in range(level_size):
+            node = queue.popleft()
+            current_level.append(node.val)
+            
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        
+        result.append(current_level)
+    
+    return result
+
+# Using same tree as above
+print(level_order_traversal(root))
+# Output: [[1], [2, 3], [4, 5]]</div>
+
+            <h3>3. Shortest Path (BFS on Graph)</h3>
+
+            <div class="code-label">Python - BFS for Shortest Path</div>
+            <div class="code-block">def shortest_path_bfs(graph, start, end):
+    """
+    Find shortest path in unweighted graph
+    """
+    if start == end:
+        return [start]
+    
+    queue = deque([(start, [start])])
+    visited = {start}
+    
+    while queue:
+        node, path = queue.popleft()
+        
+        for neighbor in graph[node]:
+            if neighbor == end:
+                return path + [neighbor]
+            
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, path + [neighbor]))
+    
+    return None  # No path found
+
+# Example graph
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+}
+
+print(shortest_path_bfs(graph, 'A', 'F'))
+# Output: ['A', 'C', 'F']</div>
+
+            <h3>4. Generate Binary Numbers</h3>
+
+            <div class="code-label">Python - Generate Binary Using Queue</div>
+            <div class="code-block">def generate_binary_numbers(n):
+    """
+    Generate binary representations from 1 to n
+    Using queue - clever pattern!
+    """
+    result = []
+    queue = deque(['1'])
+    
+    for _ in range(n):
+        binary = queue.popleft()
+        result.append(binary)
+        
+        # Generate next numbers by appending 0 and 1
+        queue.append(binary + '0')
+        queue.append(binary + '1')
+    
+    return result
+
+print(generate_binary_numbers(10))
+# Output: ['1', '10', '11', '100', '101', '110', '111', '1000', '1001', '1010']</div>
+
+            <h3>5. Hot Potato Game (Josephus Problem)</h3>
+
+            <div class="code-label">Python - Hot Potato Simulation</div>
+            <div class="code-block">def hot_potato(names, num):
+    """
+    Simulate hot potato game
+    Pass potato num times, person holding it is out
+    """
+    queue = deque(names)
+    
+    while len(queue) > 1:
+        # Pass the potato
+        for _ in range(num):
+            queue.append(queue.popleft())
+        
+        # Remove person holding potato
+        eliminated = queue.popleft()
+        print(f"{eliminated} is eliminated!")
+    
+    return queue[0]
+
+players = ['Alice', 'Bob', 'Charlie', 'David', 'Eve']
+winner = hot_potato(players, 7)
+print(f"Winner: {winner}")</div>
+
+            <h3>6. Task Scheduler</h3>
+
+            <div class="code-label">Python - Simple Task Scheduler</div>
+            <div class="code-block">def schedule_tasks(tasks, cooldown):
+    """
+    Schedule tasks with cooldown period
+    Same task must wait cooldown cycles
+    """
+    queue = deque(tasks)
+    time = 0
+    last_executed = {}
+    
+    while queue:
+        task = queue.popleft()
+        
+        # Check if task can be executed
+        if task in last_executed:
+            wait_time = cooldown - (time - last_executed[task])
+            if wait_time > 0:
+                # Put task back and add idle time
+                queue.append(task)
+                time += 1
+                continue
+        
+        # Execute task
+        print(f"Time {time}: Execute {task}")
+        last_executed[task] = time
+        time += 1
+    
+    return time
+
+tasks = ['A', 'A', 'A', 'B', 'B', 'B']
+total_time = schedule_tasks(tasks, 2)
+print(f"Total time: {total_time}")</div>
+
+            <div class="memory-tip">
+                <strong>💡 Queue Applications Pattern:</strong>
+                <ul>
+                    <li><strong>BFS:</strong> Process nodes level by level</li>
+                    <li><strong>Scheduling:</strong> First come, first served</li>
+                    <li><strong>Buffering:</strong> Store data temporarily in order</li>
+                    <li><strong>Shortest Path:</strong> Explore nearest nodes first</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PROBLEMS SECTION -->
+        <div id="problems" class="section">
+            <h2>🧩 Practice Problems</h2>
+
+            <h3>Problem 1: Implement Queue Using Stacks</h3>
+
+            <div class="concept-box">
+                <p><strong>Challenge:</strong> Implement a queue using two stacks. All operations should maintain FIFO order.</p>
+            </div>
+
+            <div class="code-label">Python - Queue Using Two Stacks</div>
+            <div class="code-block">class QueueUsingStacks:
+    """
+    Implement queue using two stacks
+    Stack 1 for enqueue, Stack 2 for dequeue
+    """
+    def __init__(self):
+        self.stack1 = []  # For enqueue
+        self.stack2 = []  # For dequeue
+    
+    def enqueue(self, item):
+        """Push to stack1 - O(1)"""
+        self.stack1.append(item)
+    
+    def dequeue(self):
+        """
+        Pop from stack2
+        If stack2 empty, transfer from stack1
+        Amortized O(1)
+        """
+        if not self.stack2:
+            # Transfer all from stack1 to stack2
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        
+        if not self.stack2:
+            raise IndexError("Queue is empty")
+        
+        return self.stack2.pop()
+    
+    def peek(self):
+        """View front without removing"""
+        if not self.stack2:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        
+        if not self.stack2:
+            raise IndexError("Queue is empty")
+        
+        return self.stack2[-1]
+    
+    def is_empty(self):
+        return not self.stack1 and not self.stack2
+
+# Test
+q = QueueUsingStacks()
+q.enqueue(1)
+q.enqueue(2)
+q.enqueue(3)
+print(q.dequeue())  # 1 (FIFO)
+print(q.peek())     # 2</div>
+
+            <h3>Problem 2: Reverse First K Elements</h3>
+
+            <div class="code-label">Python - Reverse First K Elements</div>
+            <div class="code-block">def reverse_first_k(queue, k):
+    """
+    Reverse first k elements of queue
+    Use stack to reverse, then queue for rest
+    """
+    if k <= 0 or k > len(queue):
+        return queue
+    
+    stack = []
+    
+    # Push first k to stack
+    for _ in range(k):
+        stack.append(queue.popleft())
+    
+    # Pop from stack and add back (reversed)
+    while stack:
+        queue.append(stack.pop())
+    
+    # Move remaining n-k elements to back
+    for _ in range(len(queue) - k):
+        queue.append(queue.popleft())
+    
+    return queue
+
+# Test
+from collections import deque
+q = deque([1, 2, 3, 4, 5])
+result = reverse_first_k(q, 3)
+print(list(result))  # [3, 2, 1, 4, 5]</div>
+
+            <h3>Problem 3: Check if Queue is Sortable</h3>
+
+            <div class="code-label">Python - Check if Sortable Using Stack</div>
+            <div class="code-block">def is_queue_sortable(queue):
+    """
+    Check if queue can be sorted using a stack
+    Can only dequeue and push/pop from stack
+    """
+    stack = []
+    expected = 1
+    temp_queue = deque(queue)
+    
+    while temp_queue:
+        front = temp_queue.popleft()
+        
+        if front == expected:
+            expected += 1
+        else:
+            # Check if we can use stack
+            while stack and stack[-1] == expected:
+                stack.pop()
+                expected += 1
+            
+            stack.append(front)
+    
+    # Check remaining stack
+    while stack:
+        if stack[-1] == expected:
+            stack.pop()
+            expected += 1
+        else:
+            return False
+    
+    return True
+
+# Test
+print(is_queue_sortable([3, 1, 2]))  # True
+print(is_queue_sortable([3, 2, 1]))  # True
+print(is_queue_sortable([2, 3, 1]))  # False</div>
+
+            <h3>Problem 4: First Non-Repeating Character</h3>
+
+            <div class="code-label">Python - First Non-Repeating Character in Stream</div>
+            <div class="code-block">def first_non_repeating_stream(stream):
+    """
+    Find first non-repeating character at each step
+    """
+    from collections import deque, defaultdict
+    
+    queue = deque()
+    count = defaultdict(int)
+    result = []
+    
+    for char in stream:
+        count[char] += 1
+        queue.append(char)
+        
+        # Remove repeating characters from front
+        while queue and count[queue[0]] > 1:
+            queue.popleft()
+        
+        # First non-repeating or -1
+        if queue:
+            result.append(queue[0])
+        else:
+            result.append('-1')
+    
+    return result
+
+# Test
+stream = "aabccxb"
+print(first_non_repeating_stream(stream))
+# Output: ['a', '-1', 'b', 'b', 'b', 'b', 'x']</div>
+
+            <h3>Problem 5: Sliding Window Maximum</h3>
+
+            <div class="code-label">Python - Max in Sliding Window Using Deque</div>
+            <div class="code-block">def sliding_window_maximum(nums, k):
+    """
+    Find maximum in each window of size k
+    Use deque to store indices of useful elements
+    """
+    from collections import deque
+    
+    if not nums or k == 0:
+        return []
+    
+    dq = deque()  # Store indices
+    result = []
+    
+    for i in range(len(nums)):
+        # Remove elements outside window
+        while dq and dq[0] < i - k + 1:
+            dq.popleft()
+        
+        # Remove smaller elements (not useful)
+        while dq and nums[dq[-1]] < nums[i]:
+            dq.pop()
+        
+        dq.append(i)
+        
+        # Add to result if window complete
+        if i >= k - 1:
+            result.append(nums[dq[0]])
+    
+    return result
+
+# Test
+nums = [1, 3, -1, -3, 5, 3, 6, 7]
+k = 3
+print(sliding_window_maximum(nums, k))
+# Output: [3, 3, 5, 5, 6, 7]</div>
+
+            <div class="key-point">
+                <strong>Problem-Solving Tips:</strong>
+                <ul>
+                    <li>Use queue for <strong>level-by-level</strong> processing</li>
+                    <li>Use queue + stack for <strong>reversing</strong> operations</li>
+                    <li>Use deque for <strong>sliding window</strong> problems</li>
+                    <li>Use queue for <strong>BFS</strong> traversal</li>
+                    <li>Think FIFO when order matters</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- INTERACTIVE PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Interactive Queue Demo</h2>
+
+            <div class="interactive-demo">
+                <h3>Try It Yourself!</h3>
+                <p>Interact with a live queue implementation:</p>
+
+                <div class="demo-controls">
+                    <input type="text" id="queueInput" placeholder="Enter value">
+                    <button class="demo-btn" onclick="enqueueDemo()">Enqueue</button>
+                    <button class="demo-btn" onclick="dequeueDemo()">Dequeue</button>
+                    <button class="demo-btn" onclick="peekDemo()">Peek</button>
+                    <button class="demo-btn" onclick="clearDemo()">Clear</button>
+                </div>
+
+                <div class="visualization">
+                    <h4>Queue Visualization</h4>
+                    <div id="queueVisual" class="queue-visual">
+                        <span style="font-weight: bold; color: #f5576c;">FRONT →</span>
+                        <span style="font-weight: bold; color: #f5576c; margin-left: auto;">← REAR</span>
+                    </div>
+                </div>
+
+                <div id="output">
+                    <strong>Output:</strong> Queue is empty. Start by enqueueing elements!
+                </div>
+
+                <div class="memory-tip" style="margin-top: 20px;">
+                    <strong>🎯 Quick Guide:</strong>
+                    <ul>
+                        <li><strong>Enqueue:</strong> Adds element to the rear (right side)</li>
+                        <li><strong>Dequeue:</strong> Removes element from front (left side)</li>
+                        <li><strong>Peek:</strong> Shows front element without removing</li>
+                        <li><strong>Clear:</strong> Empties the entire queue</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Practice Exercises</h3>
+
+            <div class="concept-box">
+                <h4>Try These:</h4>
+                <ol>
+                    <li>Enqueue numbers 1 through 5 and observe FIFO order</li>
+                    <li>Dequeue 2 elements and see which ones are removed</li>
+                    <li>Use peek to see the front without removing it</li>
+                    <li>Implement your own queue in your favorite language</li>
+                    <li>Solve a BFS problem using a queue</li>
+                </ol>
+            </div>
+
+            <h3>Key Takeaways</h3>
+
+            <div class="key-point">
+                <strong>Remember:</strong>
+                <ul>
+                    <li>Queue follows <strong>FIFO</strong> (First In, First Out)</li>
+                    <li>Use <strong>deque</strong> in Python for O(1) operations</li>
+                    <li>Perfect for <strong>BFS, scheduling, buffering</strong></li>
+                    <li>Dequeue from <strong>front</strong>, enqueue at <strong>rear</strong></li>
+                    <li>Different from stack which is LIFO</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            const buttons = document.querySelectorAll('.nav-btn');
+            
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Interactive Queue Demo
+        const demoQueue = [];
+
+        function updateVisual() {
+            const visual = document.getElementById('queueVisual');
+            visual.innerHTML = '<span style="font-weight: bold; color: #f5576c;">FRONT →</span>';
+            
+            if (demoQueue.length === 0) {
+                const emptyMsg = document.createElement('span');
+                emptyMsg.textContent = 'Empty Queue';
+                emptyMsg.style.color = '#999';
+                emptyMsg.style.fontStyle = 'italic';
+                emptyMsg.style.margin = '0 auto';
+                visual.appendChild(emptyMsg);
+            } else {
+                demoQueue.forEach((item, index) => {
+                    const queueItem = document.createElement('div');
+                    queueItem.className = 'queue-item';
+                    queueItem.textContent = item;
+                    if (index === 0) {
+                        queueItem.style.borderLeft = '3px solid #4caf50';
+                    }
+                    if (index === demoQueue.length - 1) {
+                        queueItem.style.borderRight = '3px solid #ff9800';
+                    }
+                    visual.appendChild(queueItem);
+                });
+            }
+            
+            visual.innerHTML += '<span style="font-weight: bold; color: #f5576c; margin-left: auto;">← REAR</span>';
+        }
+
+        function updateOutput(message, isError = false) {
+            const output = document.getElementById('output');
+            output.innerHTML = `<strong>Output:</strong> ${message}`;
+            output.style.color = isError ? '#d32f2f' : '#333';
+        }
+
+        function enqueueDemo() {
+            const input = document.getElementById('queueInput');
+            const value = input.value.trim();
+            
+            if (!value) {
+                updateOutput('Please enter a value!', true);
+                return;
+            }
+            
+            demoQueue.push(value);
+            updateVisual();
+            updateOutput(`Enqueued "${value}". Queue size: ${demoQueue.length}`);
+            input.value = '';
+        }
+
+        function dequeueDemo() {
+            if (demoQueue.length === 0) {
+                updateOutput('Queue is empty! Cannot dequeue.', true);
+                return;
+            }
+            
+            const removed = demoQueue.shift();
+            updateVisual();
+            updateOutput(`Dequeued "${removed}". Queue size: ${demoQueue.length}`);
+        }
+
+        function peekDemo() {
+            if (demoQueue.length === 0) {
+                updateOutput('Queue is empty! Nothing to peek.', true);
+                return;
+            }
+            
+            const front = demoQueue[0];
+            updateOutput(`Front element: "${front}" (not removed). Queue size: ${demoQueue.length}`);
+        }
+
+        function clearDemo() {
+            demoQueue.length = 0;
+            updateVisual();
+            updateOutput('Queue cleared successfully!');
+        }
+
+        // Allow Enter key to enqueue
+        document.getElementById('queueInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                enqueueDemo();
+            }
+        });
+
+        // Initialize
+        updateVisual();
+    </script>
+</body>
+</html>

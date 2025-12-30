@@ -1,0 +1,1681 @@
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searching Algorithms - Master the Basics</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #f5576c; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #f5576c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #f093fb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #f093fb;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #f5576c;
+        }
+        h3 { color: #f093fb; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box {
+            background: #fff0f5;
+            padding: 20px;
+            border-left: 5px solid #f5576c;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #f5576c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #f5576c;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #fff0f5;
+        }
+        .visual-array {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .array-cell {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #f5576c;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            background: white;
+            transition: all 0.3s;
+        }
+        .array-cell.highlight {
+            background: #ffeb3b;
+            border-color: #ff9800;
+            transform: scale(1.1);
+        }
+        .array-cell.found {
+            background: #4caf50;
+            color: white;
+            border-color: #2e7d32;
+        }
+        .array-cell.checked {
+            background: #e0e0e0;
+            border-color: #9e9e9e;
+        }
+        .cell-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #f5576c;
+        }
+        .array-cell.found .cell-value,
+        .array-cell.highlight .cell-value {
+            color: inherit;
+        }
+        .cell-index {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        input[type="number"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            min-width: 150px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #f5576c; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+            border: 2px solid #f5576c;
+        }
+        .complexity-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin: 5px;
+        }
+        .time-complexity {
+            background: #e1f5fe;
+            color: #0277bd;
+        }
+        .space-complexity {
+            background: #f3e5f5;
+            color: #6a1b9a;
+        }
+        .visualization {
+            background: white;
+            border: 2px solid #f5576c;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .step-by-step {
+            background: #e3f2fd;
+            padding: 15px;
+            border-left: 5px solid #2196f3;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Searching Algorithms Masterclass</h1>
+            <p class="subtitle">Master Linear Search, Binary Search & Beyond</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('linear')">Linear Search</button>
+                <button class="nav-btn" onclick="showSection('binary')">Binary Search</button>
+                <button class="nav-btn" onclick="showSection('variations')">Binary Variations</button>
+                <button class="nav-btn" onclick="showSection('advanced')">Advanced Techniques</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive Practice</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 What is Searching?</h2>
+            
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p><strong>Searching</strong> is the process of finding a specific element or determining if an element exists in a data structure. It's one of the most fundamental operations in computer science.</p>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Critical Insight:</strong> Choosing the right search algorithm can make the difference between <span class="highlight">O(n) and O(log n)</span> - that's the difference between 1 million operations and just 20!
+            </div>
+
+            <h3>Why Learn Searching Algorithms?</h3>
+            <ul>
+                <li><strong>Ubiquitous:</strong> Used everywhere - databases, file systems, autocomplete, games</li>
+                <li><strong>Interview Essential:</strong> Binary search appears in 40%+ of coding interviews</li>
+                <li><strong>Foundation:</strong> Basis for more complex algorithms (sorting, graph traversal)</li>
+                <li><strong>Real Performance Impact:</strong> Can speed up applications by 1000x+</li>
+                <li><strong>Problem-Solving:</strong> Teaches divide-and-conquer thinking</li>
+            </ul>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> Searching = Finding a Book in Library
+                <ul>
+                    <li><strong>Linear Search</strong> = Check every book one by one (unsorted shelf)</li>
+                    <li><strong>Binary Search</strong> = Use alphabetical order, eliminate half each time (sorted shelf)</li>
+                    <li>Sorted data = Organized library (fast search)</li>
+                    <li>Unsorted data = Messy pile of books (slow search)</li>
+                </ul>
+            </div>
+
+            <h3>Searching Algorithm Comparison</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Time (Best)</th>
+                    <th>Time (Average)</th>
+                    <th>Time (Worst)</th>
+                    <th>Space</th>
+                    <th>Requirement</th>
+                </tr>
+                <tr>
+                    <td><strong>Linear Search</strong></td>
+                    <td>O(1)</td>
+                    <td>O(n)</td>
+                    <td>O(n)</td>
+                    <td>O(1)</td>
+                    <td>None</td>
+                </tr>
+                <tr>
+                    <td><strong>Binary Search</strong></td>
+                    <td>O(1)</td>
+                    <td>O(log n)</td>
+                    <td>O(log n)</td>
+                    <td>O(1)</td>
+                    <td>Sorted array</td>
+                </tr>
+                <tr>
+                    <td><strong>Jump Search</strong></td>
+                    <td>O(1)</td>
+                    <td>O(√n)</td>
+                    <td>O(√n)</td>
+                    <td>O(1)</td>
+                    <td>Sorted array</td>
+                </tr>
+                <tr>
+                    <td><strong>Interpolation</strong></td>
+                    <td>O(1)</td>
+                    <td>O(log log n)</td>
+                    <td>O(n)</td>
+                    <td>O(1)</td>
+                    <td>Sorted, uniform</td>
+                </tr>
+                <tr>
+                    <td><strong>Exponential</strong></td>
+                    <td>O(1)</td>
+                    <td>O(log n)</td>
+                    <td>O(log n)</td>
+                    <td>O(1)</td>
+                    <td>Sorted, unbounded</td>
+                </tr>
+            </table>
+
+            <h3>When to Use Which Algorithm?</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Scenario</th>
+                    <th>Best Algorithm</th>
+                    <th>Why?</th>
+                </tr>
+                <tr>
+                    <td>Unsorted array</td>
+                    <td>Linear Search</td>
+                    <td>No other choice</td>
+                </tr>
+                <tr>
+                    <td>Sorted array, small size (< 100)</td>
+                    <td>Linear Search</td>
+                    <td>Simple, no overhead</td>
+                </tr>
+                <tr>
+                    <td>Sorted array, any size</td>
+                    <td>Binary Search</td>
+                    <td>O(log n) - extremely fast</td>
+                </tr>
+                <tr>
+                    <td>Sorted, uniformly distributed</td>
+                    <td>Interpolation Search</td>
+                    <td>O(log log n) - even faster</td>
+                </tr>
+                <tr>
+                    <td>Unbounded/infinite array</td>
+                    <td>Exponential Search</td>
+                    <td>Find range first</td>
+                </tr>
+                <tr>
+                    <td>Linked list (sorted)</td>
+                    <td>Jump Search</td>
+                    <td>No random access</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- LINEAR SEARCH SECTION -->
+        <div id="linear" class="section">
+            <h2>📚 Linear Search (Sequential Search)</h2>
+
+            <h3>Concept</h3>
+
+            <div class="concept-box">
+                <p><strong>Linear Search</strong> checks each element in the array one by one until the target is found or the end is reached.</p>
+                <p><strong>Analogy:</strong> Like checking every house on a street to find a specific address.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Visual Example: Find 40</h4>
+                <div class="visual-array">
+                    <div class="array-cell checked"><div class="cell-value">10</div><div class="cell-index">[0]</div></div>
+                    <div class="array-cell checked"><div class="cell-value">25</div><div class="cell-index">[1]</div></div>
+                    <div class="array-cell checked"><div class="cell-value">32</div><div class="cell-index">[2]</div></div>
+                    <div class="array-cell found"><div class="cell-value">40</div><div class="cell-index">[3] ✓</div></div>
+                    <div class="array-cell"><div class="cell-value">55</div><div class="cell-index">[4]</div></div>
+                    <div class="array-cell"><div class="cell-value">67</div><div class="cell-index">[5]</div></div>
+                </div>
+                <p style="text-align: center; margin-top: 10px;">
+                    Checked indices: 0 → 1 → 2 → 3 (Found!)
+                </p>
+            </div>
+
+            <h3>Implementation</h3>
+
+            <div class="code-label">Python - Linear Search</div>
+            <div class="code-block">def linear_search(arr, target):
+    """
+    Search for target in array linearly
+    Returns: index if found, -1 if not found
+    """
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i  # Found at index i
+    return -1  # Not found
+
+# Example usage
+arr = [10, 25, 32, 40, 55, 67]
+target = 40
+result = linear_search(arr, target)
+
+if result != -1:
+    print(f"Found {target} at index {result}")
+else:
+    print(f"{target} not found")
+
+# Output: Found 40 at index 3</div>
+
+            <div class="pseudocode">PSEUDOCODE: Linear Search
+
+FUNCTION linearSearch(arr, target):
+    FOR i = 0 TO LENGTH(arr) - 1:
+        IF arr[i] == target:
+            RETURN i
+        END IF
+    END FOR
+    RETURN -1  // Not found
+END FUNCTION
+
+Time Complexity: O(n)
+- Best Case: O(1) - element at first position
+- Average Case: O(n/2) = O(n) - element in middle
+- Worst Case: O(n) - element at end or not present
+
+Space Complexity: O(1) - no extra space needed</div>
+
+            <h3>Variations of Linear Search</h3>
+
+            <div class="code-label">Python - Linear Search Variations</div>
+            <div class="code-block"># 1. Find all occurrences
+def linear_search_all(arr, target):
+    """Return list of all indices where target appears"""
+    indices = []
+    for i in range(len(arr)):
+        if arr[i] == target:
+            indices.append(i)
+    return indices
+
+arr = [10, 20, 30, 20, 40, 20]
+print(linear_search_all(arr, 20))  # [1, 3, 5]
+
+# 2. Find last occurrence
+def linear_search_last(arr, target):
+    """Return last index where target appears"""
+    last_index = -1
+    for i in range(len(arr)):
+        if arr[i] == target:
+            last_index = i
+    return last_index
+
+print(linear_search_last(arr, 20))  # 5
+
+# 3. Search with condition (lambda)
+def linear_search_condition(arr, condition):
+    """Find first element matching condition"""
+    for i in range(len(arr)):
+        if condition(arr[i]):
+            return i
+    return -1
+
+# Find first even number
+arr = [1, 3, 5, 8, 9, 10]
+result = linear_search_condition(arr, lambda x: x % 2 == 0)
+print(result)  # 3 (index of 8)
+
+# 4. Search in 2D array
+def linear_search_2d(matrix, target):
+    """Search in 2D array"""
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            if matrix[i][j] == target:
+                return (i, j)
+    return (-1, -1)
+
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+print(linear_search_2d(matrix, 5))  # (1, 1)</div>
+
+            <h3>When to Use Linear Search?</h3>
+
+            <div class="key-point">
+                <strong>✅ Use Linear Search When:</strong>
+                <ul>
+                    <li><strong>Array is unsorted</strong> - No other option</li>
+                    <li><strong>Small array</strong> (< 100 elements) - Overhead not worth it</li>
+                    <li><strong>Single search</strong> - Not worth sorting first</li>
+                    <li><strong>Linked list</strong> - No random access available</li>
+                    <li><strong>Streaming data</strong> - Elements come one at a time</li>
+                </ul>
+                
+                <strong>❌ Don't Use Linear Search When:</strong>
+                <ul>
+                    <li>Array is sorted (use Binary Search instead)</li>
+                    <li>Multiple searches on same data (sort first, then binary search)</li>
+                    <li>Large dataset (n > 10,000) and sorted</li>
+                </ul>
+            </div>
+
+            <h3>Optimizations</h3>
+
+            <div class="code-label">Python - Optimized Linear Search</div>
+            <div class="code-block"># Sentinel Linear Search (avoid boundary checks)
+def sentinel_linear_search(arr, target):
+    """
+    Add target at end to avoid checking bounds in loop
+    """
+    n = len(arr)
+    last = arr[n - 1]
+    
+    # Replace last element with target
+    arr[n - 1] = target
+    
+    i = 0
+    while arr[i] != target:
+        i += 1
+    
+    # Restore last element
+    arr[n - 1] = last
+    
+    # Check if target was found before last position
+    if i < n - 1 or arr[n - 1] == target:
+        return i
+    return -1
+
+# Move to Front optimization (for repeated searches)
+def linear_search_move_front(arr, target):
+    """
+    If found, move element to front (self-organizing list)
+    Good for frequently accessed elements
+    """
+    for i in range(len(arr)):
+        if arr[i] == target:
+            # Move to front
+            if i > 0:
+                arr[0], arr[i] = arr[i], arr[0]
+            return 0 if i > 0 else i
+    return -1</div>
+        </div>
+
+        <!-- BINARY SEARCH SECTION -->
+        <div id="binary" class="section">
+            <h2>🎯 Binary Search</h2>
+
+            <h3>Concept</h3>
+
+            <div class="concept-box">
+                <p><strong>Binary Search</strong> efficiently finds an element in a <span class="highlight">sorted array</span> by repeatedly dividing the search interval in half.</p>
+                <p><strong>Analogy:</strong> Like finding a word in a dictionary - open to middle, decide which half, repeat.</p>
+            </div>
+
+            <div class="step-by-step">
+                <h4>Step-by-Step: Find 40 in [10, 20, 30, 40, 50, 60, 70]</h4>
+                <ol>
+                    <li><strong>Step 1:</strong> left=0, right=6, mid=3 → arr[3]=40 → Found!</li>
+                </ol>
+                <p><strong>Only 1 comparison vs 4 in linear search!</strong></p>
+            </div>
+
+            <div class="step-by-step">
+                <h4>Another Example: Find 55 in [10, 20, 30, 40, 50, 60, 70]</h4>
+                <ol>
+                    <li><strong>Step 1:</strong> left=0, right=6, mid=3 → arr[3]=40 < 55 → Search right half</li>
+                    <li><strong>Step 2:</strong> left=4, right=6, mid=5 → arr[5]=60 > 55 → Search left half</li>
+                    <li><strong>Step 3:</strong> left=4, right=4, mid=4 → arr[4]=50 < 55 → Not found</li>
+                </ol>
+                <p><strong>Only 3 comparisons!</strong></p>
+            </div>
+
+            <h3>Implementation - Iterative</h3>
+
+            <div class="code-label">Python - Binary Search (Iterative)</div>
+            <div class="code-block">def binary_search(arr, target):
+    """
+    Binary search in sorted array (iterative)
+    Returns: index if found, -1 if not found
+    """
+    left = 0
+    right = len(arr) - 1
+    
+    while left <= right:
+        # Calculate middle (avoid overflow)
+        mid = left + (right - left) // 2
+        
+        # Check if target is at mid
+        if arr[mid] == target:
+            return mid
+        
+        # If target is greater, ignore left half
+        elif arr[mid] < target:
+            left = mid + 1
+        
+        # If target is smaller, ignore right half
+        else:
+            right = mid - 1
+    
+    # Target not found
+    return -1
+
+# Example usage
+arr = [10, 20, 30, 40, 50, 60, 70]
+target = 40
+result = binary_search(arr, target)
+
+if result != -1:
+    print(f"Found {target} at index {result}")
+else:
+    print(f"{target} not found")
+
+# Output: Found 40 at index 3</div>
+
+            <div class="pseudocode">PSEUDOCODE: Binary Search (Iterative)
+
+FUNCTION binarySearch(arr, target):
+    left = 0
+    right = LENGTH(arr) - 1
+    
+    WHILE left <= right:
+        mid = left + (right - left) / 2
+        
+        IF arr[mid] == target:
+            RETURN mid
+        ELSE IF arr[mid] < target:
+            left = mid + 1
+        ELSE:
+            right = mid - 1
+        END IF
+    END WHILE
+    
+    RETURN -1  // Not found
+END FUNCTION
+
+Time Complexity: O(log n)
+- Each step eliminates half the elements
+- For n=1,000,000: only ~20 comparisons needed!
+
+Space Complexity: O(1) - only a few variables</div>
+
+            <h3>Implementation - Recursive</h3>
+
+            <div class="code-label">Python - Binary Search (Recursive)</div>
+            <div class="code-block">def binary_search_recursive(arr, target, left=None, right=None):
+    """
+    Binary search in sorted array (recursive)
+    """
+    # Initialize bounds on first call
+    if left is None:
+        left = 0
+    if right is None:
+        right = len(arr) - 1
+    
+    # Base case: element not found
+    if left > right:
+        return -1
+    
+    # Calculate middle
+    mid = left + (right - left) // 2
+    
+    # Check if target is at mid
+    if arr[mid] == target:
+        return mid
+    
+    # Recursively search left or right half
+    elif arr[mid] < target:
+        return binary_search_recursive(arr, target, mid + 1, right)
+    else:
+        return binary_search_recursive(arr, target, left, mid - 1)
+
+# Example
+arr = [10, 20, 30, 40, 50, 60, 70]
+print(binary_search_recursive(arr, 40))  # 3</div>
+
+            <div class="pseudocode">PSEUDOCODE: Binary Search (Recursive)
+
+FUNCTION binarySearchRecursive(arr, target, left, right):
+    IF left > right:
+        RETURN -1  // Base case: not found
+    END IF
+    
+    mid = left + (right - left) / 2
+    
+    IF arr[mid] == target:
+        RETURN mid
+    ELSE IF arr[mid] < target:
+        RETURN binarySearchRecursive(arr, target, mid + 1, right)
+    ELSE:
+        RETURN binarySearchRecursive(arr, target, left, mid - 1)
+    END IF
+END FUNCTION
+
+Time Complexity: O(log n)
+Space Complexity: O(log n) - recursive call stack</div>
+
+            <div class="key-point">
+                <strong>⚠️ Iterative vs Recursive:</strong>
+                <ul>
+                    <li><strong>Iterative:</strong> More efficient (O(1) space), preferred in interviews</li>
+                    <li><strong>Recursive:</strong> More elegant, easier to understand, uses call stack</li>
+                    <li>For production code: <strong>use iterative</strong></li>
+                    <li>For understanding: <strong>learn both</strong></li>
+                </ul>
+            </div>
+
+            <h3>Common Mistakes & How to Avoid</h3>
+
+            <div class="code-label">Python - Binary Search Pitfalls</div>
+            <div class="code-block"># ❌ MISTAKE 1: Integer overflow (in languages like C/Java)
+# mid = (left + right) / 2  # Can overflow!
+
+# ✅ CORRECT:
+mid = left + (right - left) // 2
+
+# ❌ MISTAKE 2: Wrong loop condition
+# while left < right:  # Misses when left == right
+
+# ✅ CORRECT:
+while left <= right:
+
+# ❌ MISTAKE 3: Infinite loop
+# left = mid  # or right = mid (doesn't reduce search space)
+
+# ✅ CORRECT:
+left = mid + 1  # or right = mid - 1
+
+# ❌ MISTAKE 4: Unsorted array
+arr = [5, 2, 8, 1, 9]
+# binary_search(arr, 8)  # Will give wrong result!
+
+# ✅ CORRECT: Sort first
+arr.sort()
+binary_search(arr, 8)</div>
+
+            <div class="memory-tip">
+                <strong>💡 Binary Search Template (Memorize This!):</strong>
+                <div class="code-block">def binary_search_template(arr, target):
+    left, right = 0, len(arr) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if arr[mid] == target:
+            if arr[mid] == target:
+                return mid
+            elif arr[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+    
+        return -1</div>
+            </div>
+        </div>
+
+        <!-- VARIATIONS SECTION -->
+        <div id="variations" class="section">
+            <h2>🔄 Binary Search Variations</h2>
+
+            <h3>1. Find First Occurrence</h3>
+
+            <div class="concept-box">
+                <p>In an array with duplicates, find the <strong>first (leftmost)</strong> occurrence of target.</p>
+            </div>
+
+            <div class="code-label">Python - First Occurrence</div>
+            <div class="code-block">def binary_search_first(arr, target):
+    """
+    Find first occurrence of target in sorted array
+    Array: [1, 2, 2, 2, 3, 4] -> target=2 returns 1
+    """
+    left, right = 0, len(arr) - 1
+    result = -1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if arr[mid] == target:
+            result = mid  # Store result
+            right = mid - 1  # Continue searching left
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return result
+
+# Example
+arr = [1, 2, 2, 2, 3, 4]
+print(binary_search_first(arr, 2))  # 1</div>
+
+            <h3>2. Find Last Occurrence</h3>
+
+            <div class="code-label">Python - Last Occurrence</div>
+            <div class="code-block">def binary_search_last(arr, target):
+    """
+    Find last occurrence of target in sorted array
+    Array: [1, 2, 2, 2, 3, 4] -> target=2 returns 3
+    """
+    left, right = 0, len(arr) - 1
+    result = -1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if arr[mid] == target:
+            result = mid  # Store result
+            left = mid + 1  # Continue searching right
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return result
+
+# Example
+arr = [1, 2, 2, 2, 3, 4]
+print(binary_search_last(arr, 2))  # 3</div>
+
+            <h3>3. Count Occurrences</h3>
+
+            <div class="code-label">Python - Count Occurrences</div>
+            <div class="code-block">def count_occurrences(arr, target):
+    """
+    Count how many times target appears
+    Uses first and last occurrence
+    """
+    first = binary_search_first(arr, target)
+    
+    if first == -1:
+        return 0  # Not found
+    
+    last = binary_search_last(arr, target)
+    return last - first + 1
+
+# Example
+arr = [1, 2, 2, 2, 3, 4]
+print(count_occurrences(arr, 2))  # 3</div>
+
+            <div class="pseudocode">PSEUDOCODE: Count Occurrences
+
+FUNCTION countOccurrences(arr, target):
+    first = findFirst(arr, target)
+    
+    IF first == -1:
+        RETURN 0
+    END IF
+    
+    last = findLast(arr, target)
+    RETURN last - first + 1
+END FUNCTION
+
+Time Complexity: O(log n) - two binary searches
+Space Complexity: O(1)</div>
+
+            <h3>4. Search in Rotated Sorted Array</h3>
+
+            <div class="concept-box">
+                <p>Array was sorted, then rotated at some pivot.</p>
+                <p>Example: [4, 5, 6, 7, 0, 1, 2] (rotated at index 4)</p>
+            </div>
+
+            <div class="code-label">Python - Rotated Array Search</div>
+            <div class="code-block">def search_rotated(arr, target):
+    """
+    Search in rotated sorted array
+    [4, 5, 6, 7, 0, 1, 2] -> target=0 returns 4
+    """
+    left, right = 0, len(arr) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if arr[mid] == target:
+            return mid
+        
+        # Determine which half is sorted
+        if arr[left] <= arr[mid]:
+            # Left half is sorted
+            if arr[left] <= target < arr[mid]:
+                right = mid - 1  # Target in left half
+            else:
+                left = mid + 1  # Target in right half
+        else:
+            # Right half is sorted
+            if arr[mid] < target <= arr[right]:
+                left = mid + 1  # Target in right half
+            else:
+                right = mid - 1  # Target in left half
+    
+    return -1
+
+# Example
+arr = [4, 5, 6, 7, 0, 1, 2]
+print(search_rotated(arr, 0))  # 4
+print(search_rotated(arr, 3))  # -1</div>
+
+            <h3>5. Find Peak Element</h3>
+
+            <div class="concept-box">
+                <p>Peak element is greater than its neighbors.</p>
+                <p>Array: [1, 3, 20, 4, 1, 0] -> 20 is a peak</p>
+            </div>
+
+            <div class="code-label">Python - Find Peak</div>
+            <div class="code-block">def find_peak(arr):
+    """
+    Find any peak element in array
+    Peak: element greater than neighbors
+    """
+    left, right = 0, len(arr) - 1
+    
+    while left < right:
+        mid = left + (right - left) // 2
+        
+        if arr[mid] < arr[mid + 1]:
+            # Peak is in right half
+            left = mid + 1
+        else:
+            # Peak is in left half (including mid)
+            right = mid
+    
+    return left  # or right (they're equal)
+
+# Example
+arr = [1, 3, 20, 4, 1, 0]
+peak_index = find_peak(arr)
+print(f"Peak at index {peak_index}: {arr[peak_index]}")  # 2: 20</div>
+
+            <h3>6. Find Minimum in Rotated Array</h3>
+
+            <div class="code-label">Python - Find Minimum</div>
+            <div class="code-block">def find_min_rotated(arr):
+    """
+    Find minimum element in rotated sorted array
+    [4, 5, 6, 7, 0, 1, 2] -> returns 0
+    """
+    left, right = 0, len(arr) - 1
+    
+    # Array is not rotated
+    if arr[left] < arr[right]:
+        return arr[left]
+    
+    while left < right:
+        mid = left + (right - left) // 2
+        
+        # Check if mid+1 is the minimum
+        if arr[mid] > arr[mid + 1]:
+            return arr[mid + 1]
+        
+        # Check if mid is the minimum
+        if arr[mid - 1] > arr[mid]:
+            return arr[mid]
+        
+        # Decide which half to search
+        if arr[mid] > arr[left]:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return arr[left]
+
+# Example
+arr = [4, 5, 6, 7, 0, 1, 2]
+print(find_min_rotated(arr))  # 0</div>
+
+            <h3>7. Square Root (Binary Search on Answer)</h3>
+
+            <div class="concept-box">
+                <p>Find square root of a number using binary search.</p>
+                <p>This is "binary search on answer space".</p>
+            </div>
+
+            <div class="code-label">Python - Square Root</div>
+            <div class="code-block">def sqrt_binary_search(x):
+    """
+    Find square root of x (integer part)
+    sqrt(8) = 2, sqrt(16) = 4
+    """
+    if x < 2:
+        return x
+    
+    left, right = 1, x // 2
+    result = 0
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if mid * mid == x:
+            return mid
+        elif mid * mid < x:
+            result = mid  # Store potential answer
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return result
+
+# Example
+print(sqrt_binary_search(8))   # 2
+print(sqrt_binary_search(16))  # 4
+print(sqrt_binary_search(25))  # 5</div>
+
+            <h3>8. Search in 2D Matrix</h3>
+
+            <div class="concept-box">
+                <p>Matrix where each row and column is sorted.</p>
+            </div>
+
+            <div class="code-label">Python - Search 2D Matrix</div>
+            <div class="code-block">def search_matrix(matrix, target):
+    """
+    Search in 2D matrix (each row sorted)
+    Can treat as 1D sorted array
+    """
+    if not matrix or not matrix[0]:
+        return False
+    
+    rows, cols = len(matrix), len(matrix[0])
+    left, right = 0, rows * cols - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        # Convert 1D index to 2D coordinates
+        mid_value = matrix[mid // cols][mid % cols]
+        
+        if mid_value == target:
+            return True
+        elif mid_value < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return False
+
+# Example
+matrix = [
+    [1,  3,  5,  7],
+    [10, 11, 16, 20],
+    [23, 30, 34, 60]
+]
+print(search_matrix(matrix, 3))   # True
+print(search_matrix(matrix, 13))  # False</div>
+
+            <div class="memory-tip">
+                <strong>💡 Binary Search Pattern Recognition:</strong>
+                <ul>
+                    <li><strong>"Find first/last"</strong> → Modify to continue searching</li>
+                    <li><strong>"Rotated array"</strong> → Check which half is sorted</li>
+                    <li><strong>"Peak element"</strong> → Compare with neighbors</li>
+                    <li><strong>"Minimum in rotated"</strong> → Look for inflection point</li>
+                    <li><strong>"Square root"</strong> → Binary search on answer space</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ADVANCED SECTION -->
+        <div id="advanced" class="section">
+            <h2>🎓 Advanced Search Techniques</h2>
+
+            <h3>1. Jump Search</h3>
+
+            <div class="concept-box">
+                <p><strong>Jump Search</strong> jumps ahead by fixed steps, then does linear search in the block.</p>
+                <p><strong>Optimal jump size:</strong> √n</p>
+                <p><strong>Time Complexity:</strong> O(√n)</p>
+            </div>
+
+            <div class="code-label">Python - Jump Search</div>
+            <div class="code-block">import math
+
+def jump_search(arr, target):
+    """
+    Jump search in sorted array
+    Jump by √n, then linear search in block
+    """
+    n = len(arr)
+    step = int(math.sqrt(n))
+    prev = 0
+    
+    # Find the block where element may be present
+    while arr[min(step, n) - 1] < target:
+        prev = step
+        step += int(math.sqrt(n))
+        
+        if prev >= n:
+            return -1  # Not found
+    
+    # Linear search in the block
+    while arr[prev] < target:
+        prev += 1
+        
+        if prev == min(step, n):
+            return -1  # Not found
+    
+    # Check if element is found
+    if arr[prev] == target:
+        return prev
+    
+    return -1
+
+# Example
+arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+print(jump_search(arr, 6))  # 6</div>
+
+            <div class="pseudocode">PSEUDOCODE: Jump Search
+
+FUNCTION jumpSearch(arr, target):
+    n = LENGTH(arr)
+    step = SQRT(n)
+    prev = 0
+    
+    // Jump to find block
+    WHILE arr[MIN(step, n) - 1] < target:
+        prev = step
+        step = step + SQRT(n)
+        IF prev >= n:
+            RETURN -1
+        END IF
+    END WHILE
+    
+    // Linear search in block
+    WHILE arr[prev] < target:
+        prev = prev + 1
+        IF prev == MIN(step, n):
+            RETURN -1
+        END IF
+    END WHILE
+    
+    IF arr[prev] == target:
+        RETURN prev
+    END IF
+    
+    RETURN -1
+END FUNCTION
+
+Time Complexity: O(√n)
+Space Complexity: O(1)</div>
+
+            <h3>2. Interpolation Search</h3>
+
+            <div class="concept-box">
+                <p><strong>Interpolation Search</strong> uses the value to estimate position (like looking in dictionary).</p>
+                <p><strong>Best for:</strong> Uniformly distributed data</p>
+                <p><strong>Time Complexity:</strong> O(log log n) average, O(n) worst</p>
+            </div>
+
+            <div class="code-label">Python - Interpolation Search</div>
+            <div class="code-block">def interpolation_search(arr, target):
+    """
+    Interpolation search - better for uniform distribution
+    Estimates position based on value
+    """
+    left, right = 0, len(arr) - 1
+    
+    while left <= right and arr[left] <= target <= arr[right]:
+        # If only one element left
+        if left == right:
+            if arr[left] == target:
+                return left
+            return -1
+        
+        # Estimate position (interpolation formula)
+        pos = left + int(((target - arr[left]) / (arr[right] - arr[left])) 
+                         * (right - left))
+        
+        # Check if target is found
+        if arr[pos] == target:
+            return pos
+        
+        # If target is larger, search right
+        if arr[pos] < target:
+            left = pos + 1
+        # If target is smaller, search left
+        else:
+            right = pos - 1
+    
+    return -1
+
+# Example - works best with uniform distribution
+arr = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+print(interpolation_search(arr, 70))  # 6</div>
+
+            <h3>3. Exponential Search</h3>
+
+            <div class="concept-box">
+                <p><strong>Exponential Search</strong> finds range where element exists, then binary search.</p>
+                <p><strong>Best for:</strong> Unbounded/infinite arrays</p>
+            </div>
+
+            <div class="code-label">Python - Exponential Search</div>
+            <div class="code-block">def exponential_search(arr, target):
+    """
+    Exponential search - find range then binary search
+    Good for unbounded/infinite arrays
+    """
+    n = len(arr)
+    
+    # If target is at first position
+    if arr[0] == target:
+        return 0
+    
+    # Find range for binary search by repeated doubling
+    i = 1
+    while i < n and arr[i] <= target:
+        i *= 2
+    
+    # Binary search in found range
+    left = i // 2
+    right = min(i, n - 1)
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return -1
+
+# Example
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+print(exponential_search(arr, 8))  # 7</div>
+
+            <h3>4. Ternary Search</h3>
+
+            <div class="concept-box">
+                <p><strong>Ternary Search</strong> divides array into 3 parts (not commonly used, binary is better).</p>
+            </div>
+
+            <div class="code-label">Python - Ternary Search</div>
+            <div class="code-block">def ternary_search(arr, target, left=0, right=None):
+    """
+    Ternary search - divides into 3 parts
+    Less efficient than binary search
+    """
+    if right is None:
+        right = len(arr) - 1
+    
+    if left > right:
+        return -1
+    
+    # Divide into 3 parts
+    mid1 = left + (right - left) // 3
+    mid2 = right - (right - left) // 3
+    
+    if arr[mid1] == target:
+        return mid1
+    if arr[mid2] == target:
+        return mid2
+    
+    if target < arr[mid1]:
+        return ternary_search(arr, target, left, mid1 - 1)
+    elif target > arr[mid2]:
+        return ternary_search(arr, target, mid2 + 1, right)
+    else:
+        return ternary_search(arr, target, mid1 + 1, mid2 - 1)
+
+# Example
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+print(ternary_search(arr, 5))  # 4</div>
+
+            <h3>Algorithm Comparison</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Best Use Case</th>
+                    <th>Time Complexity</th>
+                    <th>Requirement</th>
+                </tr>
+                <tr>
+                    <td><strong>Linear</strong></td>
+                    <td>Unsorted, small arrays</td>
+                    <td>O(n)</td>
+                    <td>None</td>
+                </tr>
+                <tr>
+                    <td><strong>Binary</strong></td>
+                    <td>Sorted arrays (most common)</td>
+                    <td>O(log n)</td>
+                    <td>Sorted</td>
+                </tr>
+                <tr>
+                    <td><strong>Jump</strong></td>
+                    <td>Sorted, linked lists</td>
+                    <td>O(√n)</td>
+                    <td>Sorted</td>
+                </tr>
+                <tr>
+                    <td><strong>Interpolation</strong></td>
+                    <td>Uniformly distributed</td>
+                    <td>O(log log n)</td>
+                    <td>Sorted, uniform</td>
+                </tr>
+                <tr>
+                    <td><strong>Exponential</strong></td>
+                    <td>Unbounded arrays</td>
+                    <td>O(log n)</td>
+                    <td>Sorted, unbounded</td>
+                </tr>
+            </table>
+
+            <div class="key-point">
+                <strong>🎯 Real-World Applications:</strong>
+                <ul>
+                    <li><strong>Binary Search:</strong> Databases, dictionaries, autocomplete</li>
+                    <li><strong>Jump Search:</strong> Systems with expensive comparisons</li>
+                    <li><strong>Interpolation:</strong> Telephone directories, IP routing</li>
+                    <li><strong>Exponential:</strong> Debug logs, infinite streams</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Interactive Practice & Problems</h2>
+
+            <div class="interactive-demo">
+                <h3>Binary Search Visualizer</h3>
+                <p>Array: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]</p>
+                <input type="number" id="targetInput" placeholder="Enter target" value="70">
+                
+                <div class="demo-controls">
+                    <button class="demo-btn" onclick="runBinarySearch()">Run Binary Search</button>
+                    <button class="demo-btn" onclick="runLinearSearch()">Run Linear Search</button>
+                    <button class="demo-btn" onclick="resetVisualization()">Reset</button>
+                </div>
+                
+                <div id="visualArray" class="visual-array"></div>
+                <div id="output"></div>
+            </div>
+
+            <h3>🏋️ Practice Problems</h3>
+
+            <div class="key-point">
+                <strong>Problem 1: First Bad Version</strong>
+                <p>You are a product manager with n versions [1, 2, ..., n]. You want to find the first bad version causing all following versions to be bad.</p>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def first_bad_version(n):
+    """
+    Find first bad version using binary search
+    Minimize calls to isBadVersion()
+    """
+    left, right = 1, n
+    
+    while left < right:
+        mid = left + (right - left) // 2
+        
+        if isBadVersion(mid):
+            right = mid  # First bad is in left half (including mid)
+        else:
+            left = mid + 1  # First bad is in right half
+    
+    return left
+
+# Time: O(log n), Space: O(1)</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 2: Search Insert Position</strong>
+                <p>Given a sorted array and a target, return the index if found. If not, return where it should be inserted.</p>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def search_insert(arr, target):
+    """
+    Find target or insertion position
+    [1,3,5,6], target=5 → 2
+    [1,3,5,6], target=2 → 1
+    """
+    left, right = 0, len(arr) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return left  # Insertion position
+
+# Example
+print(search_insert([1, 3, 5, 6], 5))  # 2
+print(search_insert([1, 3, 5, 6], 2))  # 1</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 3: Find Kth Missing Positive Number</strong>
+                <div class="code-label">Python Solution</div>
+                <div class="code-block">def find_kth_missing(arr, k):
+    """
+    Find kth missing positive number
+    [2,3,4,7,11], k=5 → 9
+    Missing: 1,5,6,8,9
+    """
+    left, right = 0, len(arr) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        
+        # Number of missing elements before arr[mid]
+        missing = arr[mid] - (mid + 1)
+        
+        if missing < k:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return left + k
+
+print(find_kth_missing([2, 3, 4, 7, 11], 5))  # 9</div>
+            </div>
+
+            <h3>🎯 Key Takeaways</h3>
+
+            <div class="memory-tip">
+                <strong>The 10 Commandments of Searching:</strong>
+                <ol>
+                    <li><strong>Sorted = Binary Search</strong> (almost always)</li>
+                    <li><strong>Unsorted = Linear Search</strong> (no choice)</li>
+                    <li><strong>Avoid integer overflow:</strong> mid = left + (right - left) // 2</li>
+                    <li><strong>Loop condition:</strong> while left <= right</li>
+                    <li><strong>Update properly:</strong> left = mid + 1, right = mid - 1</li>
+                    <li><strong>First occurrence:</strong> Continue left after finding</li>
+                    <li><strong>Last occurrence:</strong> Continue right after finding</li>
+                    <li><strong>Rotated array:</strong> Check which half is sorted</li>
+                    <li><strong>Answer space:</strong> Binary search works on ranges too</li>
+                    <li><strong>Test edge cases:</strong> empty, single element, not found</li>
+                </ol>
+            </div>
+
+            <h3>🔥 Common Interview Questions</h3>
+
+            <div class="concept-box">
+                <h4>Must Practice:</h4>
+                <ol>
+                    <li>Binary Search (basic)</li>
+                    <li>First and Last Position</li>
+                    <li>Search in Rotated Sorted Array</li>
+                    <li>Find Peak Element</li>
+                    <li>Search 2D Matrix</li>
+                    <li>Find Minimum in Rotated Array</li>
+                    <li>Square Root (Binary Search on Answer)</li>
+                    <li>First Bad Version</li>
+                    <li>Search Insert Position</li>
+                    <li>Find Kth Smallest Element</li>
+                </ol>
+            </div>
+
+            <h3>📚 Quick Reference</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Problem Type</th>
+                    <th>Key Insight</th>
+                    <th>Template Modification</th>
+                </tr>
+                <tr>
+                    <td>Standard Binary Search</td>
+                    <td>Find exact match</td>
+                    <td>Return when arr[mid] == target</td>
+                </tr>
+                <tr>
+                    <td>First Occurrence</td>
+                    <td>Continue searching left</td>
+                    <td>right = mid - 1 when found</td>
+                </tr>
+                <tr>
+                    <td>Last Occurrence</td>
+                    <td>Continue searching right</td>
+                    <td>left = mid + 1 when found</td>
+                </tr>
+                <tr>
+                    <td>Insert Position</td>
+                    <td>Return left pointer</td>
+                    <td>Return left at end</td>
+                </tr>
+                <tr>
+                    <td>Rotated Array</td>
+                    <td>Check which half is sorted</td>
+                    <td>Compare arr[left] with arr[mid]</td>
+                </tr>
+                <tr>
+                    <td>Peak Element</td>
+                    <td>Compare with neighbors</td>
+                    <td>Check arr[mid] vs arr[mid+1]</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const demoArray = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+        let searchSteps = [];
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function renderArray(highlightIndices = [], foundIndex = -1, checkedIndices = []) {
+            const container = document.getElementById('visualArray');
+            container.innerHTML = '';
+            
+            demoArray.forEach((val, idx) => {
+                const cell = document.createElement('div');
+                cell.className = 'array-cell';
+                
+                if (idx === foundIndex) {
+                    cell.classList.add('found');
+                } else if (highlightIndices.includes(idx)) {
+                    cell.classList.add('highlight');
+                } else if (checkedIndices.includes(idx)) {
+                    cell.classList.add('checked');
+                }
+                
+                cell.innerHTML = `
+                    <div class="cell-value">${val}</div>
+                    <div class="cell-index">[${idx}]</div>
+                `;
+                container.appendChild(cell);
+            });
+        }
+
+        function displayOutput(msg) {
+            document.getElementById('output').innerHTML = msg;
+        }
+
+        async function runBinarySearch() {
+            const target = parseInt(document.getElementById('targetInput').value);
+            if (isNaN(target)) {
+                displayOutput('Please enter a valid number!');
+                return;
+            }
+
+            let left = 0, right = demoArray.length - 1;
+            let steps = 0;
+            let output = '<strong>Binary Search Steps:</strong><br><br>';
+
+            while (left <= right) {
+                steps++;
+                const mid = left + Math.floor((right - left) / 2);
+                
+                renderArray([mid], -1, []);
+                output += `Step ${steps}: left=${left}, right=${right}, mid=${mid}, arr[${mid}]=${demoArray[mid]}<br>`;
+                
+                await sleep(1000);
+
+                if (demoArray[mid] === target) {
+                    renderArray([], mid, []);
+                    output += `<br><strong>✅ Found ${target} at index ${mid}!</strong><br>`;
+                    output += `Total comparisons: ${steps}`;
+                    displayOutput(output);
+                    return;
+                } else if (demoArray[mid] < target) {
+                    output += `${demoArray[mid]} < ${target}, search right half<br><br>`;
+                    left = mid + 1;
+                } else {
+                    output += `${demoArray[mid]} > ${target}, search left half<br><br>`;
+                    right = mid - 1;
+                }
+
+                displayOutput(output);
+            }
+
+            renderArray([], -1, []);
+            output += `<br><strong>❌ ${target} not found in array</strong><br>`;
+            output += `Total comparisons: ${steps}`;
+            displayOutput(output);
+        }
+
+        async function runLinearSearch() {
+            const target = parseInt(document.getElementById('targetInput').value);
+            if (isNaN(target)) {
+                displayOutput('Please enter a valid number!');
+                return;
+            }
+
+            let output = '<strong>Linear Search Steps:</strong><br><br>';
+            const checkedSoFar = [];
+
+            for (let i = 0; i < demoArray.length; i++) {
+                checkedSoFar.push(i);
+                renderArray([i], -1, checkedSoFar);
+                
+                output += `Step ${i + 1}: Checking index ${i}, value = ${demoArray[i]}<br>`;
+                displayOutput(output);
+                
+                await sleep(500);
+
+                if (demoArray[i] === target) {
+                    renderArray([], i, checkedSoFar);
+                    output += `<br><strong>✅ Found ${target} at index ${i}!</strong><br>`;
+                    output += `Total comparisons: ${i + 1}`;
+                    displayOutput(output);
+                    return;
+                }
+            }
+
+            renderArray([], -1, checkedSoFar);
+            output += `<br><strong>❌ ${target} not found in array</strong><br>`;
+            output += `Total comparisons: ${demoArray.length}`;
+            displayOutput(output);
+        }
+
+        function resetVisualization() {
+            renderArray([], -1, []);
+            displayOutput('Ready to search! Enter a target value and click a search button.');
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Initialize
+        renderArray([], -1, []);
+        displayOutput('Ready to search! Enter a target value and click a search button.');
+    </script>
+</body>

@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linked List Masterclass</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #185a9d; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #185a9d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #43cea2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #43cea2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #185a9d;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #185a9d;
+        }
+        h3 { color: #43cea2; margin-top: 25px; margin-bottom: 15px; }
+        h4 { color: #185a9d; margin-top: 20px; margin-bottom: 10px; }
+        .concept-box {
+            background: #e8f5f1;
+            padding: 20px;
+            border-left: 5px solid #185a9d;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .warning-box {
+            background: #ffebee;
+            padding: 15px;
+            border-left: 5px solid #f44336;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #185a9d;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #185a9d;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #e8f5f1;
+        }
+        .visualization {
+            background: white;
+            border: 2px solid #185a9d;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .linked-list-visual {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            overflow-x: auto;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .node {
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+        }
+        .node-box {
+            display: flex;
+            border: 2px solid #185a9d;
+            border-radius: 5px;
+            background: white;
+            overflow: hidden;
+        }
+        .node-data {
+            padding: 15px 20px;
+            background: #185a9d;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .node-next {
+            padding: 15px 10px;
+            background: #43cea2;
+            color: white;
+            font-size: 0.9em;
+        }
+        .arrow {
+            font-size: 2em;
+            color: #185a9d;
+            margin: 0 5px;
+        }
+        .null-box {
+            padding: 15px 20px;
+            background: #f44336;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        .demo-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .demo-btn.danger {
+            background: #f44336;
+        }
+        .demo-btn.danger:hover {
+            background: #da190b;
+        }
+        input[type="number"], input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            width: 120px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #185a9d; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+            border: 2px solid #185a9d;
+            font-family: 'Courier New', monospace;
+        }
+        .complexity-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #4caf50;
+            color: white;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+        .complexity-badge.warning {
+            background: #ff9800;
+        }
+        .complexity-badge.danger {
+            background: #f44336;
+        }
+        .step-visual {
+            margin: 15px 0;
+            padding: 15px;
+            background: #e8f5f1;
+            border-left: 4px solid #185a9d;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔗 Linked List Masterclass</h1>
+            <p class="subtitle">Master Dynamic Data Structures</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('singly')">Singly Linked List</button>
+                <button class="nav-btn" onclick="showSection('operations')">Operations</button>
+                <button class="nav-btn" onclick="showSection('types')">Types</button>
+                <button class="nav-btn" onclick="showSection('problems')">Problems</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 What is a Linked List?</h2>
+            
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>A <strong>Linked List</strong> is a linear data structure where elements (nodes) are stored in memory at non-contiguous locations. Each node contains <span class="highlight">data</span> and a <span class="highlight">reference (pointer)</span> to the next node.</p>
+            </div>
+
+            <div class="visualization">
+                <h4>Linked List Structure</h4>
+                <div class="linked-list-visual">
+                    <span style="font-weight: bold; color: #185a9d;">HEAD →</span>
+                    <div class="node">
+                        <div class="node-box">
+                            <div class="node-data">10</div>
+                            <div class="node-next">next</div>
+                        </div>
+                    </div>
+                    <span class="arrow">→</span>
+                    <div class="node">
+                        <div class="node-box">
+                            <div class="node-data">20</div>
+                            <div class="node-next">next</div>
+                        </div>
+                    </div>
+                    <span class="arrow">→</span>
+                    <div class="node">
+                        <div class="node-box">
+                            <div class="node-data">30</div>
+                            <div class="node-next">next</div>
+                        </div>
+                    </div>
+                    <span class="arrow">→</span>
+                    <div class="null-box">NULL</div>
+                </div>
+                <p style="text-align: center; margin-top: 10px;">
+                    Each node points to the next, last node points to NULL
+                </p>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Critical Insight:</strong> Unlike arrays with contiguous memory, linked lists use <span class="highlight">pointers</span> to connect nodes scattered in memory. This enables dynamic size and efficient insertions/deletions!
+            </div>
+
+            <h3>Why Learn Linked Lists?</h3>
+            <ul>
+                <li><strong>Dynamic Size:</strong> Grows/shrinks as needed, no fixed capacity</li>
+                <li><strong>Efficient Insertion/Deletion:</strong> O(1) at beginning (vs O(n) in arrays)</li>
+                <li><strong>Foundation:</strong> Building block for stacks, queues, graphs</li>
+                <li><strong>Interview Essential:</strong> Very common in coding interviews</li>
+                <li><strong>Real-World:</strong> Browser history, music playlists, undo functionality</li>
+                <li><strong>Memory Management:</strong> Allocate memory as needed</li>
+            </ul>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> Linked List = Train Cars
+                <ul>
+                    <li>Each car (node) has cargo (data)</li>
+                    <li>Each car connects to next car (pointer)</li>
+                    <li>Cars can be anywhere on tracks (non-contiguous memory)</li>
+                    <li>Last car has no connection (NULL)</li>
+                    <li>Easy to add/remove cars anywhere</li>
+                </ul>
+            </div>
+
+            <h3>Linked List vs Array</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Array</th>
+                    <th>Linked List</th>
+                </tr>
+                <tr>
+                    <td><strong>Memory</strong></td>
+                    <td>Contiguous</td>
+                    <td>Non-contiguous (scattered)</td>
+                </tr>
+                <tr>
+                    <td><strong>Size</strong></td>
+                    <td>Fixed (static) or costly resize</td>
+                    <td>Dynamic (grows/shrinks easily)</td>
+                </tr>
+                <tr>
+                    <td><strong>Access</strong></td>
+                    <td>O(1) - Direct index access</td>
+                    <td>O(n) - Must traverse from head</td>
+                </tr>
+                <tr>
+                    <td><strong>Insert at Start</strong></td>
+                    <td>O(n) - Shift all elements</td>
+                    <td>O(1) - Just update head</td>
+                </tr>
+                <tr>
+                    <td><strong>Insert at End</strong></td>
+                    <td>O(1) - If space available</td>
+                    <td>O(n) - Must traverse to end</td>
+                </tr>
+                <tr>
+                    <td><strong>Delete at Start</strong></td>
+                    <td>O(n) - Shift all elements</td>
+                    <td>O(1) - Update head</td>
+                </tr>
+                <tr>
+                    <td><strong>Memory Usage</strong></td>
+                    <td>Less (just data)</td>
+                    <td>More (data + pointers)</td>
+                </tr>
+                <tr>
+                    <td><strong>Cache Performance</strong></td>
+                    <td>Better (locality)</td>
+                    <td>Worse (scattered)</td>
+                </tr>
+                <tr>
+                    <td><strong>Best For</strong></td>
+                    <td>Random access, iteration</td>
+                    <td>Frequent insertions/deletions</td>
+                </tr>
+            </table>
+
+            <h3>Types of Linked Lists</h3>
+
+            <div class="concept-box">
+                <ol>
+                    <li><strong>Singly Linked List:</strong> Each node points to next node only</li>
+                    <li><strong>Doubly Linked List:</strong> Each node points to both next and previous</li>
+                    <li><strong>Circular Linked List:</strong> Last node points back to first (forms circle)</li>
+                    <li><strong>Circular Doubly Linked List:</strong> Combination of circular and doubly</li>
+                </ol>
+            </div>
+
+            <h3>Real-World Applications</h3>
+
+            <div class="concept-box">
+                <h4>Where Linked Lists Are Used:</h4>
+                <ul>
+                    <li><strong>Browser History:</strong> Back/forward navigation (doubly linked)</li>
+                    <li><strong>Music Player:</strong> Next/previous song playlist</li>
+                    <li><strong>Undo/Redo:</strong> Text editors, image editors</li>
+                    <li><strong>Memory Management:</strong> Free memory blocks list</li>
+                    <li><strong>Hash Tables:</strong> Collision handling with chaining</li>
+                    <li><strong>Graph Adjacency Lists:</strong> Represent graph connections</li>
+                    <li><strong>Polynomial Operations:</strong> Store and manipulate polynomials</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SINGLY LINKED LIST SECTION -->
+        <div id="singly" class="section">
+            <h2>➡️ Singly Linked List</h2>
+
+            <h3>Node Structure</h3>
+
+            <div class="code-label">Python - Node Class</div>
+            <div class="code-block">class Node:
+    """
+    Node for singly linked list
+    Contains data and pointer to next node
+    """
+    def __init__(self, data):
+        self.data = data      # Store data
+        self.next = None      # Pointer to next node (initially None)
+
+# Creating nodes
+node1 = Node(10)
+node2 = Node(20)
+node3 = Node(30)
+
+# Linking nodes
+node1.next = node2
+node2.next = node3
+node3.next = None
+
+# Now we have: 10 -> 20 -> 30 -> NULL</div>
+
+            <h3>Singly Linked List Implementation</h3>
+
+            <div class="code-label">Python - Complete Singly Linked List</div>
+            <div class="code-block">class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class SinglyLinkedList:
+    """
+    Complete singly linked list implementation
+    """
+    def __init__(self):
+        self.head = None  # Start with empty list
+    
+    def is_empty(self):
+        """Check if list is empty"""
+        return self.head is None
+    
+    def insert_at_beginning(self, data):
+        """
+        Insert at start - O(1)
+        New node becomes head
+        """
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node
+    
+    def insert_at_end(self, data):
+        """
+        Insert at end - O(n)
+        Must traverse to find last node
+        """
+        new_node = Node(data)
+        
+        # If empty, new node is head
+        if self.is_empty():
+            self.head = new_node
+            return
+        
+        # Traverse to last node
+        current = self.head
+        while current.next:
+            current = current.next
+        
+        current.next = new_node
+    
+    def insert_at_position(self, data, position):
+        """
+        Insert at specific position - O(n)
+        Position 0 = beginning
+        """
+        if position == 0:
+            self.insert_at_beginning(data)
+            return
+        
+        new_node = Node(data)
+        current = self.head
+        
+        # Traverse to position-1
+        for i in range(position - 1):
+            if current is None:
+                print("Position out of bounds")
+                return
+            current = current.next
+        
+        # Insert node
+        new_node.next = current.next
+        current.next = new_node
+    
+    def delete_from_beginning(self):
+        """
+        Delete first node - O(1)
+        """
+        if self.is_empty():
+            print("List is empty!")
+            return None
+        
+        deleted_data = self.head.data
+        self.head = self.head.next
+        return deleted_data
+    
+    def delete_from_end(self):
+        """
+        Delete last node - O(n)
+        Need to find second-to-last node
+        """
+        if self.is_empty():
+            print("List is empty!")
+            return None
+        
+        # If only one node
+        if self.head.next is None:
+            deleted_data = self.head.data
+            self.head = None
+            return deleted_data
+        
+        # Find second-to-last node
+        current = self.head
+        while current.next.next:
+            current = current.next
+        
+        deleted_data = current.next.data
+        current.next = None
+        return deleted_data
+    
+    def delete_by_value(self, value):
+        """
+        Delete first node with given value - O(n)
+        """
+        if self.is_empty():
+            print("List is empty!")
+            return False
+        
+        # If head contains value
+        if self.head.data == value:
+            self.head = self.head.next
+            return True
+        
+        # Search for node
+        current = self.head
+        while current.next:
+            if current.next.data == value:
+                current.next = current.next.next
+                return True
+            current = current.next
+        
+        print(f"Value {value} not found")
+        return False
+    
+    def search(self, value):
+        """
+        Search for value - O(n)
+        Returns True if found
+        """
+        current = self.head
+        while current:
+            if current.data == value:
+                return True
+            current = current.next
+        return False
+    
+    def get_length(self):
+        """
+        Count nodes - O(n)
+        """
+        count = 0
+        current = self.head
+        while current:
+            count += 1
+            current = current.next
+        return count
+    
+    def display(self):
+        """
+        Print all elements - O(n)
+        """
+        if self.is_empty():
+            print("List is empty")
+            return
+        
+        current = self.head
+        elements = []
+        while current:
+            elements.append(str(current.data))
+            current = current.next
+        
+        print(" -> ".join(elements) + " -> NULL")
+    
+    def reverse(self):
+        """
+        Reverse the linked list - O(n)
+        Uses 3 pointers: prev, current, next
+        """
+        prev = None
+        current = self.head
+        
+        while current:
+            next_node = current.next  # Save next
+            current.next = prev       # Reverse link
+            prev = current            # Move prev forward
+            current = next_node       # Move current forward
+        
+        self.head = prev
+
+# Example Usage
+ll = SinglyLinkedList()
+ll.insert_at_end(10)
+ll.insert_at_end(20)
+ll.insert_at_end(30)
+ll.insert_at_beginning(5)
+ll.display()  # 5 -> 10 -> 20 -> 30 -> NULL
+
+print(f"Length: {ll.get_length()}")  # 4
+print(f"Search 20: {ll.search(20)}")  # True
+
+ll.reverse()
+ll.display()  # 30 -> 20 -> 10 -> 5 -> NULL</div>
+
+            <div class="pseudocode">PSEUDOCODE: Insert at Beginning
+
+FUNCTION insertAtBeginning(data):
+    new_node = CREATE_NODE(data)
+    new_node.next = head
+    head = new_node
+END FUNCTION
+
+Time: O(1)
+Space: O(1)</div>
+
+            <div class="pseudocode">PSEUDOCODE: Delete from End
+
+FUNCTION deleteFromEnd():
+    IF head == NULL:
+        RETURN "Empty list"
+    END IF
+    
+    IF head.next == NULL:
+        deleted = head.data
+        head = NULL
+        RETURN deleted
+    END IF
+    
+    current = head
+    WHILE current.next.next != NULL:
+        current = current.next
+    END WHILE
+    
+    deleted = current.next.data
+    current.next = NULL
+    RETURN deleted
+END FUNCTION
+
+Time: O(n)
+Space: O(1)</div>
+
+            <h3>Time Complexity Summary</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operation</th>
+                    <th>Time Complexity</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td><strong>Insert at Beginning</strong></td>
+                    <td><span class="complexity-badge">O(1)</span></td>
+                    <td>Just update head pointer</td>
+                </tr>
+                <tr>
+                    <td><strong>Insert at End</strong></td>
+                    <td><span class="complexity-badge warning">O(n)</span></td>
+                    <td>Must traverse entire list</td>
+                </tr>
+                <tr>
+                    <td><strong>Insert at Position</strong></td>
+                    <td><span class="complexity-badge warning">O(n)</span></td>
+                    <td>Traverse to position</td>
+                </tr>
+                <tr>
+                    <td><strong>Delete from Beginning</strong></td>
+                    <td><span class="complexity-badge">O(1)</span></td>
+                    <td>Just update head</td>
+                </tr>
+                <tr>
+                    <td><strong>Delete from End</strong></td>
+                    <td><span class="complexity-badge warning">O(n)</span></td>
+                    <td>Find second-to-last node</td>
+                </tr>
+                <tr>
+                    <td><strong>Search</strong></td>
+                    <td><span class="complexity-badge warning">O(n)</span></td>
+                    <td>Linear search only</td>
+                </tr>
+                <tr>
+                    <td><strong>Access by Index</strong></td>
+                    <td><span class="complexity-badge warning">O(n)</span></td>
+                    <td>No random access</td>
+                </tr>
+                <tr>
+                    <td><strong>Get Length</strong></td>
+                    <td><span class="complexity-badge warning">O(n)</span></td>
+                    <td>Unless we maintain size variable</td>
+                </tr>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ Common Pitfalls:</strong>
+                <ul>
+                    <li><strong>Losing Head Reference:</strong> Always keep track of head!</li>
+                    <li><strong>NULL Pointer:</strong> Check for NULL before accessing .next</li>
+                    <li><strong>Memory Leaks:</strong> In languages like C/C++, remember to free memory</li>
+                    <li><strong>Infinite Loops:</strong> Ensure traversal terminates (check for NULL)</li>
+                    <li><strong>Edge Cases:</strong> Handle empty list, single node, etc.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- OPERATIONS SECTION -->
+        <div id="operations" class="section">
+            <h2>⚙️ Key Operations</h2>
+
+            <h3>1. Traversal</h3>
+
+            <div class="code-label">Python - Traverse and Print</div>
+            <div class="code-block">def traverse(head):
+    """
+    Visit each node once - O(n)
+    """
+    current = head
+    
+    while current is not None:
+        print(current.data, end=" -> ")
+        current = current.next
+    
+    print("NULL")</div>
+
+            <h3>2. Reverse a Linked List</h3>
+
+            <div class="visualization">
+                <h4>Reversing Process</h4>
+                <div class="step-visual">
+                    <strong>Original:</strong> 10 → 20 → 30 → NULL
+                </div>
+                <div class="step-visual">
+                    <strong>Step 1:</strong> NULL ← 10   20 → 30 → NULL
+                </div>
+                <div class="step-visual">
+                    <strong>Step 2:</strong> NULL ← 10 ← 20   30 → NULL
+                </div>
+                <div class="step-visual">
+                    <strong>Step 3:</strong> NULL ← 10 ← 20 ← 30
+                </div>
+                <div class="step-visual">
+                    <strong>Result:</strong> 30 → 20 → 10 → NULL
+                </div>
+            </div>
+
+            <div class="code-label">Python - Iterative Reverse</div>
+            <div class="code-block">def reverse_iterative(head):
+    """
+    Reverse linked list iteratively - O(n) time, O(1) space
+    Use 3 pointers: prev, current, next
+    """
+    prev = None
+    current = head
+    
+    while current:
+        next_node = current.next  # Save next node
+        current.next = prev       # Reverse the link
+        prev = current            # Move prev forward
+        current = next_node       # Move current forward
+    
+    return prev  # New head</div>
+
+            <div class="code-label">Python - Recursive Reverse</div>
+            <div class="code-block">def reverse_recursive(head):
+    """
+    Reverse linked list recursively - O(n) time, O(n) space (call stack)
+    """
+    # Base case
+    if head is None or head.next is None:
+        return head
+    
+    # Reverse rest of list
+    new_head = reverse_recursive(head.next)
+    
+    # Fix current node
+    head.next.next = head
+    head.next = None
+    
+    return new_head</div>
+
+            <h3>3. Find Middle Element</h3>
+
+            <div class="code-label">Python - Two Pointer Technique (Tortoise & Hare)</div>
+            <div class="code-block">def find_middle(head):
+    """
+    Find middle node using slow-fast pointers
+    Slow moves 1 step, fast moves 2 steps
+    When fast reaches end, slow is at middle
+    """
+    if not head:
+        return None
+    
+    slow = head
+    fast = head
+    
+    while fast and fast.next:
+        slow = slow.next          # Move 1 step
+        fast = fast.next.next     # Move 2 steps
+    
+    return slow  # Middle node
+
+# Example: 1->2->3->4->5
+# Returns node with value 3</div>
+
+            <h3>4. Detect Cycle (Floyd's Algorithm)</h3>
+
+            <div class="concept-box">
+                <p><strong>Problem:</strong> Detect if linked list has a cycle (a node's next points back to a previous node)</p>
+            </div>
+
+            <div class="code-label">Python - Detect Cycle</div>
+            <div class="code-block">def has_cycle(head):
+    """
+    Detect cycle using Floyd's algorithm (tortoise & hare)
+    If fast catches slow, there's a cycle
+    """
+    if not head:
+        return False
+    
+    slow = head
+    fast = head
+    
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        
+        if slow == fast:  # They met - cycle exists!
+            return True
+    
+    return False  # Fast reached end - no cycle</div>
+
+            <div class="code-label">Python - Find Cycle Start Point</div>
+            <div class="code-block">def find_cycle_start(head):
+    """
+    Find where cycle begins
+    After detecting cycle, move one pointer to head
+    Move both at same speed - they meet at cycle start
+    """
+    if not head:
+        return None
+    
+    # Detect cycle
+    slow = fast = head
+    has_cycle = False
+    
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        
+        if slow == fast:
+            has_cycle = True
+            break
+    
+    if not has_cycle:
+        return None
+    
+    # Find start of cycle
+    slow = head
+    while slow != fast:
+        slow = slow.next
+        fast = fast.next
+    
+    return slow  # Start of cycle</div>
+
+            <h3>5. Remove Duplicates</h3>
+
+            <div class="code-label">Python - Remove Duplicates (Sorted List)</div>
+            <div class="code-block">def remove_duplicates_sorted(head):
+    """
+    Remove duplicates from sorted list
+    Compare adjacent nodes
+    """
+    if not head:
+        return head
+    
+    current = head
+    
+    while current and current.next:
+        if current.data == current.next.data:
+            # Skip duplicate
+            current.next = current.next.next
+        else:
+            current = current.next
+    
+    return head
+
+# Example: 1->1->2->3->3->4
+# Result:  1->2->3->4</div>
+
+            <div class="code-label">Python - Remove Duplicates (Unsorted List)</div>
+            <div class="code-block">def remove_duplicates_unsorted(head):
+    """
+    Remove duplicates from unsorted list
+    Use hash set to track seen values
+    """
+    if not head:
+        return head
+    
+    seen = set()
+    seen.add(head.data)
+    current = head
+    
+    while current.next:
+        if current.next.data in seen:
+            # Skip duplicate
+            current.next = current.next.next
+        else:
+            seen.add(current.next.data)
+            current = current.next
+    
+    return head
+
+# Example: 1->3->2->1->4->2
+# Result:  1->3->2->4</div>
+
+            <h3>6. Merge Two Sorted Lists</h3>
+
+            <div class="code-label">Python - Merge Sorted Lists</div>
+            <div class="code-block">def merge_sorted_lists(l1, l2):
+    """
+    Merge two sorted linked lists into one sorted list
+    Similar to merge step in merge sort
+    """
+    # Create dummy node to simplify logic
+    dummy = Node(0)
+    current = dummy
+    
+    # Compare and merge
+    while l1 and l2:
+        if l1.data <= l2.data:
+            current.next = l1
+            l1 = l1.next
+        else:
+            current.next = l2
+            l2 = l2.next
+        current = current.next
+    
+    # Attach remaining nodes
+    current.next = l1 if l1 else l2
+    
+    return dummy.next  # Skip dummy node
+
+# Example:
+# L1: 1->3->5
+# L2: 2->4->6
+# Result: 1->2->3->4->5->6</div>
+
+            <h3>7. Check if Palindrome</h3>
+
+            <div class="code-label">Python - Palindrome Check</div>
+            <div class="code-block">def is_palindrome(head):
+    """
+    Check if linked list is palindrome
+    1. Find middle using slow-fast pointers
+    2. Reverse second half
+    3. Compare both halves
+    """
+    if not head or not head.next:
+        return True
+    
+    # Find middle
+    slow = fast = head
+    while fast.next and fast.next.next:
+        slow = slow.next
+        fast = fast.next.next
+    
+    # Reverse second half
+    second_half = reverse_list(slow.next)
+    
+    # Compare both halves
+    first = head
+    second = second_half
+    
+    while second:
+        if first.data != second.data:
+            return False
+        first = first.next
+        second = second.next
+    
+    return True
+
+def reverse_list(head):
+    prev = None
+    current = head
+    while current:
+        next_node = current.next
+        current.next = prev
+        prev = current
+        current = next_node
+    return prev
+
+# Example: 1->2->3->2->1 returns True</div>
+
+            <div class="key-point">
+                <strong>Two Pointer Techniques:</strong>
+                <ul>
+                    <li><strong>Slow-Fast (Tortoise-Hare):</strong> Find middle, detect cycle</li>
+                    <li><strong>Previous-Current:</strong> Traversal with deletion</li>
+                    <li><strong>Two Lists:</strong> Merge, intersection detection</li>
+                    <li><strong>Window:</strong> Reverse K-group nodes</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TYPES SECTION -->
+        <div id="types" class="section">
+            <h2>🔄 Types of Linked Lists</h2>
+
+            <h3>1. Doubly Linked List</h3>
+
+            <div class="concept-box">
+                <p><strong>Doubly Linked List:</strong> Each node has pointers to both <span class="highlight">next</span> and <span class="highlight">previous</span> nodes. Allows traversal in both directions.</p>
+            </div>
+
+            <div class="code-label">Python - Doubly Linked List Node</div>
+            <div class="code-block">class DoublyNode:
+    def __init__(self, data):
+        self.data = data
+        self.next = None    # Pointer to next node
+        self.prev = None    # Pointer to previous node
+
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = None
+    
+    def insert_at_beginning(self, data):
+        """Insert at start - O(1)"""
+        new_node = DoublyNode(data)
+        
+        if self.head:
+            new_node.next = self.head
+            self.head.prev = new_node
+        
+        self.head = new_node
+    
+    def insert_at_end(self, data):
+        """Insert at end - O(n)"""
+        new_node = DoublyNode(data)
+        
+        if not self.head:
+            self.head = new_node
+            return
+        
+        current = self.head
+        while current.next:
+            current = current.next
+        
+        current.next = new_node
+        new_node.prev = current
+    
+    def delete_node(self, node):
+        """
+        Delete given node - O(1) if node reference known!
+        This is advantage over singly linked list
+        """
+        if not node:
+            return
+        
+        # Update previous node
+        if node.prev:
+            node.prev.next = node.next
+        else:
+            # Node is head
+            self.head = node.next
+        
+        # Update next node
+        if node.next:
+            node.next.prev = node.prev
+    
+    def display_forward(self):
+        """Print from head to tail"""
+        current = self.head
+        while current:
+            print(current.data, end=" <-> ")
+            current = current.next
+        print("NULL")
+    
+    def display_backward(self):
+        """Print from tail to head"""
+        # Go to last node
+        current = self.head
+        while current and current.next:
+            current = current.next
+        
+        # Traverse backward
+        while current:
+            print(current.data, end=" <-> ")
+            current = current.prev
+        print("NULL")
+
+# Example
+dll = DoublyLinkedList()
+dll.insert_at_end(10)
+dll.insert_at_end(20)
+dll.insert_at_end(30)
+dll.display_forward()   # 10 <-> 20 <-> 30 <-> NULL
+dll.display_backward()  # 30 <-> 20 <-> 10 <-> NULL</div>
+
+            <h3>2. Circular Linked List</h3>
+
+            <div class="concept-box">
+                <p><strong>Circular Linked List:</strong> Last node points back to first node instead of NULL. Forms a circle - useful for round-robin scheduling.</p>
+            </div>
+
+            <div class="code-label">Python - Circular Linked List</div>
+            <div class="code-block">class CircularLinkedList:
+    def __init__(self):
+        self.head = None
+    
+    def insert_at_end(self, data):
+        """Insert at end - O(n)"""
+        new_node = Node(data)
+        
+        if not self.head:
+            self.head = new_node
+            new_node.next = self.head  # Point to itself
+            return
+        
+        # Find last node
+        current = self.head
+        while current.next != self.head:
+            current = current.next
+        
+        # Insert and maintain circle
+        current.next = new_node
+        new_node.next = self.head
+    
+    def display(self):
+        """Print circular list (stop after one rotation)"""
+        if not self.head:
+            print("Empty list")
+            return
+        
+        current = self.head
+        while True:
+            print(current.data, end=" -> ")
+            current = current.next
+            if current == self.head:
+                break
+        print("(back to head)")
+    
+    def delete_node(self, value):
+        """Delete node with given value"""
+        if not self.head:
+            return
+        
+        current = self.head
+        prev = None
+        
+        # Find node to delete
+        while True:
+            if current.data == value:
+                # Found node to delete
+                if prev:
+                    prev.next = current.next
+                else:
+                    # Deleting head
+                    # Find last node
+                    last = self.head
+                    while last.next != self.head:
+                        last = last.next
+                    
+                    if self.head == self.head.next:
+                        # Only one node
+                        self.head = None
+                    else:
+                        last.next = self.head.next
+                        self.head = self.head.next
+                return
+            
+            prev = current
+            current = current.next
+            
+            if current == self.head:
+                break  # Not found
+
+# Example
+cll = CircularLinkedList()
+cll.insert_at_end(10)
+cll.insert_at_end(20)
+cll.insert_at_end(30)
+cll.display()  # 10 -> 20 -> 30 -> (back to head)</div>
+
+            <h3>Comparison of List Types</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Singly Linked</th>
+                    <th>Doubly Linked</th>
+                    <th>Circular</th>
+                </tr>
+                <tr>
+                    <td><strong>Pointers per Node</strong></td>
+                    <td>1 (next)</td>
+                    <td>2 (next, prev)</td>
+                    <td>1 (next, circular)</td>
+                </tr>
+                <tr>
+                    <td><strong>Traversal</strong></td>
+                    <td>Forward only</td>
+                    <td>Both directions</td>
+                    <td>Continuous (circular)</td>
+                </tr>
+                <tr>
+                    <td><strong>Delete Node</strong></td>
+                    <td>O(n) - need previous</td>
+                    <td>O(1) - has prev pointer</td>
+                    <td>O(n) - need previous</td>
+                </tr>
+                <tr>
+                    <td><strong>Memory</strong></td>
+                    <td>Less</td>
+                    <td>More (extra pointer)</td>
+                    <td>Same as singly</td>
+                </tr>
+                <tr>
+                    <td><strong>Use Cases</strong></td>
+                    <td>Basic lists, stacks</td>
+                    <td>Browser history, undo</td>
+                    <td>Round-robin, playlists</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- PROBLEMS SECTION -->
+        <div id="problems" class="section">
+            <h2>🧩 Advanced Problems</h2>
+
+            <h3>1. Remove Nth Node from End</h3>
+
+            <div class="code-label">Python - Remove Nth from End (One Pass)</div>
+            <div class="code-block">def remove_nth_from_end(head, n):
+    """
+    Remove nth node from end using two pointers
+    Maintain gap of n between pointers
+    """
+    dummy = Node(0)
+    dummy.next = head
+    
+    first = dummy
+    second = dummy
+    
+    # Move first pointer n+1 steps ahead
+    for i in range(n + 1):
+        first = first.next
+    
+    # Move both pointers until first reaches end
+    while first:
+        first = first.next
+        second = second.next
+    
+    # Remove node
+    second.next = second.next.next
+    
+    return dummy.next
+
+# Example: Remove 2nd from end in 1->2->3->4->5
+# Result: 1->2->3->5</div>
+
+            <h3>2. Add Two Numbers (Lists Represent Numbers)</h3>
+
+            <div class="code-label">Python - Add Two Numbers</div>
+            <div class="code-block">def add_two_numbers(l1, l2):
+    """
+    Add two numbers represented as linked lists
+    Lists store digits in reverse order
+    
+    Example: 342 + 465 = 807
+    L1: 2->4->3  (represents 342)
+    L2: 5->6->4  (represents 465)
+    Result: 7->0->8 (represents 807)
+    """
+    dummy = Node(0)
+    current = dummy
+    carry = 0
+    
+    while l1 or l2 or carry:
+        # Get values (0 if node is None)
+        val1 = l1.data if l1 else 0
+        val2 = l2.data if l2 else 0
+        
+        # Calculate sum and carry
+        total = val1 + val2 + carry
+        carry = total // 10
+        digit = total % 10
+        
+        # Create new node
+        current.next = Node(digit)
+        current = current.next
+        
+        # Move to next nodes
+        l1 = l1.next if l1 else None
+        l2 = l2.next if l2 else None
+    
+    return dummy.next</div>
+
+            <h3>3. Intersection of Two Lists</h3>
+
+            <div class="code-label">Python - Find Intersection Point</div>
+            <div class="code-block">def get_intersection_node(headA, headB):
+    """
+    Find node where two lists intersect
+    Use two pointers - when they meet, that's intersection
+    """
+    if not headA or not headB:
+        return None
+    
+    # Get lengths
+    lenA = get_length(headA)
+    lenB = get_length(headB)
+    
+    # Align start points
+    while lenA > lenB:
+        headA = headA.next
+        lenA -= 1
+    
+    while lenB > lenA:
+        headB = headB.next
+        lenB -= 1
+    
+    # Find intersection
+    while headA != headB:
+        headA = headA.next
+        headB = headB.next
+    
+    return headA  # Intersection node (or None)
+
+def get_length(head):
+    count = 0
+    while head:
+        count += 1
+        head = head.next
+    return count</div>
+
+            <h3>4. Flatten Multilevel List</h3>
+
+            <div class="code-label">Python - Flatten List with Child Pointers</div>
+            <div class="code-block">def flatten(head):
+    """
+    Flatten multilevel doubly linked list
+    Nodes may have child pointer to another list
+    """
+    if not head:
+        return head
+    
+    current = head
+    
+    while current:
+        # If no child, move to next
+        if not current.child:
+            current = current.next
+            continue
+        
+        # Process child list
+        child = current.child
+        
+        # Find tail of child list
+        tail = child
+        while tail.next:
+            tail = tail.next
+        
+        # Connect child list between current and next
+        tail.next = current.next
+        if current.next:
+            current.next.prev = tail
+        
+        current.next = child
+        child.prev = current
+        current.child = None
+        
+        current = current.next
+    
+    return head</div>
+
+            <h3>5. Clone List with Random Pointer</h3>
+
+            <div class="code-label">Python - Deep Copy with Random Pointers</div>
+            <div class="code-block">class NodeWithRandom:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.random = None  # Can point to any node
+
+def copy_random_list(head):
+    """
+    Create deep copy of list with random pointers
+    Use hash map to track original->copy mapping
+    """
+    if not head:
+        return None
+    
+    # Map original nodes to copies
+    node_map = {}
+    
+    # First pass: create all nodes
+    current = head
+    while current:
+        node_map[current] = NodeWithRandom(current.data)
+        current = current.next
+    
+    # Second pass: set next and random pointers
+    current = head
+    while current:
+        if current.next:
+            node_map[current].next = node_map[current.next]
+        if current.random:
+            node_map[current].random = node_map[current.random]
+        current = current.next
+    
+    return node_map[head]</div>
+
+            <h3>6. Sort Linked List</h3>
+
+            <div class="code-label">Python - Merge Sort on Linked List</div>
+            <div class="code-block">def sort_list(head):
+    """
+    Sort linked list using merge sort - O(n log n)
+    Better than insertion sort O(n²) for large lists
+    """
+    if not head or not head.next:
+        return head
+    
+    # Split list in half
+    mid = get_middle(head)
+    right_head = mid.next
+    mid.next = None
+    
+    # Recursively sort both halves
+    left = sort_list(head)
+    right = sort_list(right_head)
+    
+    # Merge sorted halves
+    return merge_sorted(left, right)
+
+def get_middle(head):
+    """Find middle using slow-fast pointers"""
+    slow = head
+    fast = head
+    
+    while fast.next and fast.next.next:
+        slow = slow.next
+        fast = fast.next.next
+    
+    return slow
+
+def merge_sorted(l1, l2):
+    """Merge two sorted lists"""
+    dummy = Node(0)
+    current = dummy
+    
+    while l1 and l2:
+        if l1.data <= l2.data:
+            current.next = l1
+            l1 = l1.next
+        else:
+            current.next = l2
+            l2 = l2.next
+        current = current.next
+    
+    current.next = l1 if l1 else l2
+    return dummy.next</div>
+
+            <div class="memory-tip">
+                <strong>💡 Problem-Solving Patterns:</strong>
+                <ul>
+                    <li><strong>Two Pointers:</strong> Middle, cycle, nth from end</li>
+                    <li><strong>Dummy Node:</strong> Simplifies edge cases (merge, reverse)</li>
+                    <li><strong>Hash Map:</strong> Cycle detection, random pointer copy</li>
+                    <li><strong>Recursion:</strong> Reverse, merge sort, flatten</li>
+                    <li><strong>Runner Technique:</strong> Fast-slow pointers</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- INTERACTIVE PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Interactive Linked List Demo</h2>
+
+            <div class="interactive-demo">
+                <h3>Build Your Own Linked List</h3>
+                <p>Try the operations and see the list update in real-time!</p>
+
+                <div class="demo-controls">
+                    <input type="number" id="nodeValue" placeholder="Value" min="0" max="99">
+                    <button class="demo-btn" onclick="insertAtBeginning()">Insert at Start</button>
+                    <button class="demo-btn" onclick="insertAtEnd()">Insert at End</button>
+                    <button class="demo-btn" onclick="deleteFirst()">Delete First</button>
+                    <button class="demo-btn" onclick="deleteLast()">Delete Last</button>
+                    <button class="demo-btn danger" onclick="clearList()">Clear All</button>
+                </div>
+
+                <div class="demo-controls">
+                    <input type="number" id="searchValue" placeholder="Search">
+                    <button class="demo-btn" onclick="searchValue()">Search</button>
+                    <button class="demo-btn" onclick="reverseList()">Reverse List</button>
+                    <button class="demo-btn" onclick="findMiddle()">Find Middle</button>
+                </div>
+
+                <div class="visualization">
+                    <h4>Your Linked List</h4>
+                    <div id="listDisplay" class="linked-list-visual">
+                        <span style="color: #999; font-style: italic;">Empty List - Add some nodes!</span>
+                    </div>
+                </div>
+
+                <div id="output">Ready! Enter values and try operations.</div>
+            </div>
+
+            <h3>Practice Challenges</h3>
+
+            <div class="concept-box">
+                <h4>Try These Problems:</h4>
+                <ol>
+                    <li><strong>Easy:</strong> Find length of linked list recursively</li>
+                    <li><strong>Easy:</strong> Check if list has even or odd number of nodes</li>
+                    <li><strong>Medium:</strong> Reverse list in groups of K</li>
+                    <li><strong>Medium:</strong> Reorder list: L0→Ln→L1→Ln-1→L2→Ln-2...</li>
+                    <li><strong>Hard:</strong> Merge K sorted linked lists</li>
+                    <li><strong>Hard:</strong> LRU Cache using doubly linked list + hash map</li>
+                </ol>
+            </div>
+
+            <h3>Interview Tips</h3>
+
+            <div class="key-point">
+                <strong>Common Interview Questions:</strong>
+                <ul>
+                    <li>✅ Reverse a linked list (iterative & recursive)</li>
+                    <li>✅ Detect cycle and find cycle start</li>
+                    <li>✅ Find middle element</li>
+                    <li>✅ Remove nth node from end</li>
+                    <li>✅ Merge two sorted lists</li>
+                    <li>✅ Check if palindrome</li>
+                    <li>✅ Add two numbers represented as lists</li>
+                    <li>✅ Intersection point of two lists</li>
+                </ul>
+            </div>
+
+            <h3>Key Takeaways</h3>
+
+            <div class="key-point">
+                <strong>Remember:</strong>
+                <ul>
+                    <li><strong>Always check for NULL</strong> - prevents crashes</li>
+                    <li><strong>Keep track of head</strong> - losing it means losing the list</li>
+                    <li><strong>Dummy nodes</strong> - simplify edge cases</li>
+                    <li><strong>Two pointers</strong> - powerful technique for many problems</li>
+                    <li><strong>Draw it out</strong> - visualize pointer changes</li>
+                    <li><strong>Edge cases:</strong> empty list, single node, two nodes</li>
+                    <li><strong>Space-time tradeoff:</strong> Hash map vs two pointers</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            const buttons = document.querySelectorAll('.nav-btn');
+            
+            sections.forEach(section => section.classList.remove('active'));
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Interactive Linked List
+        class Node {
+            constructor(data) {
+                this.data = data;
+                this.next = null;
+            }
+        }
+
+        let head = null;
+
+        function updateDisplay() {
+            const display = document.getElementById('listDisplay');
+            display.innerHTML = '';
+
+            if (!head) {
+                display.innerHTML = '<span style="color: #999; font-style: italic;">Empty List</span>';
+                return;
+            }
+
+            display.innerHTML = '<span style="font-weight: bold; color: #185a9d;">HEAD →</span>';
+
+            let current = head;
+            let count = 0;
+            while (current && count < 10) {
+                const nodeDiv = document.createElement('div');
+                nodeDiv.className = 'node';
+                
+                nodeDiv.innerHTML = `
+                    <div class="node-box">
+                        <div class="node-data">${current.data}</div>
+                        <div class="node-next">next</div>
+                    </div>
+                `;
+                
+                display.appendChild(nodeDiv);
+                
+                if (current.next) {
+                    const arrow = document.createElement('span');
+                    arrow.className = 'arrow';
+                    arrow.textContent = '→';
+                    display.appendChild(arrow);
+                }
+                
+                current = current.next;
+                count++;
+            }
+
+            const nullBox = document.createElement('div');
+            nullBox.className = 'null-box';
+            nullBox.textContent = 'NULL';
+            display.appendChild(nullBox);
+        }
+
+        function insertAtBeginning() {
+            const value = document.getElementById('nodeValue').value;
+            if (!value) {
+                updateOutput('Please enter a value!', true);
+                return;
+            }
+
+            const newNode = new Node(parseInt(value));
+            newNode.next = head;
+            head = newNode;
+
+            updateDisplay();
+            updateOutput(`Inserted ${value} at beginning. Length: ${getLength()}`);
+            document.getElementById('nodeValue').value = '';
+        }
+
+        function insertAtEnd() {
+            const value = document.getElementById('nodeValue').value;
+            if (!value) {
+                updateOutput('Please enter a value!', true);
+                return;
+            }
+
+            const newNode = new Node(parseInt(value));
+
+            if (!head) {
+                head = newNode;
+            } else {
+                let current = head;
+                while (current.next) {
+                    current = current.next;
+                }
+                current.next = newNode;
+            }
+
+            updateDisplay();
+            updateOutput(`Inserted ${value} at end. Length: ${getLength()}`);
+            document.getElementById('nodeValue').value = '';
+        }
+
+        function deleteFirst() {
+            if (!head) {
+                updateOutput('List is empty!', true);
+                return;
+            }
+
+            const deleted = head.data;
+            head = head.next;
+
+            updateDisplay();
+            updateOutput(`Deleted ${deleted} from beginning. Length: ${getLength()}`);
+        }
+
+        function deleteLast() {
+            if (!head) {
+                updateOutput('List is empty!', true);
+                return;
+            }
+
+            if (!head.next) {
+                const deleted = head.data;
+                head = null;
+                updateDisplay();
+                updateOutput(`Deleted ${deleted}. List is now empty.`);
+                return;
+            }
+
+            let current = head;
+            while (current.next.next) {
+                current = current.next;
+            }
+
+            const deleted = current.next.data;
+            current.next = null;
+
+            updateDisplay();
+            updateOutput(`Deleted ${deleted} from end. Length: ${getLength()}`);
+        }
+
+        function searchValue() {
+            const value = document.getElementById('searchValue').value;
+            if (!value) {
+                updateOutput('Please enter a value to search!', true);
+                return;
+            }
+
+            const target = parseInt(value);
+            let current = head;
+            let position = 0;
+
+            while (current) {
+                if (current.data === target) {
+                    updateOutput(`Found ${target} at position ${position}!`);
+                    return;
+                }
+                current = current.next;
+                position++;
+            }
+
+            updateOutput(`Value ${target} not found in list.`, true);
+        }
+
+        function reverseList() {
+            if (!head) {
+                updateOutput('List is empty!', true);
+                return;
+            }
+
+            let prev = null;
+            let current = head;
+
+            while (current) {
+                const next = current.next;
+                current.next = prev;
+                prev = current;
+                current = next;
+            }
+
+            head = prev;
+            updateDisplay();
+            updateOutput('List reversed successfully!');
+        }
+
+        function findMiddle() {
+            if (!head) {
+                updateOutput('List is empty!', true);
+                return;
+            }
+
+            let slow = head;
+            let fast = head;
+
+            while (fast && fast.next) {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+
+            updateOutput(`Middle element: ${slow.data}`);
+        }
+
+        function clearList() {
+            head = null;
+            updateDisplay();
+            updateOutput('List cleared!');
+        }
+
+        function getLength() {
+            let count = 0;
+            let current = head;
+            while (current) {
+                count++;
+                current = current.next;
+            }
+            return count;
+        }
+
+        function updateOutput(message, isError = false) {
+            const output = document.getElementById('output');
+            output.innerHTML = `<strong>Output:</strong> ${message}`;
+            output.style.color = isError ? '#f44336' : '#333';
+        }
+
+        // Keyboard support
+        document.getElementById('nodeValue').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') insertAtEnd();
+        });
+
+        document.getElementById('searchValue').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') searchValue();
+        });
+
+        // Initialize
+        updateDisplay();
+    </script>
+</body>
+</html>
