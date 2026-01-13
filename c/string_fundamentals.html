@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C String Fundamentals - Master the Basics</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #f5576c; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #f5576c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #f093fb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #f093fb;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #f5576c;
+        }
+        h3 { color: #f093fb; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box {
+            background: #fff0f5;
+            padding: 20px;
+            border-left: 5px solid #f5576c;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #f5576c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .visual-string {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .char-cell {
+            width: 50px;
+            height: 70px;
+            border: 2px solid #f5576c;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            background: white;
+            transition: all 0.3s;
+        }
+        .char-cell:hover {
+            background: #fff0f5;
+            transform: scale(1.1);
+        }
+        .char-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #f5576c;
+        }
+        .char-index {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #f5576c;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #fff0f5;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            flex: 1;
+            min-width: 200px;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #f5576c; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 C String Fundamentals Masterclass</h1>
+            <p class="subtitle">Master char Arrays, Pointers, and Memory Management</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('basics')">String Basics</button>
+                <button class="nav-btn" onclick="showSection('operations')">Operations</button>
+                <button class="nav-btn" onclick="showSection('methods')">Built-in Methods</button>
+                <button class="nav-btn" onclick="showSection('patterns')">Common Patterns</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive Practice</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 What is a String in C?</h2>
+
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>In C, there is <strong>NO string type</strong>! A string is simply a <strong>one-dimensional array of characters</strong> terminated by a null character <code>'\0'</code>.</p>
+                <p>This simple definition gives you full control but requires careful memory management.</p>
+            </div>
+
+            <div class="visual-string">
+                <div class="char-cell"><div class="char-value">H</div><div class="char-index">[0]</div></div>
+                <div class="char-cell"><div class="char-value">i</div><div class="char-index">[1]</div></div>
+                <div class="char-cell"><div class="char-value">\0</div><div class="char-index">[2]</div></div>
+                <div class="char-cell"><div class="char-value">?</div><div class="char-index">[3]</div></div>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Key Insight:</strong> The <code>'\0'</code> (Null Terminator) marks the end of the string. Without it, functions like <code>printf</code> keeps reading memory until it crashes!
+            </div>
+
+            <h3>String vs Character Array</h3>
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>C String (Terminated)</th>
+                    <th>Raw char Array</th>
+                </tr>
+                <tr>
+                    <td><strong>Termination</strong></td>
+                    <td>Must have <code>'\0'</code></td>
+                    <td>Not required</td>
+                </tr>
+                <tr>
+                    <td><strong>Printing</strong></td>
+                    <td><code>printf("%s", s)</code></td>
+                    <td>Loop required</td>
+                </tr>
+                <tr>
+                    <td><strong>Functions</strong></td>
+                    <td>Use <code>string.h</code></td>
+                    <td>Manual handling</td>
+                </tr>
+            </table>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> Always allocate <code>length + 1</code> for the null terminator. To store "Hello" (5 chars), you need an array of size 6.
+            </div>
+        </div>
+
+        <!-- BASICS SECTION -->
+        <div id="basics" class="section">
+            <h2>📚 String Basics in C</h2>
+
+            <h3>1. Creating Strings</h3>
+
+            <div class="code-label">C - String Creation</div>
+            <div class="code-block">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+// Method 1: Character Array (Mutable)
+char s1[] = "Hello";
+s1[0] = 'J'; // Valid -> "Jello"
+
+// Method 2: String Pointer (Read-Only Literal)
+char *s2 = "World";
+// s2[0] = 'X'; // CRASH! Undefined behavior (modifying read-only memory)
+
+// Method 3: Sized Array (Buffer)
+char s3[20] = "Buffer"; // Size 20, holds "Buffer\0"
+
+// Method 4: Manual Chars
+char s4[] = {'C', 'o', 'd', 'e', '\0'}; // Must add \0 manually!</div>
+
+            <div class="pseudocode">PSEUDOCODE: String Creation
+
+DECLARE char array s[SIZE]
+SET s = "Hello World"
+SET length = strlen(s)</div>
+
+            <h3>2. Accessing Characters</h3>
+
+            <div class="code-label">C - Character Access</div>
+            <div class="code-block">char s[] = "Language";
+
+// Access by index
+char distinct = s[0]; // 'L'
+char last = s[strlen(s) - 1]; // 'e'
+
+// Iterate through characters
+// Method 1: Index Loop
+for (int i = 0; s[i] != '\0'; i++) {
+    printf("%c ", s[i]);
+}
+
+// Method 2: Pointer Arithmetic
+char *ptr = s;
+while (*ptr != '\0') {
+    printf("%c ", *ptr);
+    ptr++;
+}</div>
+
+            <div class="key-point">
+                <strong>⚠️ Safety Tip:</strong> Always check for <code>NULL</code> pointers before accessing structure, although standard strings are usually arrays.
+            </div>
+
+            <h3>3. String Slicing (Substring)</h3>
+
+            <div class="concept-box">
+                <p><strong>Syntax:</strong> manual <code>strncpy</code> required</p>
+                <p>C has no built-in slice. You must copy characters to a new buffer.</p>
+            </div>
+
+            <div class="code-label">C - Substrings</div>
+            <div class="code-block">char s[] = "C Programming";
+char sub[10];
+
+// Extract "Prog" (Starts at index 2, length 4)
+strncpy(sub, s + 2, 4);
+sub[4] = '\0'; // MUST manually terminate!
+
+printf("%s", sub); // "Prog"</div>
+
+            <div class="memory-tip">
+                <strong>💡 Null Terminator Rule:</strong> <code>strncpy</code> does NOT add <code>\0</code> automatically if max length is reached. YOU must add it.
+            </div>
+
+            <h3>4. String Mutability</h3>
+
+            <div class="code-label">C - Mutability</div>
+            <div class="code-block">char s[] = "Hello";
+
+// Modify character
+s[0] = 'J'; 
+printf("%s", s); // "Jello"
+
+// WARNING: Can only modify arrays, NOT string literals (char *s = "...")</div>
+        </div>
+
+        <!-- OPERATIONS SECTION -->
+        <div id="operations" class="section">
+            <h2>⚙️ Core String Operations in C</h2>
+
+            <h3>1. Concatenation (Joining Strings)</h3>
+
+            <div class="code-label">C - String Concatenation</div>
+            <div class="code-block">#include &lt;string.h&gt;
+
+char s1[20] = "Hello"; // Must have enough space!
+char s2[] = " World";
+
+// Method 1: strcat (Appends s2 to s1)
+strcat(s1, s2);
+printf("%s", s1); // "Hello World"
+
+// Method 2: strncat (Safe - Limit chars)
+strncat(s1, "!", 1);</div>
+
+            <div class="key-point">
+                <strong>⚠️ Buffer Overflow:</strong> <code>strcat</code> is dangerous! Does <code>s1</code> have enough space? If not, program crashes or gets hacked. Use <code>strncat</code> safely.
+            </div>
+
+            <h3>2. String Copying</h3>
+
+            <div class="code-label">C - String Copy</div>
+            <div class="code-block">char src[] = "Copy Me";
+char dest[20];
+
+// Copy src to dest
+strcpy(dest, src);
+
+// Safe Copy
+strncpy(dest, src, sizeof(dest) - 1);
+dest[sizeof(dest) - 1] = '\0'; // Ensure termination</div>
+
+            <h3>3. String Comparison</h3>
+
+            <div class="code-label">C - Comparing Strings</div>
+            <div class="code-block">char s1[] = "Apple";
+char s2[] = "Banana";
+
+// strcmp returns:
+// 0 if equal
+// <0 if s1 < s2
+// >0 if s1 > s2
+
+if (strcmp(s1, s2) == 0) {
+    printf("Equal");
+} else if (strcmp(s1, s2) < 0) {
+    printf("s1 is smaller"); // Prints this
+}
+
+// Case-insensitive? Use strcasecmp (POSIX) or custom loop.</div>
+
+            <h3>4. Searching in Strings</h3>
+
+            <div class="code-label">C - String Search</div>
+            <div class="code-block">char s[] = "C Programming Language";
+
+// Find substring (strstr)
+char *found = strstr(s, "Programming");
+if (found != NULL) {
+    printf("Found at index: %ld", found - s); // Pointer arithmetic for index
+}
+
+// Find character (strchr)
+char *c = strchr(s, 'P'); 
+
+// Find last occurrence (strrchr)
+char *last = strrchr(s, 'a');</div>
+
+            <h3>5. Key String Functions (string.h)</h3>
+            <table class="comparison-table">
+                <tr>
+                    <th>Function</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>strlen(s)</code></td>
+                    <td>Length of string (excluding \0)</td>
+                </tr>
+                <tr>
+                    <td><code>strcpy(d, s)</code></td>
+                    <td>Copy string</td>
+                </tr>
+                <tr>
+                    <td><code>strcat(d, s)</code></td>
+                    <td>Concatenate string</td>
+                </tr>
+                <tr>
+                    <td><code>strcmp(s1, s2)</code></td>
+                    <td>Compare strings</td>
+                </tr>
+                <tr>
+                    <td><code>strstr(s, sub)</code></td>
+                    <td>Find substring</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- METHODS SECTION -->
+        <div id="methods" class="section">
+            <h2>🛠️ Essential String Functions in C</h2>
+
+            <h3>1. Case Conversion</h3>
+
+            <div class="code-label">C - Manual Uppercase</div>
+            <div class="code-block">#include &lt;ctype.h&gt;
+
+char s[] = "Hello World";
+
+// Convert to Uppercase (In-place)
+for (int i = 0; s[i] != '\0'; i++) {
+    s[i] = toupper(s[i]);
+}
+printf("%s", s); // "HELLO WORLD"
+
+// To Lowercase
+for (int i = 0; s[i] != '\0'; i++) {
+    s[i] = tolower(s[i]);
+}</div>
+
+            <h3>2. String Tokenization (Splitting)</h3>
+
+            <div class="code-label">C - strtok (Destructive!)</div>
+            <div class="code-block">char s[] = "Hello,World,C";
+char *token;
+
+// First call: Pass the string
+token = strtok(s, ",");
+
+while (token != NULL) {
+    printf("%s\n", token);
+    // Subsequent calls: Pass NULL
+    token = strtok(NULL, ",");
+}
+
+/* Output:
+Hello
+World
+C
+*/
+// WARNING: strtok modifies the original string by inserting \0</div>
+
+            <h3>3. String/Number Conversion</h3>
+
+            <div class="code-label">C - Formatting</div>
+            <div class="code-block">// String to Number
+int num = atoi("123");
+double d = atof("3.14");
+
+// Number to String (sprintf)
+char buffer[50];
+int age = 25;
+sprintf(buffer, "Age: %d", age); 
+printf("%s", buffer); // "Age: 25"</div>
+        </div>
+
+        <!-- PATTERNS SECTION -->
+        <div id="patterns" class="section">
+            <h2>🎨 Common String Patterns</h2>
+
+            <h3>Pattern 1: Character Frequency Count</h3>
+
+            <div class="code-label">C - Frequency Array</div>
+            <div class="code-block">char s[] = "hello world";
+int freq[256] = {0}; // Initialize to 0
+
+for (int i = 0; s[i] != '\0'; i++) {
+    freq[(unsigned char)s[i]]++;
+}
+
+// Print non-zero frequencies
+for (int i = 0; i < 256; i++) {
+    if (freq[i] > 0) {
+        printf("%c: %d\n", i, freq[i]);
+    }
+}</div>
+
+            <div class="pseudocode">PSEUDOCODE: Character Frequency
+Time Complexity: O(n)
+Space Complexity: O(1) (Fixed size 256)</div>
+
+            <h3>Pattern 2: Palindrome Check</h3>
+
+            <div class="code-label">C - Palindrome</div>
+            <div class="code-block">int isPalindrome(char *s) {
+    int left = 0;
+    int right = strlen(s) - 1;
+
+    while (left < right) {
+        if (s[left] != s[right]) return 0; // False
+        left++;
+        right--;
+    }
+    return 1; // True
+}</div>
+
+            <h3>Pattern 3: Anagram Check</h3>
+
+            <div class="code-label">C - Anagram Detection</div>
+            <div class="code-block">int isAnagram(char *s1, char *s2) {
+    if (strlen(s1) != strlen(s2)) return 0;
+
+    int count[256] = {0};
+
+    for (int i = 0; s1[i] != '\0'; i++) count[(unsigned char)s1[i]]++;
+    for (int i = 0; s2[i] != '\0'; i++) count[(unsigned char)s2[i]]--;
+
+    for (int i = 0; i < 256; i++) {
+        if (count[i] != 0) return 0;
+    }
+    return 1;
+}</div>
+
+            <h3>Pattern 4: Substring Search</h3>
+
+            <div class="code-label">C - Find All Occurrences</div>
+            <div class="code-block">char text[] = "banana";
+char *p = text;
+char *pattern = "an";
+
+while ((p = strstr(p, pattern)) != NULL) {
+    printf("Found at index: %ld\n", p - text);
+    p++; // Advance past found match
+}</div>
+        </div>
+
+        <!-- PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Interactive String Practice</h2>
+
+            <div class="interactive-demo">
+                <h3>String Visualizer</h3>
+                <input type="text" id="stringInput" placeholder="Enter a string..." value="Hello">
+                
+                <div class="demo-controls">
+                    <button class="demo-btn" onclick="visualizeString()">Visualize</button>
+                    <button class="demo-btn" onclick="reverseString()">Reverse</button>
+                    <button class="demo-btn" onclick="upperCase()">Uppercase</button>
+                    <button class="demo-btn" onclick="lowerCase()">Lowercase</button>
+                    <button class="demo-btn" onclick="checkPalindrome()">Check Palindrome</button>
+                    <button class="demo-btn" onclick="countChars()">Count Characters</button>
+                    <button class="demo-btn" onclick="removeDuplicates()">Remove Duplicates</button>
+                </div>
+                
+                <div id="visualString" class="visual-string"></div>
+                <div id="output"></div>
+            </div>
+
+            <h3>🏋️ Practice Problems</h3>
+
+            <div class="key-point">
+                <strong>Problem 1: Count Vowels</strong>
+                <div class="code-label">C Solution</div>
+                <div class="code-block">int countVowels(char *s) {
+    char *vowels = "aeiouAEIOU";
+    int count = 0;
+    for (int i = 0; s[i] != '\0'; i++) {
+        if (strchr(vowels, s[i]) != NULL) {
+            count++;
+        }
+    }
+    return count;
+}</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 2: Reverse Words in Sentence</strong>
+                <div class="code-label">C Solution</div>
+                <div class="code-block">// Manual implementation required in C
+void reverseWords(char *s) {
+    // 1. Reverse the whole string
+    // 2. Reverse each word individualy
+    // (Implementation omitted for brevity, ~30 lines of code)
+}</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 3: Check if Strings are Rotations</strong>
+                <div class="code-label">C Solution</div>
+                <div class="code-block">int isRotation(char *s1, char *s2) {
+    if (strlen(s1) != strlen(s2)) return 0;
+    
+    // Allocate double buffer
+    char temp[100]; // Warning: unsafe size
+    strcpy(temp, s1);
+    strcat(temp, s1);
+    
+    return strstr(temp, s2) != NULL;
+}</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 4: Remove Spaces</strong>
+                <div class="code-label">C Solution</div>
+                <div class="code-block">void removeSpaces(char *s) {
+    int count = 0;
+    for (int i = 0; s[i]; i++) {
+        if (s[i] != ' ') {
+            s[count++] = s[i];
+        }
+    }
+    s[count] = '\0';
+}</div>
+            </div>
+
+            <h3>🎯 Key Takeaways to Remember Forever</h3>
+
+            <div class="memory-tip">
+                <strong>The 10 Commandments of Strings:</strong>
+                <ol>
+                    <li><strong>Immutable:</strong> Can't change, only create new strings</li>
+                    <li><strong>Zero-indexed:</strong> First character at index 0</li>
+                    <li><strong>Slicing is exclusive:</strong> s[1:4] = indices 1, 2, 3</li>
+                    <li><strong>Use join() not +:</strong> For concatenating multiple strings</li>
+                    <li><strong>Case matters:</strong> "Hello" != "hello"</li>
+                    <li><strong>f-strings are best:</strong> For formatting in Python 3.6+</li>
+                    <li><strong>in operator:</strong> Fast substring/character checking</li>
+                    <li><strong>Reverse with [::-1]:</strong> Simplest way to reverse</li>
+                    <li><strong>Count frequency:</strong> Use Counter or dictionary</li>
+                    <li><strong>Validate input:</strong> Check length and bounds</li>
+                </ol>
+            </div>
+
+            <h3>📊 Time Complexity Cheat Sheet</h3>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Operation</th>
+                    <th>Time Complexity</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>Access s[i]</td>
+                    <td>O(1)</td>
+                    <td>Direct index access</td>
+                </tr>
+                <tr>
+                    <td>Search (in)</td>
+                    <td>O(n)</td>
+                    <td>Linear search through string</td>
+                </tr>
+                <tr>
+                    <td>Concatenation (+)</td>
+                    <td>O(n + m)</td>
+                    <td>Creates new string</td>
+                </tr>
+                <tr>
+                    <td>Slicing s[i:j]</td>
+                    <td>O(j - i)</td>
+                    <td>Copies substring</td>
+                </tr>
+                <tr>
+                    <td>find()</td>
+                    <td>O(n * m)</td>
+                    <td>n = string length, m = pattern</td>
+                </tr>
+                <tr>
+                    <td>replace()</td>
+                    <td>O(n)</td>
+                    <td>Creates new string</td>
+                </tr>
+                <tr>
+                    <td>split()</td>
+                    <td>O(n)</td>
+                    <td>Creates list of strings</td>
+                </tr>
+                <tr>
+                    <td>join()</td>
+                    <td>O(n)</td>
+                    <td>Concatenates list efficiently</td>
+                </tr>
+            </table>
+
+            <h3>🔥 Common Interview Questions</h3>
+
+            <div class="concept-box">
+                <h4>Must Practice:</h4>
+                <ol>
+                    <li>Reverse a string</li>
+                    <li>Check if palindrome</li>
+                    <li>Check if two strings are anagrams</li>
+                    <li>Find first non-repeating character</li>
+                    <li>Count character frequency</li>
+                    <li>Remove duplicates from string</li>
+                    <li>Check if string contains only digits</li>
+                    <li>Find longest common prefix</li>
+                    <li>Reverse words in a sentence</li>
+                    <li>Check if one string is rotation of another</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function visualizeString() {
+            const input = document.getElementById('stringInput').value;
+            const container = document.getElementById('visualString');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < input.length; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'char-cell';
+                cell.innerHTML = `
+                    <div class="char-value">${input[i] === ' ' ? '␣' : input[i]}</div>
+                    <div class="char-index">[${i}]</div>
+                `;
+                container.appendChild(cell);
+            }
+            
+            displayOutput(`String visualized! Length: ${input.length}`);
+        }
+
+        function displayOutput(msg) {
+            document.getElementById('output').innerHTML = `<strong>${msg}</strong>`;
+        }
+
+        function reverseString() {
+            const input = document.getElementById('stringInput').value;
+            const reversed = input.split('').reverse().join('');
+            document.getElementById('stringInput').value = reversed;
+            visualizeString();
+            displayOutput(`✅ String reversed: "${reversed}"`);
+        }
+
+        function upperCase() {
+            const input = document.getElementById('stringInput').value;
+            const upper = input.toUpperCase();
+            document.getElementById('stringInput').value = upper;
+            visualizeString();
+            displayOutput(`✅ Converted to uppercase: "${upper}"`);
+        }
+
+        function lowerCase() {
+            const input = document.getElementById('stringInput').value;
+            const lower = input.toLowerCase();
+            document.getElementById('stringInput').value = lower;
+            visualizeString();
+            displayOutput(`✅ Converted to lowercase: "${lower}"`);
+        }
+
+        function checkPalindrome() {
+            const input = document.getElementById('stringInput').value;
+            const reversed = input.split('').reverse().join('');
+            const isPalindrome = input === reversed;
+            
+            if (isPalindrome) {
+                displayOutput(`✅ "${input}" IS a palindrome!`);
+            } else {
+                displayOutput(`❌ "${input}" is NOT a palindrome. Reversed: "${reversed}"`);
+            }
+        }
+
+        function countChars() {
+            const input = document.getElementById('stringInput').value;
+            const freq = {};
+            
+            for (let char of input) {
+                freq[char] = (freq[char] || 0) + 1;
+            }
+            
+            let result = '<strong>Character Frequency:</strong><br>';
+            for (let char in freq) {
+                const display = char === ' ' ? '(space)' : char;
+                result += `${display}: ${freq[char]}<br>`;
+            }
+            
+            displayOutput(result);
+        }
+
+        function removeDuplicates() {
+            const input = document.getElementById('stringInput').value;
+            const seen = new Set();
+            let result = '';
+            
+            for (let char of input) {
+                if (!seen.has(char)) {
+                    seen.add(char);
+                    result += char;
+                }
+            }
+            
+            document.getElementById('stringInput').value = result;
+            visualizeString();
+            displayOutput(`✅ Duplicates removed: "${result}"`);
+        }
+
+        // Initialize
+        visualizeString();
+    </script>
+</body>
+</html>

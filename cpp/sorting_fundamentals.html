@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Sorting Algorithms</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #f5576c; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #f5576c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #f093fb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #f093fb;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #f5576c;
+        }
+        h3 { color: #f093fb; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box {
+            background: #fff0f5;
+            padding: 20px;
+            border-left: 5px solid #f5576c;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #f5576c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .visual-string {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .char-cell {
+            width: 50px;
+            height: 70px;
+            border: 2px solid #f5576c;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            background: white;
+            transition: all 0.3s;
+        }
+        .char-cell:hover {
+            background: #fff0f5;
+            transform: scale(1.1);
+        }
+        .char-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #f5576c;
+        }
+        .char-index {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #f5576c;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #fff0f5;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            flex: 1;
+            min-width: 200px;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #f5576c; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 String Fundamentals Masterclass</h1>
+            <p class="subtitle">Master Strings for DSA Success</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('basics')">String Basics</button>
+                <button class="nav-btn" onclick="showSection('operations')">Operations</button>
+                <button class="nav-btn" onclick="showSection('methods')">Built-in Methods</button>
+                <button class="nav-btn" onclick="showSection('patterns')">Common Patterns</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive Practice</button>
+            </div>
+        </header>
+
+        
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>C++ Sorting Algorithms</h2>
+            <div class="concept-box">
+                <p><strong>Status:</strong> Use the Python version for reference while this C++ version is being finalized.</p>
+                <p>This module covers Merge Sort, Quick Sort, and Stability implemented specifically in C++.</p>
+            </div>
+        </div>
+        
+        <!-- BASICS SECTION -->
+        <div id="basics" class="section">
+            <h2>📚 Fundamental Concepts</h2>
+            <div class="code-block">// Code coming soon...</div>
+        </div>
+
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function visualizeString() {
+            const input = document.getElementById('stringInput').value;
+            const container = document.getElementById('visualString');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < input.length; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'char-cell';
+                cell.innerHTML = `
+                    <div class="char-value">${input[i] === ' ' ? '␣' : input[i]}</div>
+                    <div class="char-index">[${i}]</div>
+                `;
+                container.appendChild(cell);
+            }
+            
+            displayOutput(`String visualized! Length: ${input.length}`);
+        }
+
+        function displayOutput(msg) {
+            document.getElementById('output').innerHTML = `<strong>${msg}</strong>`;
+        }
+
+        function reverseString() {
+            const input = document.getElementById('stringInput').value;
+            const reversed = input.split('').reverse().join('');
+            document.getElementById('stringInput').value = reversed;
+            visualizeString();
+            displayOutput(`✅ String reversed: "${reversed}"`);
+        }
+
+        function upperCase() {
+            const input = document.getElementById('stringInput').value;
+            const upper = input.toUpperCase();
+            document.getElementById('stringInput').value = upper;
+            visualizeString();
+            displayOutput(`✅ Converted to uppercase: "${upper}"`);
+        }
+
+        function lowerCase() {
+            const input = document.getElementById('stringInput').value;
+            const lower = input.toLowerCase();
+            document.getElementById('stringInput').value = lower;
+            visualizeString();
+            displayOutput(`✅ Converted to lowercase: "${lower}"`);
+        }
+
+        function checkPalindrome() {
+            const input = document.getElementById('stringInput').value;
+            const reversed = input.split('').reverse().join('');
+            const isPalindrome = input === reversed;
+            
+            if (isPalindrome) {
+                displayOutput(`✅ "${input}" IS a palindrome!`);
+            } else {
+                displayOutput(`❌ "${input}" is NOT a palindrome. Reversed: "${reversed}"`);
+            }
+        }
+
+        function countChars() {
+            const input = document.getElementById('stringInput').value;
+            const freq = {};
+            
+            for (let char of input) {
+                freq[char] = (freq[char] || 0) + 1;
+            }
+            
+            let result = '<strong>Character Frequency:</strong><br>';
+            for (let char in freq) {
+                const display = char === ' ' ? '(space)' : char;
+                result += `${display}: ${freq[char]}<br>`;
+            }
+            
+            displayOutput(result);
+        }
+
+        function removeDuplicates() {
+            const input = document.getElementById('stringInput').value;
+            const seen = new Set();
+            let result = '';
+            
+            for (let char of input) {
+                if (!seen.has(char)) {
+                    seen.add(char);
+                    result += char;
+                }
+            }
+            
+            document.getElementById('stringInput').value = result;
+            visualizeString();
+            displayOutput(`✅ Duplicates removed: "${result}"`);
+        }
+
+        // Initialize
+        visualizeString();
+    </script>
+</body>
+</html>

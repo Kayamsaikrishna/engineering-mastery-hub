@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Bit Manipulation Masterclass</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 { color: #f5576c; font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { color: #666; font-size: 1.2em; }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            background: #f5576c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover {
+            background: #f093fb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .nav-btn.active {
+            background: #f093fb;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #f5576c;
+        }
+        h3 { color: #f093fb; margin-top: 25px; margin-bottom: 15px; }
+        .concept-box {
+            background: #fff0f5;
+            padding: 20px;
+            border-left: 5px solid #f5576c;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .code-label {
+            background: #f5576c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .visual-string {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .char-cell {
+            width: 50px;
+            height: 70px;
+            border: 2px solid #f5576c;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            background: white;
+            transition: all 0.3s;
+        }
+        .char-cell:hover {
+            background: #fff0f5;
+            transform: scale(1.1);
+        }
+        .char-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #f5576c;
+        }
+        .char-index {
+            font-size: 0.8em;
+            color: #999;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #f5576c;
+            color: white;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #fff0f5;
+        }
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            flex: 1;
+            min-width: 200px;
+        }
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        ul, ol { margin-left: 30px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        strong { color: #f5576c; }
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        #output {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 Java Bit Manipulation Masterclass Masterclass</h1>
+            <p class="subtitle">Master Strings for DSA Success</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('basics')">String Basics</button>
+                <button class="nav-btn" onclick="showSection('operations')">Operations</button>
+                <button class="nav-btn" onclick="showSection('methods')">Built-in Methods</button>
+                <button class="nav-btn" onclick="showSection('patterns')">Common Patterns</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive Practice</button>
+            </div>
+        </header>
+
+        
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 Why Bit Manipulation in Java?</h2>
+
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>Bit manipulation involves working directly with the <strong>binary representations</strong> of integers. In Java, all integers are <strong>SIGNED</strong> (Two's Complement). There are no unsigned primitives (until Java 8 utility methods), which makes understanding the sign bit critical.</p>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Java Specifics:</strong>
+                <ul>
+                    <li><code>int</code> is always 32-bit signed.</li>
+                    <li><code>long</code> is always 64-bit signed.</li>
+                    <li>Java has a special <strong>Unsigned Right Shift (>>>)</strong> operator.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- BASICS SECTION -->
+        <div id="basics" class="section">
+            <h2>📚 Java Bitwise Operators</h2>
+
+            <table class="comparison-table">
+                <tr><th>Operator</th><th>Name</th><th>Description</th></tr>
+                <tr><td><code>&</code></td><td>AND</td><td>1 if both bits are 1</td></tr>
+                <tr><td><code>|</code></td><td>OR</td><td>1 if either bit is 1</td></tr>
+                <tr><td><code>^</code></td><td>XOR</td><td>1 if bits are different</td></tr>
+                <tr><td><code>~</code></td><td>NOT</td><td>Flip all bits (One's Complement)</td></tr>
+                <tr><td><code><<</code></td><td>Left Shift</td><td>Multiply by 2^k</td></tr>
+                <tr><td><code>>></code></td><td>Signed Right Shift</td><td>Divide by 2^k (Preserves Sign)</td></tr>
+                <tr><td><code>>>></code></td><td>Unsigned Right Shift</td><td>Shift right, fill with 0 (Ignored Sign)</td></tr>
+            </table>
+
+            <h3>2. Java Binary String Helper</h3>
+            <div class="code-block">int n = 5;
+System.out.println(Integer.toBinaryString(n)); // "101"</div>
+        </div>
+
+        <!-- TECHNIQUES SECTION -->
+        <div id="techniques" class="section">
+            <h2>🎯 Common Bit Manipulation Techniques in Java</h2>
+
+            <h3>1. Check if Bit is Set</h3>
+            <div class="code-block">boolean isBitSet(int num, int pos) {
+    return (num & (1 << pos)) != 0;
+}</div>
+
+            <h3>2. Integer Class Utilities (Java Core)</h3>
+            <div class="key-point">
+                <strong>💡 Java Cheat:</strong> The <code>Integer</code> class has built-in optimized methods!
+                <br><code>Integer.bitCount(n)</code>
+            </div>
+        </div>
+
+        <!-- PATTERNS SECTION -->
+        <div id="patterns" class="section">
+            <h2>🎨 Common Problem Patterns</h2>
+            <h3>Pattern 1: Single Number (XOR)</h3>
+            <div class="code-block">int findSingleNumber(int[] nums) {
+    int result = 0;
+    for (int num : nums) result ^= num;
+    return result;
+}</div>
+        </div>
+
+        <!-- PRACTICE SECTION -->
+        <div id="practice" class="section">
+            <h2>🎮 Interactive Bit Manipulation Practice</h2>
+            <div class="interactive-demo">
+                <h3>Bit Calculator</h3>
+                <input type="number" id="num1Input" value="10">
+                <input type="number" id="num2Input" value="2">
+                <br><br>
+                <div class="demo-controls">
+                    <button class="nav-btn" onclick="doOp('&')">AND</button>
+                    <button class="nav-btn" onclick="doOp('|')">OR</button>
+                    <button class="nav-btn" onclick="doOp('^')">XOR</button>
+                    <button class="nav-btn" onclick="doOp('~')">NOT</button>
+                    <button class="nav-btn" onclick="doOp('<<')">Left Shift</button>
+                    <button class="nav-btn" onclick="doOp('>>')">Right Shift</button>
+                    <button class="nav-btn" onclick="doOp('>>>')">Unsigned Shift (Java)</button>
+                    <button class="nav-btn" onclick="doOp('count')">Count Bits</button>
+                </div>
+                <div id="output"></div>
+            </div>
+        </div>
+
+    <script>
+        function showBinary() {
+            const n1 = parseInt(document.getElementById('num1Input').value) || 0;
+            const n2 = parseInt(document.getElementById('num2Input').value) || 0;
+            
+            let html = `<div class="code-block">`;
+            html += `N1 (${n1}): ${toBin(n1)}\n`;
+            html += `N2 (${n2}): ${toBin(n2)}`;
+            html += `</div>`;
+            
+            document.getElementById('output').innerHTML = html;
+        }
+
+        function toBin(n) {
+            // Handle 32-bit signed integer view
+            return (n >>> 0).toString(2).padStart(32, '0');
+        }
+
+        function doOp(op) {
+            const n1 = parseInt(document.getElementById('num1Input').value) || 0;
+            const n2 = parseInt(document.getElementById('num2Input').value) || 0;
+            let res = 0;
+            let opStr = "";
+
+            switch(op) {
+                case '&': res = n1 & n2; opStr = "&"; break;
+                case '|': res = n1 | n2; opStr = "|"; break;
+                case '^': res = n1 ^ n2; opStr = "^"; break;
+                case '~': res = ~n1; opStr = "~"; break;
+                case '<<': res = n1 << n2; opStr = "<<"; break;
+                case '>>': res = n1 >> n2; opStr = ">>"; break;
+                case 'pow2': res = (n1 & (n1 - 1)) === 0; opStr = "isPow2"; break;
+                case 'count': 
+                    res = 0; let temp = n1;
+                    while(temp) { temp &= (temp-1); res++; }
+                    opStr = "popCount"; 
+                    break;
+            }
+
+            let html = `<div class="code-block">`;
+            if (op === '~' || op === 'pow2' || op === 'count') {
+                html += `${opStr}(${n1}) = ${res}\n`;
+                if (typeof res === 'number') html += `Binary: ${toBin(res)}`;
+            } else {
+                html += `${n1} ${opStr} ${n2} = ${res}\n`;
+                html += `Binary: ${toBin(res)}`;
+            }
+            html += `</div>`;
+            document.getElementById('output').innerHTML = html;
+        }
+    </script>
+
+</body>
+</html>

@@ -306,7 +306,7 @@
             <h1>🎯 Array Fundamentals Masterclass</h1>
             <p class="subtitle">Build Unshakeable Foundation for DSA Success</p>
             <div class="nav-buttons">
-                <a href="resource_hub.html" class="nav-btn"
+                <a href="../resource_hub.html" class="nav-btn"
                     style="text-decoration: none; display: flex; align-items: center; gap: 8px;">🏠 Hub</a>
                 <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
                 <button class="nav-btn" onclick="showSection('basics')">Basics & Creation</button>
@@ -413,57 +413,65 @@
             </div>
 
             <div class="code-label">Python - 5 Ways to Create Arrays</div>
-            <div class="code-block"># Method 1: Direct initialization
-                arr = [10, 20, 30, 40, 50]
+            <div class="code-block">
+# Method 1: Direct initialization
+arr = [10, 20, 30, 40, 50]
 
-                # Method 2: Empty array
-                arr = []
+# Method 2: Empty array
+arr = []
 
-                # Method 3: Pre-sized with default value
-                arr = [0] * 5 # [0, 0, 0, 0, 0]
+# Method 3: Pre-sized with default value
+arr = [0] * 5 # [0, 0, 0, 0, 0]
 
-                # Method 4: List comprehension
-                arr = [i for i in range(5)] # [0, 1, 2, 3, 4]
-                arr = [i*2 for i in range(5)] # [0, 2, 4, 6, 8]
+# Method 4: List comprehension
+arr = [i for i in range(5)] # [0, 1, 2, 3, 4]
+arr = [i*2 for i in range(5)] # [0, 2, 4, 6, 8]
 
-                # Method 5: From user input
-                arr = list(map(int, input().split()))
-                # Input: "1 2 3 4 5" → [1, 2, 3, 4, 5]</div>
+# Method 5: From user input
+arr = list(map(int, input().split()))
+# Input: "1 2 3 4 5" → [1, 2, 3, 4, 5]
+</div>
 
-            <div class="pseudocode">PSEUDOCODE: Creating Array
+            <div class="pseudocode">
+PSEUDOCODE: Creating Array
 
-                DECLARE array arr
-                SET arr = [element1, element2, ..., elementN]
-                SET size = LENGTH(arr)</div>
+DECLARE array arr
+SET arr = [element1, element2, ..., elementN]
+SET size = LENGTH(arr)
+</div>
 
             <h3>2. Accessing Elements</h3>
 
             <div class="code-label">Python - Access Operations</div>
-            <div class="code-block">arr = [10, 20, 30, 40, 50]
+            <div class="code-block">
+arr = [10, 20, 30, 40, 50]
 
-                # Positive indexing (left to right)
-                print(arr[0]) # 10 (first)
-                print(arr[2]) # 30 (third)
-                print(arr[4]) # 50 (last)
+# Positive indexing (left to right)
+print(arr[0]) # 10 (first)
+print(arr[2]) # 30 (third)
+print(arr[4]) # 50 (last)
 
-                # Negative indexing (right to left)
-                print(arr[-1]) # 50 (last)
-                print(arr[-2]) # 40 (second last)
-                print(arr[-5]) # 10 (first)
+# Negative indexing (right to left)
+print(arr[-1]) # 50 (last)
+print(arr[-2]) # 40 (second last)
+print(arr[-5]) # 10 (first)
 
-                # Get length
-                size = len(arr) # 5
+# Get length
+size = len(arr) # 5
 
-                # Check bounds before accessing
-                index = 10
-                if 0 <= index < len(arr): print(arr[index]) else: print("Index out of bounds!")</div>
+# Check bounds before accessing
+index = 10
+if 0 <= index < len(arr): print(arr[index]) else: print("Index out of bounds!")
+</div>
 
-                    <div class="pseudocode">PSEUDOCODE: Access Element
+                    <div class="pseudocode">
+PSEUDOCODE: Access Element
 
-                        FUNCTION access(arr, index):
-                        IF index >= 0 AND index < LENGTH(arr): RETURN arr[index] ELSE: RETURN "Index out of bounds" END
-                            IF END FUNCTION Time Complexity: O(1) - Direct access Space Complexity: O(1) - No extra
-                            space</div>
+FUNCTION access(arr, index):
+IF index >= 0 AND index < LENGTH(arr): RETURN arr[index] ELSE: RETURN "Index out of bounds" END
+    IF END FUNCTION Time Complexity: O(1) - Direct access Space Complexity: O(1) - No extra
+    space
+</div>
 
                             <div class="key-point">
                                 <strong>⚠️ Golden Rule:</strong> Valid indices are 0 to (length - 1). Accessing outside
@@ -473,17 +481,19 @@
                             <h3>3. Modifying Elements</h3>
 
                             <div class="code-label">Python - Modification</div>
-                            <div class="code-block">arr = [10, 20, 30, 40, 50]
+                            <div class="code-block">
+arr = [10, 20, 30, 40, 50]
 
-                                # Update single element
-                                arr[0] = 100 # [100, 20, 30, 40, 50]
-                                arr[-1] = 500 # [100, 20, 30, 40, 500]
+# Update single element
+arr[0] = 100 # [100, 20, 30, 40, 50]
+arr[-1] = 500 # [100, 20, 30, 40, 500]
 
-                                # Update multiple elements
-                                arr[1:3] = [200, 300] # [100, 200, 300, 40, 500]
+# Update multiple elements
+arr[1:3] = [200, 300] # [100, 200, 300, 40, 500]
 
-                                # Swap two elements
-                                arr[0], arr[4] = arr[4], arr[0] # [500, 200, 300, 40, 100]</div>
+# Swap two elements
+arr[0], arr[4] = arr[4], arr[0] # [500, 200, 300, 40, 100]
+</div>
 
                             <h3>4. Array Slicing</h3>
 
@@ -497,27 +507,29 @@
                             </div>
 
                             <div class="code-label">Python - Slicing Examples</div>
-                            <div class="code-block">arr = [10, 20, 30, 40, 50, 60, 70]
+                            <div class="code-block">
+arr = [10, 20, 30, 40, 50, 60, 70]
 
-                                # Basic slicing
-                                print(arr[1:4]) # [20, 30, 40]
-                                print(arr[2:6]) # [30, 40, 50, 60]
+# Basic slicing
+print(arr[1:4]) # [20, 30, 40]
+print(arr[2:6]) # [30, 40, 50, 60]
 
-                                # From start
-                                print(arr[:3]) # [10, 20, 30]
+# From start
+print(arr[:3]) # [10, 20, 30]
 
-                                # To end
-                                print(arr[3:]) # [40, 50, 60, 70]
+# To end
+print(arr[3:]) # [40, 50, 60, 70]
 
-                                # With step
-                                print(arr[::2]) # [10, 30, 50, 70] (every 2nd)
-                                print(arr[1::2]) # [20, 40, 60] (every 2nd from index 1)
+# With step
+print(arr[::2]) # [10, 30, 50, 70] (every 2nd)
+print(arr[1::2]) # [20, 40, 60] (every 2nd from index 1)
 
-                                # Reverse
-                                print(arr[::-1]) # [70, 60, 50, 40, 30, 20, 10]
+# Reverse
+print(arr[::-1]) # [70, 60, 50, 40, 30, 20, 10]
 
-                                # Copy array
-                                copy = arr[:] # Creates new array</div>
+# Copy array
+copy = arr[:] # Creates new array
+</div>
 
                             <div class="memory-tip">
                                 <strong>💡 Slicing Memory Trick:</strong> Think of "up to but not including"
@@ -531,204 +543,226 @@
                         <h3>1. Traversal (Looping)</h3>
 
                         <div class="code-label">Python - 4 Traversal Methods</div>
-                        <div class="code-block">arr = [10, 20, 30, 40, 50]
+                        <div class="code-block">
+arr = [10, 20, 30, 40, 50]
 
-                            # Method 1: For-each (when index not needed)
-                            for element in arr:
-                            print(element)
+# Method 1: For-each (when index not needed)
+for element in arr:
+print(element)
 
-                            # Method 2: Index-based (when index needed)
-                            for i in range(len(arr)):
-                            print(f"arr[{i}] = {arr[i]}")
+# Method 2: Index-based (when index needed)
+for i in range(len(arr)):
+print(f"arr[{i}] = {arr[i]}")
 
-                            # Method 3: Enumerate (best of both)
-                            for index, value in enumerate(arr):
-                            print(f"Index {index}: {value}")
+# Method 3: Enumerate (best of both)
+for index, value in enumerate(arr):
+print(f"Index {index}: {value}")
 
-                            # Method 4: While loop
-                            i = 0
-                            while i < len(arr): print(arr[i]) i +=1</div>
+# Method 4: While loop
+i = 0
+while i < len(arr): print(arr[i]) i +=1
+</div>
 
-                                <div class="pseudocode">PSEUDOCODE: Array Traversal
+                                <div class="pseudocode">
+PSEUDOCODE: Array Traversal
 
-                                    FUNCTION traverse(arr):
-                                    FOR i = 0 TO LENGTH(arr) - 1:
-                                    PROCESS arr[i]
-                                    END FOR
-                                    END FUNCTION
+FUNCTION traverse(arr):
+FOR i = 0 TO LENGTH(arr) - 1:
+PROCESS arr[i]
+END FOR
+END FUNCTION
 
-                                    Time Complexity: O(n)
-                                    Space Complexity: O(1)</div>
+Time Complexity: O(n)
+Space Complexity: O(1)
+</div>
 
                                 <h3>2. Insertion</h3>
 
                                 <div class="code-label">Python - Insert Operations</div>
-                                <div class="code-block">arr = [10, 20, 30, 40, 50]
+                                <div class="code-block">
+arr = [10, 20, 30, 40, 50]
 
-                                    # Insert at end (fastest)
-                                    arr.append(60)
-                                    print(arr) # [10, 20, 30, 40, 50, 60]
+# Insert at end (fastest)
+arr.append(60)
+print(arr) # [10, 20, 30, 40, 50, 60]
 
-                                    # Insert at specific position
-                                    arr.insert(2, 25) # Insert 25 at index 2
-                                    print(arr) # [10, 20, 25, 30, 40, 50, 60]
+# Insert at specific position
+arr.insert(2, 25) # Insert 25 at index 2
+print(arr) # [10, 20, 25, 30, 40, 50, 60]
 
-                                    # Insert at beginning (slowest)
-                                    arr.insert(0, 5)
-                                    print(arr) # [5, 10, 20, 25, 30, 40, 50, 60]
+# Insert at beginning (slowest)
+arr.insert(0, 5)
+print(arr) # [5, 10, 20, 25, 30, 40, 50, 60]
 
-                                    # Insert multiple elements
-                                    arr.extend([70, 80])
-                                    print(arr) # [5, 10, 20, 25, 30, 40, 50, 60, 70, 80]</div>
+# Insert multiple elements
+arr.extend([70, 80])
+print(arr) # [5, 10, 20, 25, 30, 40, 50, 60, 70, 80]
+</div>
 
-                                <div class="pseudocode">PSEUDOCODE: Insert at Index
+                                <div class="pseudocode">
+PSEUDOCODE: Insert at Index
 
-                                    FUNCTION insertAt(arr, index, value):
-                                    // Shift elements right
-                                    FOR i = LENGTH(arr) - 1 DOWN TO index:
-                                    arr[i + 1] = arr[i]
-                                    END FOR
-                                    arr[index] = value
-                                    END FUNCTION
+FUNCTION insertAt(arr, index, value):
+// Shift elements right
+FOR i = LENGTH(arr) - 1 DOWN TO index:
+arr[i + 1] = arr[i]
+END FOR
+arr[index] = value
+END FUNCTION
 
-                                    Complexity:
-                                    - At end: O(1)
-                                    - At beginning/middle: O(n)</div>
+Complexity:
+- At end: O(1)
+- At beginning/middle: O(n)
+</div>
 
                                 <h3>3. Deletion</h3>
 
                                 <div class="code-label">Python - Delete Operations</div>
-                                <div class="code-block">arr = [10, 20, 30, 40, 50]
+                                <div class="code-block">
+arr = [10, 20, 30, 40, 50]
 
-                                    # Remove by value (first occurrence)
-                                    arr.remove(30)
-                                    print(arr) # [10, 20, 40, 50]
+# Remove by value (first occurrence)
+arr.remove(30)
+print(arr) # [10, 20, 40, 50]
 
-                                    # Remove by index (returns removed value)
-                                    removed = arr.pop(1) # Removes index 1
-                                    print(removed) # 20
-                                    print(arr) # [10, 40, 50]
+# Remove by index (returns removed value)
+removed = arr.pop(1) # Removes index 1
+print(removed) # 20
+print(arr) # [10, 40, 50]
 
-                                    # Remove last element
-                                    last = arr.pop()
-                                    print(last) # 50
-                                    print(arr) # [10, 40]
+# Remove last element
+last = arr.pop()
+print(last) # 50
+print(arr) # [10, 40]
 
-                                    # Delete by index (no return)
-                                    arr = [10, 20, 30, 40, 50]
-                                    del arr[2]
-                                    print(arr) # [10, 20, 40, 50]
+# Delete by index (no return)
+arr = [10, 20, 30, 40, 50]
+del arr[2]
+print(arr) # [10, 20, 40, 50]
 
-                                    # Clear entire array
-                                    arr.clear()
-                                    print(arr) # []</div>
+# Clear entire array
+arr.clear()
+print(arr) # []
+</div>
 
-                                <div class="pseudocode">PSEUDOCODE: Delete at Index
+                                <div class="pseudocode">
+PSEUDOCODE: Delete at Index
 
-                                    FUNCTION deleteAt(arr, index):
-                                    // Shift elements left
-                                    FOR i = index TO LENGTH(arr) - 2:
-                                    arr[i] = arr[i + 1]
-                                    END FOR
-                                    REDUCE LENGTH by 1
-                                    END FUNCTION
+FUNCTION deleteAt(arr, index):
+// Shift elements left
+FOR i = index TO LENGTH(arr) - 2:
+arr[i] = arr[i + 1]
+END FOR
+REDUCE LENGTH by 1
+END FUNCTION
 
-                                    Complexity:
-                                    - From end: O(1)
-                                    - From beginning/middle: O(n)</div>
+Complexity:
+- From end: O(1)
+- From beginning/middle: O(n)
+</div>
 
                                 <h3>4. Searching</h3>
 
                                 <div class="code-label">Python - Linear Search</div>
-                                <div class="code-block">arr = [10, 20, 30, 40, 50]
+                                <div class="code-block">
+arr = [10, 20, 30, 40, 50]
 
-                                    # Method 1: Manual linear search
-                                    def linear_search(arr, target):
-                                    for i in range(len(arr)):
-                                    if arr[i] == target:
-                                    return i # Found at index i
-                                    return -1 # Not found
+# Method 1: Manual linear search
+def linear_search(arr, target):
+for i in range(len(arr)):
+if arr[i] == target:
+return i # Found at index i
+return -1 # Not found
 
-                                    result = linear_search(arr, 30)
-                                    print(result) # 2
+result = linear_search(arr, 30)
+print(result) # 2
 
-                                    # Method 2: Using 'in' operator
-                                    if 30 in arr:
-                                    print("Found!")
+# Method 2: Using 'in' operator
+if 30 in arr:
+print("Found!")
 
-                                    # Method 3: Using index()
-                                    try:
-                                    idx = arr.index(30)
-                                    print(idx) # 2
-                                    except ValueError:
-                                    print("Not found")
+# Method 3: Using index()
+try:
+idx = arr.index(30)
+print(idx) # 2
+except ValueError:
+print("Not found")
 
-                                    # Count occurrences
-                                    count = arr.count(30)
-                                    print(count) # 1</div>
+# Count occurrences
+count = arr.count(30)
+print(count) # 1
+</div>
 
-                                <div class="pseudocode">PSEUDOCODE: Linear Search
+                                <div class="pseudocode">
+PSEUDOCODE: Linear Search
 
-                                    FUNCTION linearSearch(arr, target):
-                                    FOR i = 0 TO LENGTH(arr) - 1:
-                                    IF arr[i] == target:
-                                    RETURN i
-                                    END IF
-                                    END FOR
-                                    RETURN -1 // Not found
-                                    END FUNCTION
+FUNCTION linearSearch(arr, target):
+FOR i = 0 TO LENGTH(arr) - 1:
+IF arr[i] == target:
+RETURN i
+END IF
+END FOR
+RETURN -1 // Not found
+END FUNCTION
 
-                                    Time Complexity: O(n) - worst case
-                                    Space Complexity: O(1)</div>
+Time Complexity: O(n) - worst case
+Space Complexity: O(1)
+</div>
 
                                 <h3>5. Sorting</h3>
 
                                 <div class="code-label">Python - Sorting</div>
-                                <div class="code-block">arr = [50, 20, 40, 10, 30]
+                                <div class="code-block">
+arr = [50, 20, 40, 10, 30]
 
-                                    # In-place sort (modifies original)
-                                    arr.sort()
-                                    print(arr) # [10, 20, 30, 40, 50]
+# In-place sort (modifies original)
+arr.sort()
+print(arr) # [10, 20, 30, 40, 50]
 
-                                    # Descending order
-                                    arr.sort(reverse=True)
-                                    print(arr) # [50, 40, 30, 20, 10]
+# Descending order
+arr.sort(reverse=True)
+print(arr) # [50, 40, 30, 20, 10]
 
-                                    # Create sorted copy (original unchanged)
-                                    arr = [50, 20, 40, 10, 30]
-                                    sorted_arr = sorted(arr)
-                                    print(sorted_arr) # [10, 20, 30, 40, 50]
-                                    print(arr) # [50, 20, 40, 10, 30] - unchanged</div>
+# Create sorted copy (original unchanged)
+arr = [50, 20, 40, 10, 30]
+sorted_arr = sorted(arr)
+print(sorted_arr) # [10, 20, 30, 40, 50]
+print(arr) # [50, 20, 40, 10, 30] - unchanged
+</div>
 
                                 <h3>6. Reversing</h3>
 
                                 <div class="code-label">Python - Reverse Methods</div>
-                                <div class="code-block"># Method 1: In-place
-                                    arr = [10, 20, 30, 40, 50]
-                                    arr.reverse()
-                                    print(arr) # [50, 40, 30, 20, 10]
+                                <div class="code-block">
+# Method 1: In-place
+arr = [10, 20, 30, 40, 50]
+arr.reverse()
+print(arr) # [50, 40, 30, 20, 10]
 
-                                    # Method 2: Slicing (new array)
-                                    arr = [10, 20, 30, 40, 50]
-                                    rev = arr[::-1]
-                                    print(rev) # [50, 40, 30, 20, 10]
+# Method 2: Slicing (new array)
+arr = [10, 20, 30, 40, 50]
+rev = arr[::-1]
+print(rev) # [50, 40, 30, 20, 10]
 
-                                    # Method 3: Two-pointer (manual)
-                                    def reverse_manual(arr):
-                                    left, right = 0, len(arr) - 1
-                                    while left < right: arr[left], arr[right]=arr[right], arr[left] left +=1 right -=1
-                                        arr=[10, 20, 30, 40, 50] reverse_manual(arr) print(arr) # [50, 40, 30, 20,
-                                        10]</div>
+# Method 3: Two-pointer (manual)
+def reverse_manual(arr):
+left, right = 0, len(arr) - 1
+while left < right: arr[left], arr[right]=arr[right], arr[left] left +=1 right -=1
+    arr=[10, 20, 30, 40, 50] reverse_manual(arr) print(arr) # [50, 40, 30, 20,
+    10]
+</div>
 
-                                        <div class="pseudocode">PSEUDOCODE: Reverse Array (Two Pointer)
+                                        <div class="pseudocode">
+PSEUDOCODE: Reverse Array (Two Pointer)
 
-                                            FUNCTION reverse(arr):
-                                            left = 0
-                                            right = LENGTH(arr) - 1
+FUNCTION reverse(arr):
+left = 0
+right = LENGTH(arr) - 1
 
-                                            WHILE left < right: SWAP arr[left] AND arr[right] left=left + 1 right=right
-                                                - 1 END WHILE END FUNCTION Time Complexity: O(n) Space Complexity:
-                                                O(1)</div>
+WHILE left < right: SWAP arr[left] AND arr[right] left=left + 1 right=right
+    - 1 END WHILE END FUNCTION Time Complexity: O(n) Space Complexity:
+    O(1)
+</div>
                                         </div>
 
                                         <div id="advanced" class="section">
@@ -742,102 +776,114 @@
                                                 <code>address = base_address + (index × element_size)</code>
                                             </div>
 
-                                            <div class="pseudocode">EXAMPLE: Memory Address Calculation
+                                            <div class="pseudocode">
+EXAMPLE: Memory Address Calculation
 
-                                                Base address = 1000
-                                                Element size = 4 bytes (integer)
-                                                To access arr[3]:
+Base address = 1000
+Element size = 4 bytes (integer)
+To access arr[3]:
 
-                                                address = 1000 + (3 × 4) = 1012
+address = 1000 + (3 × 4) = 1012
 
-                                                CPU jumps directly to address 1012!</div>
+CPU jumps directly to address 1012!
+</div>
 
                                             <h3>2. 2D Arrays (Matrix)</h3>
 
                                             <div class="code-label">Python - 2D Arrays</div>
-                                            <div class="code-block"># Create 2D array (3x4 matrix)
-                                                matrix = [
-                                                [1, 2, 3, 4],
-                                                [5, 6, 7, 8],
-                                                [9, 10, 11, 12]
-                                                ]
+                                            <div class="code-block">
+# Create 2D array (3x4 matrix)
+matrix = [
+[1, 2, 3, 4],
+[5, 6, 7, 8],
+[9, 10, 11, 12]
+]
 
-                                                # Access element
-                                                print(matrix[1][2]) # 7 (row 1, col 2)
+# Access element
+print(matrix[1][2]) # 7 (row 1, col 2)
 
-                                                # Traverse 2D array
-                                                for i in range(len(matrix)):
-                                                for j in range(len(matrix[0])):
-                                                print(matrix[i][j], end=" ")
-                                                print()
+# Traverse 2D array
+for i in range(len(matrix)):
+for j in range(len(matrix[0])):
+print(matrix[i][j], end=" ")
+print()
 
-                                                # Create using list comprehension
-                                                rows, cols = 3, 4
-                                                matrix = [[0 for j in range(cols)] for i in range(rows)]
+# Create using list comprehension
+rows, cols = 3, 4
+matrix = [[0 for j in range(cols)] for i in range(rows)]
 
-                                                # Alternative: Using numpy (for advanced users)
-                                                import numpy as np
-                                                matrix = np.zeros((3, 4)) # 3x4 matrix of zeros</div>
+# Alternative: Using numpy (for advanced users)
+import numpy as np
+matrix = np.zeros((3, 4)) # 3x4 matrix of zeros
+</div>
 
-                                            <div class="pseudocode">PSEUDOCODE: 2D Array Traversal
+                                            <div class="pseudocode">
+PSEUDOCODE: 2D Array Traversal
 
-                                                FUNCTION traverse2D(matrix):
-                                                rows = LENGTH(matrix)
-                                                cols = LENGTH(matrix[0])
+FUNCTION traverse2D(matrix):
+rows = LENGTH(matrix)
+cols = LENGTH(matrix[0])
 
-                                                FOR i = 0 TO rows - 1:
-                                                FOR j = 0 TO cols - 1:
-                                                PROCESS matrix[i][j]
-                                                END FOR
-                                                END FOR
-                                                END FUNCTION
+FOR i = 0 TO rows - 1:
+FOR j = 0 TO cols - 1:
+PROCESS matrix[i][j]
+END FOR
+END FOR
+END FUNCTION
 
-                                                Time Complexity: O(rows × cols)
-                                                Space Complexity: O(1)</div>
+Time Complexity: O(rows × cols)
+Space Complexity: O(1)
+</div>
 
                                             <h3>3. Common Array Algorithms</h3>
 
                                             <div class="code-label">Python - Find Maximum</div>
-                                            <div class="code-block">def find_max(arr):
-                                                if len(arr) == 0:
-                                                return None
+                                            <div class="code-block">
+def find_max(arr):
+if len(arr) == 0:
+return None
 
-                                                max_val = arr[0]
-                                                for i in range(1, len(arr)):
-                                                if arr[i] > max_val:
-                                                max_val = arr[i]
-                                                return max_val
+max_val = arr[0]
+for i in range(1, len(arr)):
+if arr[i] > max_val:
+max_val = arr[i]
+return max_val
 
-                                                # Or use built-in
-                                                max_val = max(arr)</div>
+# Or use built-in
+max_val = max(arr)
+</div>
 
                                             <div class="code-label">Python - Find Second Largest</div>
-                                            <div class="code-block">def second_largest(arr):
-                                                if len(arr) < 2: return None first=second=float('-inf') for num in arr:
-                                                    if num> first:
-                                                    second = first
-                                                    first = num
-                                                    elif num > second and num != first:
-                                                    second = num
+                                            <div class="code-block">
+def second_largest(arr):
+if len(arr) < 2: return None first=second=float('-inf') for num in arr:
+    if num> first:
+    second = first
+    first = num
+    elif num > second and num != first:
+    second = num
 
-                                                    return second if second != float('-inf') else None</div>
+    return second if second != float('-inf') else None
+</div>
 
                                             <div class="code-label">Python - Rotate Array</div>
-                                            <div class="code-block"># Rotate right by k positions
-                                                def rotate_right(arr, k):
-                                                n = len(arr)
-                                                k = k % n # Handle k > n
+                                            <div class="code-block">
+# Rotate right by k positions
+def rotate_right(arr, k):
+n = len(arr)
+k = k % n # Handle k > n
 
-                                                # Method 1: Using slicing
-                                                return arr[-k:] + arr[:-k]
+# Method 1: Using slicing
+return arr[-k:] + arr[:-k]
 
-                                                # Method 2: In-place reversal
-                                                # reverse(arr, 0, n-1)
-                                                # reverse(arr, 0, k-1)
-                                                # reverse(arr, k, n-1)
+# Method 2: In-place reversal
+# reverse(arr, 0, n-1)
+# reverse(arr, 0, k-1)
+# reverse(arr, k, n-1)
 
-                                                arr = [1, 2, 3, 4, 5]
-                                                print(rotate_right(arr, 2)) # [4, 5, 1, 2, 3]</div>
+arr = [1, 2, 3, 4, 5]
+print(rotate_right(arr, 2)) # [4, 5, 1, 2, 3]
+</div>
 
                                             <h3>4. Time Complexity Summary</h3>
 
@@ -891,18 +937,22 @@
                                             </div>
 
                                             <div class="code-label">Example: Reverse Array</div>
-                                            <div class="code-block">def reverse_two_pointer(arr):
-                                                left, right = 0, len(arr) - 1
+                                            <div class="code-block">
+def reverse_two_pointer(arr):
+left, right = 0, len(arr) - 1
 
-                                                while left < right: arr[left], arr[right]=arr[right], arr[left] left +=1
-                                                    right -=1 return arr</div>
+while left < right: arr[left], arr[right]=arr[right], arr[left] left +=1
+    right -=1 return arr
+</div>
 
                                                     <div class="code-label">Example: Check Palindrome</div>
-                                                    <div class="code-block">def is_palindrome(arr):
-                                                        left, right = 0, len(arr) - 1
+                                                    <div class="code-block">
+def is_palindrome(arr):
+left, right = 0, len(arr) - 1
 
-                                                        while left < right: if arr[left] !=arr[right]: return False left
-                                                            +=1 right -=1 return True</div>
+while left < right: if arr[left] !=arr[right]: return False left
+    +=1 right -=1 return True
+</div>
 
                                                             <h3>Pattern 2: Sliding Window</h3>
 
@@ -913,62 +963,68 @@
 
                                                             <div class="code-label">Example: Maximum Sum Subarray of
                                                                 Size K</div>
-                                                            <div class="code-block">def max_sum_subarray(arr, k):
-                                                                if len(arr) < k: return None # Calculate sum of first
-                                                                    window window_sum=sum(arr[:k]) max_sum=window_sum #
-                                                                    Slide the window for i in range(k, len(arr)):
-                                                                    window_sum=window_sum - arr[i-k] + arr[i]
-                                                                    max_sum=max(max_sum, window_sum) return max_sum
-                                                                    arr=[1, 4, 2, 10, 23, 3, 1, 0, 20]
-                                                                    print(max_sum_subarray(arr, 4)) # 39</div>
+                                                            <div class="code-block">
+def max_sum_subarray(arr, k):
+if len(arr) < k: return None # Calculate sum of first
+    window window_sum=sum(arr[:k]) max_sum=window_sum #
+    Slide the window for i in range(k, len(arr)):
+    window_sum=window_sum - arr[i-k] + arr[i]
+    max_sum=max(max_sum, window_sum) return max_sum
+    arr=[1, 4, 2, 10, 23, 3, 1, 0, 20]
+    print(max_sum_subarray(arr, 4)) # 39
+</div>
 
                                                                     <h3>Pattern 3: Prefix Sum</h3>
 
                                                                     <div class="code-label">Example: Range Sum Query
                                                                     </div>
-                                                                    <div class="code-block">def create_prefix_sum(arr):
-                                                                        prefix = [0] * len(arr)
-                                                                        prefix[0] = arr[0]
+                                                                    <div class="code-block">
+def create_prefix_sum(arr):
+prefix = [0] * len(arr)
+prefix[0] = arr[0]
 
-                                                                        for i in range(1, len(arr)):
-                                                                        prefix[i] = prefix[i-1] + arr[i]
+for i in range(1, len(arr)):
+prefix[i] = prefix[i-1] + arr[i]
 
-                                                                        return prefix
+return prefix
 
-                                                                        def range_sum(prefix, left, right):
-                                                                        if left == 0:
-                                                                        return prefix[right]
-                                                                        return prefix[right] - prefix[left-1]
+def range_sum(prefix, left, right):
+if left == 0:
+return prefix[right]
+return prefix[right] - prefix[left-1]
 
-                                                                        arr = [1, 2, 3, 4, 5]
-                                                                        prefix = create_prefix_sum(arr)
-                                                                        print(range_sum(prefix, 1, 3)) # 9 (2+3+4)</div>
+arr = [1, 2, 3, 4, 5]
+prefix = create_prefix_sum(arr)
+print(range_sum(prefix, 1, 3)) # 9 (2+3+4)
+</div>
 
                                                                     <h3>Pattern 4: Frequency Count</h3>
 
                                                                     <div class="code-label">Example: Find Duplicates
                                                                     </div>
-                                                                    <div class="code-block">from collections import
-                                                                        Counter
+                                                                    <div class="code-block">
+from collections import
+Counter
 
-                                                                        def find_duplicates(arr):
-                                                                        freq = {}
-                                                                        duplicates = []
+def find_duplicates(arr):
+freq = {}
+duplicates = []
 
-                                                                        for num in arr:
-                                                                        freq[num] = freq.get(num, 0) + 1
+for num in arr:
+freq[num] = freq.get(num, 0) + 1
 
-                                                                        for num, count in freq.items():
-                                                                        if count > 1:
-                                                                        duplicates.append(num)
+for num, count in freq.items():
+if count > 1:
+duplicates.append(num)
 
-                                                                        return duplicates
+return duplicates
 
-                                                                        # Or using Counter
-                                                                        def find_duplicates_v2(arr):
-                                                                        freq = Counter(arr)
-                                                                        return [num for num, count in freq.items() if
-                                                                        count > 1]</div>
+# Or using Counter
+def find_duplicates_v2(arr):
+freq = Counter(arr)
+return [num for num, count in freq.items() if
+count > 1]
+</div>
 
                                                                     <div class="memory-tip">
                                                                         <strong>💡 Pattern Recognition Tips:</strong>
@@ -1024,39 +1080,45 @@
 
                                                                 <div class="key-point">
                                                                     <strong>Problem 1: Find Sum of Array</strong>
-                                                                    <div class="pseudocode">FUNCTION sumArray(arr):
-                                                                        sum = 0
-                                                                        FOR each element IN arr:
-                                                                        sum = sum + element
-                                                                        END FOR
-                                                                        RETURN sum
-                                                                        END FUNCTION</div>
+                                                                    <div class="pseudocode">
+FUNCTION sumArray(arr):
+sum = 0
+FOR each element IN arr:
+sum = sum + element
+END FOR
+RETURN sum
+END FUNCTION
+</div>
                                                                 </div>
 
                                                                 <div class="key-point">
                                                                     <strong>Problem 2: Count Even Numbers</strong>
-                                                                    <div class="pseudocode">FUNCTION countEven(arr):
-                                                                        count = 0
-                                                                        FOR each element IN arr:
-                                                                        IF element % 2 == 0:
-                                                                        count = count + 1
-                                                                        END IF
-                                                                        END FOR
-                                                                        RETURN count
-                                                                        END FUNCTION</div>
+                                                                    <div class="pseudocode">
+FUNCTION countEven(arr):
+count = 0
+FOR each element IN arr:
+IF element % 2 == 0:
+count = count + 1
+END IF
+END FOR
+RETURN count
+END FUNCTION
+</div>
                                                                 </div>
 
                                                                 <div class="key-point">
                                                                     <strong>Problem 3: Find Minimum Element</strong>
-                                                                    <div class="pseudocode">FUNCTION findMin(arr):
-                                                                        IF arr is empty:
-                                                                        RETURN null
-                                                                        END IF
+                                                                    <div class="pseudocode">
+FUNCTION findMin(arr):
+IF arr is empty:
+RETURN null
+END IF
 
-                                                                        min = arr[0]
-                                                                        FOR i = 1 TO LENGTH(arr) - 1:
-                                                                        IF arr[i] < min: min=arr[i] END IF END FOR
-                                                                            RETURN min END FUNCTION</div>
+min = arr[0]
+FOR i = 1 TO LENGTH(arr) - 1:
+IF arr[i] < min: min=arr[i] END IF END FOR
+    RETURN min END FUNCTION
+</div>
                                                                     </div>
 
                                                                     <h3>🎯 Key Takeaways to Remember Forever</h3>

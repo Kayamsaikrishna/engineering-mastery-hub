@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java String Fundamentals - Master the Basics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #f5576c;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: #f5576c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #f093fb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn.active {
+            background: #f093fb;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #f5576c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #f5576c;
+        }
+
+        h3 {
+            color: #f093fb;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .concept-box {
+            background: #fff0f5;
+            padding: 20px;
+            border-left: 5px solid #f5576c;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .code-label {
+            background: #f5576c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .visual-string {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .char-cell {
+            width: 50px;
+            height: 70px;
+            border: 2px solid #f5576c;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .char-cell:hover {
+            background: #fff0f5;
+            transform: scale(1.1);
+        }
+
+        .char-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #f5576c;
+        }
+
+        .char-index {
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #f5576c;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #fff0f5;
+        }
+
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        ul,
+        ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        strong {
+            color: #f5576c;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        #output {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>☕ Java String Fundamentals Masterclass</h1>
+            <p class="subtitle">Master Strings, StringBuilder, and StringPool for DSA Success</p>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('basics')">String Basics</button>
+                <button class="nav-btn" onclick="showSection('operations')">Operations</button>
+                <button class="nav-btn" onclick="showSection('methods')">Built-in Methods</button>
+                <button class="nav-btn" onclick="showSection('patterns')">Common Patterns</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive Practice</button>
+            </div>
+        </header>
+
+        <!-- INTRODUCTION SECTION -->
+        <div id="intro" class="section active">
+            <h2>🚀 What is a String?</h2>
+
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>In Java, a <strong>String</strong> is an object that represents a sequence of characters. Internally,
+                    it is backed by a <code>char[]</code> (or <code>byte[]</code> in newer versions).</p>
+            </div>
+
+            <div class="visual-string">
+                <div class="char-cell">
+                    <div class="char-value">J</div>
+                    <div class="char-index">[0]</div>
+                </div>
+                <div class="char-cell">
+                    <div class="char-value">a</div>
+                    <div class="char-index">[1]</div>
+                </div>
+                <div class="char-cell">
+                    <div class="char-value">v</div>
+                    <div class="char-index">[2]</div>
+                </div>
+                <div class="char-cell">
+                    <div class="char-value">a</div>
+                    <div class="char-index">[3]</div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Key Insight:</strong> Strings in Java are <span class="highlight">IMMUTABLE</span>. Once
+                created, they cannot be changed. Modification creates a new object in the <strong>String Pool</strong>.
+            </div>
+
+            <h3>Why Learn Strings?</h3>
+            <ul>
+                <li><strong>Text Processing:</strong> Most real-world data is text-based</li>
+                <li><strong>Interview Favorite:</strong> 40%+ of coding problems involve strings</li>
+                <li><strong>Pattern Matching:</strong> Search engines, DNA sequencing, text editors</li>
+                <li><strong>Data Validation:</strong> Email validation, password checks, parsing</li>
+            </ul>
+
+            <div class="memory-tip">
+                <strong>💡 Memory Trick:</strong> String = "Chain of Letters"
+                <br>Each letter is a link in the chain, connected in order, but the chain itself is permanent
+                (immutable).
+            </div>
+
+            <h3>String vs char[]: Key Differences</h3>
+            <table class="comparison-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>String (Object)</th>
+                    <th>char[] (Primitive Array)</th>
+                </tr>
+                <tr>
+                    <td><strong>Type</strong></td>
+                    <td>Class / Object</td>
+                    <td>Primitive Array</td>
+                </tr>
+                <tr>
+                    <td><strong>Mutability</strong></td>
+                    <td>Immutable</td>
+                    <td>Mutable</td>
+                </tr>
+                <tr>
+                    <td><strong>Storage</strong></td>
+                    <td>Heap (String Pool)</td>
+                    <td>Heap (Standard)</td>
+                </tr>
+                <tr>
+                    <td><strong>Length</strong></td>
+                    <td><code>.length()</code> method</td>
+                    <td><code>.length</code> property</td>
+                </tr>
+                <tr>
+                    <td><strong>Utility</strong></td>
+                    <td>Rich API (split, trim...)</td>
+                    <td>Basic functionality</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- BASICS SECTION -->
+        <div id="basics" class="section">
+            <h2>📚 String Basics in Java</h2>
+
+            <h3>1. Creating Strings</h3>
+
+            <div class="code-label">Java - String Creation</div>
+            <div class="code-block">// Method 1: String Literal (Stored in String Pool)
+String s1 = "Hello";
+
+// Method 2: new Keyword (Stored in Heap)
+String s2 = new String("World");
+
+// Method 3: From char array
+char[] arr = {'J', 'a', 'v', 'a'};
+String s3 = new String(arr);
+
+// Method 4: StringBuilder (Mutable)
+StringBuilder sb = new StringBuilder("Mutable");
+
+// Method 5: Empty String
+String s4 = "";
+
+// Check identity
+String a = "Test";
+String b = "Test";
+System.out.println(a == b); // true (Same reference in Pool)
+
+String c = new String("Test");
+System.out.println(a == c); // false (Different objects)</div>
+
+            <div class="pseudocode">PSEUDOCODE: String Creation
+
+DECLARE String s
+SET s = "Hello World"
+SET length = s.length()</div>
+
+            <h3>2. Accessing Characters</h3>
+
+            <div class="code-label">Java - Character Access</div>
+            <div class="code-block">String s = "Java";
+
+// Get character at index
+char first = s.charAt(0);  // 'J'
+char last = s.charAt(s.length() - 1); // 'a'
+
+// Get length
+int len = s.length(); // 4
+
+// Iterate through characters
+// Method 1: Standard For Loop
+for (int i = 0; i < s.length(); i++) {
+    System.out.println("Char at " + i + ": " + s.charAt(i));
+}
+
+// Method 2: Enhanced For Loop (toCharArray)
+for (char c : s.toCharArray()) {
+    System.out.println(c);
+}</div>
+
+            <div class="key-point">
+                <strong>⚠️ Important:</strong> Java strings do NOT support array indexing like `s[0]`. You MUST use `s.charAt(0)`.
+            </div>
+
+            <h3>3. String Slicing (Substring)</h3>
+
+            <div class="concept-box">
+                <p><strong>Syntax:</strong> <code>s.substring(start, end)</code></p>
+                <ul>
+                    <li><strong>start:</strong> Starting index (inclusive)</li>
+                    <li><strong>end:</strong> Ending index (exclusive)</li>
+                    <li><strong>Note:</strong> Java does not have built-in step slicing like Python.</li>
+                </ul>
+            </div>
+
+            <div class="code-label">Java - Substrings</div>
+            <div class="code-block">String s = "Java Programming";
+
+// Basic substring
+String sub1 = s.substring(0, 4);  // "Java"
+String sub2 = s.substring(5, 16); // "Programming"
+
+// From start index to end
+String sub3 = s.substring(5);     // "Programming"
+
+// Extract portion
+String code = s.substring(0, 1);  // "J"
+
+// Reverse string (No slicing, needs StringBuilder)
+String reversed = new StringBuilder(s).reverse().toString();
+
+// Copy string
+String copy = new String(s);</div>
+
+            <div class="memory-tip">
+                <strong>💡 Substring Trick:</strong> <code>endIndex - beginIndex</code> always equals the length of the substring.
+            </div>
+
+            <h3>4. String Immutability</h3>
+
+            <div class="code-label">Java - Understanding Immutability</div>
+            <div class="code-block">String s = "Hello";
+
+// This DOES NOT change 's', it creates a new string
+s.concat(" World"); 
+System.out.println(s); // "Hello" (Original unchanged)
+
+// Must reassign to change reference
+s = s.concat(" World");
+System.out.println(s); // "Hello World"
+
+// Using StringBuilder for mutability
+StringBuilder sb = new StringBuilder("Hello");
+sb.append(" World"); // Modifies object in place
+sb.setCharAt(0, 'J'); // "Jello World"
+System.out.println(sb.toString());</div>
+
+            <div class="key-point">
+                <strong>Why Immutability Matters:</strong>
+                <ul>
+                    <li><strong>String Pool:</strong> Saves memory by reusing literals.</li>
+                    <li><strong>Security:</strong> Safe for sensitive data (DB connections, passwords).</li>
+                    <li><strong>Thread Safety:</strong> No synchronization needed for read-only strings.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- OPERATIONS SECTION -->
+        <div id="operations" class="section">
+            <h2>⚙️ Core String Operations in Java</h2>
+
+            <h3>1. Concatenation (Joining Strings)</h3>
+
+            <div class="code-label">Java - String Concatenation</div>
+            <div class="code-block">// Method 1: Using + operator (Syntactic Sugar)
+String s1 = "Hello";
+String s2 = "World";
+String result = s1 + " " + s2; // "Hello World"
+
+// Method 2: concat() method
+String s3 = s1.concat(" ").concat(s2);
+
+// Method 3: StringBuilder (HIGHLY RECOMMENDED for loops)
+StringBuilder sb = new StringBuilder();
+sb.append("Hello");
+sb.append(" ");
+sb.append("World");
+String s4 = sb.toString();
+
+// Method 4: String.join (Java 8+)
+String joined = String.join(" ", "Hello", "World", "Java");
+
+// Method 5: String.format
+String name = "Alice";
+int age = 25;
+String message = String.format("My name is %s and I'm %d", name, age);</div>
+
+            <div class="pseudocode">PSEUDOCODE: String Concatenation
+
+FUNCTION concatenate(s1, s2):
+    RETURN s1 + s2
+END FUNCTION
+
+Time Complexity: O(n + m)
+Space Complexity: O(n + m)</div>
+
+            <div class="key-point">
+                <strong>⚠️ Performance Warning:</strong> Avoid <code>+</code> in loops! It creates a new String object every time (O(n²)). Use <code>StringBuilder</code> for O(n).
+            </div>
+
+            <h3>2. String Repetition</h3>
+
+            <div class="code-label">Java - String Repetition</div>
+            <div class="code-block">// Method 1: repeat() (Java 11+)
+String s = "Ha";
+String repeated = s.repeat(3); // "HaHaHa"
+
+// Method 2: Manual Loop (Pre-Java 11)
+StringBuilder sb = new StringBuilder();
+for (int i = 0; i < 3; i++) {
+    sb.append("Ha");
+}
+String loopRepeated = sb.toString();</div>
+
+            <h3>3. String Comparison</h3>
+
+            <div class="code-label">Java - Comparing Strings</div>
+            <div class="code-block">String s1 = "hello";
+String s2 = "hello";
+String s3 = "Hello";
+String s4 = new String("hello");
+
+// 1. Check Identity (Memory Address) - DO NOT USE FOR CONTENT
+System.out.println(s1 == s4); // false (different objects)
+
+// 2. Check Content (Equality) - USE THIS
+System.out.println(s1.equals(s4)); // true
+System.out.println(s1.equals(s3)); // false (case-sensitive)
+
+// 3. Case-Insensitive Equality
+System.out.println(s1.equalsIgnoreCase(s3)); // true
+
+// 4. Lexicographic Comparison (compareTo)
+// Returns 0 if equal, <0 if s1 < s2, >0 if s1 > s2
+System.out.println("apple".compareTo("banana")); // Negative
+System.out.println("apple".compareTo("Apple"));  // Positive (lowercase > uppercase)
+
+// 5. Starts/Ends With
+System.out.println("Hello World".startsWith("Hello")); // true
+System.out.println("Hello World".endsWith("World"));   // true</div>
+
+            <div class="pseudocode">PSEUDOCODE: String Comparison
+
+FUNCTION compareStrings(s1, s2):
+    IF s1.length() != s2.length(): RETURN False
+    FOR i = 0 TO s1.length() - 1:
+        IF s1.charAt(i) != s2.charAt(i): RETURN False
+    RETURN True</div>
+
+            <h3>4. Searching in Strings</h3>
+
+            <div class="code-label">Java - String Search</div>
+            <div class="code-block">String s = "Java Programming Language";
+
+// Check if contains substring
+System.out.println(s.contains("Java")); // true
+
+// Find index of substring (returns -1 if not found)
+int index = s.indexOf("Programming"); // 5
+System.out.println(index);
+
+// Find from specific index
+int index2 = s.indexOf("a", 2); // Find 'a' starting from index 2
+
+// Find last occurrence
+int lastIndex = s.lastIndexOf("a"); // Last 'a' in "Language"
+
+// Count occurrences (Manual approach required)
+int count = 0;
+int fromIndex = 0;
+while ((fromIndex = s.indexOf("a", fromIndex)) != -1) {
+    count++;
+    fromIndex++;
+}
+System.out.println("Count of 'a': " + count);</div>
+
+            <h3>5. String Traversal</h3>
+
+            <div class="code-label">Java - Traversing Strings</div>
+            <div class="code-block">String s = "Java";
+
+// Method 1: For Loop with charAt()
+for (int i = 0; i < s.length(); i++) {
+    System.out.println("Index " + i + ": " + s.charAt(i));
+}
+
+// Method 2: Enhance For Loop (toCharArray)
+for (char c : s.toCharArray()) {
+    System.out.println(c);
+}</div>
+
+            <h3>6. Reversing Strings</h3>
+
+            <div class="code-label">Java - String Reversal</div>
+            <div class="code-block">String s = "Java";
+
+// Method 1: StringBuilder reverse() (Easiest & Most Efficient)
+String reversed = new StringBuilder(s).reverse().toString();
+
+// Method 2: Manual Loop (Interview approach)
+char[] chars = s.toCharArray();
+int left = 0, right = chars.length - 1;
+while (left < right) {
+    char temp = chars[left];
+    chars[left] = chars[right];
+    chars[right] = temp;
+    left++;
+    right--;
+}
+String manualReversed = new String(chars);</div>
+        </div>
+
+        <!-- METHODS SECTION -->
+                                    <div id="methods" class="section">
+                                        <h2>🛠️ Essential String Methods in Java</h2>
+
+                                        <h3>1. Case Conversion</h3>
+
+                                        <div class="code-label">Java - Case Methods</div>
+                                        <div class="code-block">String s = "Hello World";
+
+// Convert to uppercase
+System.out.println(s.toUpperCase()); // "HELLO WORLD"
+
+// Convert to lowercase
+System.out.println(s.toLowerCase()); // "hello world"
+
+// Case-insensitive comparison
+System.out.println(s.equalsIgnoreCase("hello world")); // true</div>
+
+                                        <h3>2. Whitespace Handling</h3>
+
+                                        <div class="code-label">Java - Trim & Strip</div>
+                                        <div class="code-block">String s = "  Hello Java  ";
+
+// Remove leading/trailing spaces
+System.out.println(s.trim()); // "Hello Java"
+
+// Java 11+ Strip (Unicode aware)
+System.out.println(s.strip()); // "Hello Java"
+System.out.println(s.stripLeading()); // "Hello Java  "
+System.out.println(s.stripTrailing()); // "  Hello Java"</div>
+
+                                        <div class="key-point">
+                                            <strong>Note:</strong> Strings are immutable! <code>s.trim()</code> returns a NEW string. It does not change <code>s</code>.
+                                        </div>
+
+                                        <h3>3. Checking Content</h3>
+
+                                        <div class="code-label">Java - Content Checks</div>
+                                        <div class="code-block">String s = "Hello World";
+
+// Start/End
+System.out.println(s.startsWith("Hello")); // true
+System.out.println(s.endsWith("World"));   // true
+
+// Empty Check
+System.out.println(s.isEmpty()); // false
+System.out.println("".isEmpty()); // true
+
+// Java 11+ Blank Check (Whitespace only)
+System.out.println("   ".isBlank()); // true</div>
+
+                                        <h3>4. Replacement</h3>
+
+                                        <div class="code-label">Java - Replace</div>
+                                        <div class="code-block">String s = "Hello World";
+
+// Replace character
+System.out.println(s.replace('l', 'p')); // "Heppo Worpd"
+
+// Replace sequence
+System.out.println(s.replace("World", "Java")); // "Hello Java"
+
+// Replace All (Regex support)
+String text = "a1b2c3d4";
+System.out.println(text.replaceAll("\\d", "#")); // "a#b#c#d#"</div>
+
+                                        <h3>5. Padding / Alignment</h3>
+
+                                        <div class="code-label">Java - Formatting & Padding</div>
+                                        <div class="code-block">String s = "Java";
+
+// Right align (pad left)
+String right = String.format("%10s", s); // "      Java"
+
+// Left align (pad right)
+String left = String.format("%-10s", s); // "Java      "
+
+// Zero padding (for numbers)
+int num = 42;
+String zero = String.format("%05d", num); // "00042"</div>
+
+                                        <h3>6. String Joining and Splitting</h3>
+
+                                        <div class="code-label">Java - Join and Split</div>
+                                        <div class="code-block">// Join strings (Java 8+)
+String joined = String.join(" ", "Hello", "World", "Java");
+// "Hello World Java"
+
+// Join array/collection
+String[] words = {"Hello", "World"};
+String csv = String.join(",", words); // "Hello,World"
+
+// Split String
+String text = "Java-Python-C++";
+String[] parts = text.split("-"); // ["Java", "Python", "C++"]
+
+// Split by regex (whitespace)
+String sentence = "Hello   World  Java";
+String[] tokens = sentence.split("\\s+"); // ["Hello", "World", "Java"]</div>
+
+                                        <h3>7. String Formatting</h3>
+
+                                        <div class="code-label">Java - Formatting</div>
+                                        <div class="code-block">String name = "Alice";
+int age = 25;
+double score = 95.5;
+
+// String.format() - Returns a string
+String msg = String.format("Name: %s, Age: %d, Score: %.2f", name, age, score);
+// "Name: Alice, Age: 25, Score: 95.50"
+
+// System.out.printf() - Prints directly
+System.out.printf("Name: %s, Age: %d%n", name, age);
+
+// Common Specifiers:
+// %s - String
+// %d - Integer
+// %f - Float/Double
+// %.2f - Float with 2 decimals
+// %n - Newline (platform independent)</div>
+                                    </div>
+
+                                    <!-- PATTERNS SECTION -->
+                                    <div id="patterns" class="section">
+                                        <h2>🎨 Common String Patterns</h2>
+
+                                        <h3>Pattern 1: Character Frequency Count</h3>
+
+                                        <div class="code-label">Java - Frequency Counter</div>
+                                        <div class="code-block">import java.util.HashMap;
+import java.util.Map;
+
+String s = "hello world";
+Map<Character, Integer> freq = new HashMap<>();
+
+for (char c : s.toCharArray()) {
+    freq.put(c, freq.getOrDefault(c, 0) + 1);
+}
+
+// Print frequencies
+for (Map.Entry<Character, Integer> entry : freq.entrySet()) {
+    System.out.println(entry.getKey() + ": " + entry.getValue());
+}</div>
+
+                                        <div class="pseudocode">PSEUDOCODE: Character Frequency
+
+FUNCTION countFrequency(s):
+    freq = Dictionary/Map
+    IF s is NULL return null
+
+    FOR each char c IN s:
+        IF freq contains c:
+            freq[c] = freq[c] + 1
+        ELSE:
+            freq[c] = 1
+    
+    RETURN freq
+END FUNCTION
+
+Time Complexity: O(n)
+Space Complexity: O(k)</div>
+
+                                        <h3>Pattern 2: Palindrome Check</h3>
+
+                                        <div class="code-label">Java - Palindrome</div>
+                                        <div class="code-block">String s = "racecar";
+
+// Method 1: Using StringBuilder (Easiest)
+boolean isPalindrome = new StringBuilder(s).reverse().toString().equals(s);
+
+// Method 2: Two Pointer (Efficient)
+boolean check(String str) {
+    int left = 0, right = str.length() - 1;
+    while (left < right) {
+        if (str.charAt(left) != str.charAt(right)) return false;
+        left++;
+        right--;
+    }
+    return true;
+}</div>
+
+                                        <div class="pseudocode">PSEUDOCODE: Palindrome Check
+
+FUNCTION isPalindrome(s):
+    left = 0
+    right = LENGTH(s) - 1
+
+    WHILE left < right:
+        IF s[left] != s[right]: RETURN False
+        left = left + 1
+        right = right - 1
+    END WHILE
+    RETURN True
+END FUNCTION
+
+Time Complexity: O(n)
+Space Complexity: O(1)</div>
+
+                                        <h3>Pattern 3: Anagram Check</h3>
+
+                                        <div class="code-label">Java - Anagram Detection</div>
+                                        <div class="code-block">import java.util.Arrays;
+
+String s1 = "listen";
+String s2 = "silent";
+
+// Method 1: Sorting (O(n log n))
+char[] c1 = s1.toCharArray();
+char[] c2 = s2.toCharArray();
+Arrays.sort(c1);
+Arrays.sort(c2);
+boolean isAnagram = Arrays.equals(c1, c2);
+
+// Method 2: Frequency Array (O(n) - Best for ASCII)
+int[] count = new int[26];
+for (char c : s1.toCharArray()) count[c - 'a']++;
+for (char c : s2.toCharArray()) count[c - 'a']--;
+
+boolean isAnagramFreq = true;
+for (int i : count) {
+    if (i != 0) { isAnagramFreq = false; break; }
+}</div>
+
+                                        <h3>Pattern 4: Substring Search (Pattern Matching)</h3>
+
+                                        <div class="code-label">Java - Find All Occurrences</div>
+                                        <div class="code-block">String text = "banana";
+String pattern = "an";
+
+int index = text.indexOf(pattern);
+while (index != -1) {
+    System.out.println("Found at: " + index);
+    index = text.indexOf(pattern, index + 1);
+}</div>
+                                    </div>
+
+        <!-- PRACTICE SECTION -->
+                                                        <div id="practice" class="section">
+                                                            <h2>🎮 Interactive String Practice</h2>
+
+                                                            <div class="interactive-demo">
+                                                                <h3>String Visualizer</h3>
+                                                                <input type="text" id="stringInput"
+                                                                    placeholder="Enter a string..." value="Hello">
+
+                                                                <div class="demo-controls">
+                                                                    <button class="demo-btn"
+                                                                        onclick="visualizeString()">Visualize</button>
+                                                                    <button class="demo-btn"
+                                                                        onclick="reverseString()">Reverse</button>
+                                                                    <button class="demo-btn"
+                                                                        onclick="upperCase()">Uppercase</button>
+                                                                    <button class="demo-btn"
+                                                                        onclick="lowerCase()">Lowercase</button>
+                                                                    <button class="demo-btn"
+                                                                        onclick="checkPalindrome()">Check
+                                                                        Palindrome</button>
+                                                                    <button class="demo-btn"
+                                                                        onclick="countChars()">Count Characters</button>
+                                                                    <button class="demo-btn"
+                                                                        onclick="removeDuplicates()">Remove
+                                                                        Duplicates</button>
+                                                                </div>
+
+                                                                <div id="visualString" class="visual-string"></div>
+                                                                <div id="output"></div>
+                                                            </div>
+
+                                                            <h3>🏋️ Practice Problems</h3>
+
+                                                            <div class="key-point">
+                <strong>Problem 1: Count Vowels</strong>
+                <div class="code-label">Java Solution</div>
+                <div class="code-block">public static int countVowels(String s) {
+    String vowels = "aeiouAEIOU";
+    int count = 0;
+    for (char c : s.toCharArray()) {
+        if (vowels.indexOf(c) != -1) {
+            count++;
+        }
+    }
+    return count;
+}</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 2: Reverse Words in Sentence</strong>
+                <div class="code-label">Java Solution</div>
+                <div class="code-block">public static String reverseWords(String s) {
+    String[] words = s.split("\\s+");
+    StringBuilder sb = new StringBuilder();
+    
+    for (int i = words.length - 1; i >= 0; i--) {
+        sb.append(words[i]);
+        if (i > 0) sb.append(" ");
+    }
+    return sb.toString();
+}</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 3: Check if Strings are Rotations</strong>
+                <div class="code-label">Java Solution</div>
+                <div class="code-block">public static boolean isRotation(String s1, String s2) {
+    if (s1.length() != s2.length()) return false;
+    // Key Insight: s2 must be a substring of s1 + s1
+    return (s1 + s1).contains(s2);
+}</div>
+            </div>
+
+            <div class="key-point">
+                <strong>Problem 4: Remove Spaces</strong>
+                <div class="code-label">Java Solution</div>
+                <div class="code-block">public static String removeSpaces(String s) {
+    // Method 1: ReplaceAll
+    return s.replaceAll("\\s+", "");
+    
+    // Method 2: StringBuilder (Manual)
+    /*
+    StringBuilder sb = new StringBuilder();
+    for (char c : s.toCharArray()) {
+        if (!Character.isWhitespace(c)) sb.append(c);
+    }
+    return sb.toString();
+    */
+}</div>
+            </div>
+
+            <h3>🎯 Key Takeaways to Remember Forever</h3>
+
+                                                            <div class="memory-tip">
+                                                                <strong>The 10 Commandments of Strings:</strong>
+                                                                <ol>
+                                                                    <li><strong>Immutable:</strong> Can't change, only
+                                                                        create new strings</li>
+                                                                    <li><strong>Zero-indexed:</strong> First character
+                                                                        at index 0</li>
+                                                                    <li><strong>Slicing is exclusive:</strong> s[1:4] =
+                                                                        indices 1, 2, 3</li>
+                                                                    <li><strong>Use join() not +:</strong> For
+                                                                        concatenating multiple strings</li>
+                                                                    <li><strong>Case matters:</strong> "Hello" !=
+                                                                        "hello"</li>
+                                                                    <li><strong>f-strings are best:</strong> For
+                                                                        formatting in Python 3.6+</li>
+                                                                    <li><strong>in operator:</strong> Fast
+                                                                        substring/character checking</li>
+                                                                    <li><strong>Reverse with [::-1]:</strong> Simplest
+                                                                        way to reverse</li>
+                                                                    <li><strong>Count frequency:</strong> Use Counter or
+                                                                        dictionary</li>
+                                                                    <li><strong>Validate input:</strong> Check length
+                                                                        and bounds</li>
+                                                                </ol>
+                                                            </div>
+
+                                                            <h3>📊 Time Complexity Cheat Sheet</h3>
+
+                                                            <table class="comparison-table">
+                                                                <tr>
+                                                                    <th>Operation</th>
+                                                                    <th>Time Complexity</th>
+                                                                    <th>Notes</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Access s[i]</td>
+                                                                    <td>O(1)</td>
+                                                                    <td>Direct index access</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Search (in)</td>
+                                                                    <td>O(n)</td>
+                                                                    <td>Linear search through string</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Concatenation (+)</td>
+                                                                    <td>O(n + m)</td>
+                                                                    <td>Creates new string</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Slicing s[i:j]</td>
+                                                                    <td>O(j - i)</td>
+                                                                    <td>Copies substring</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>find()</td>
+                                                                    <td>O(n * m)</td>
+                                                                    <td>n = string length, m = pattern</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>replace()</td>
+                                                                    <td>O(n)</td>
+                                                                    <td>Creates new string</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>split()</td>
+                                                                    <td>O(n)</td>
+                                                                    <td>Creates list of strings</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>join()</td>
+                                                                    <td>O(n)</td>
+                                                                    <td>Concatenates list efficiently</td>
+                                                                </tr>
+                                                            </table>
+
+                                                            <h3>🔥 Common Interview Questions</h3>
+
+                                                            <div class="concept-box">
+                                                                <h4>Must Practice:</h4>
+                                                                <ol>
+                                                                    <li>Reverse a string</li>
+                                                                    <li>Check if palindrome</li>
+                                                                    <li>Check if two strings are anagrams</li>
+                                                                    <li>Find first non-repeating character</li>
+                                                                    <li>Count character frequency</li>
+                                                                    <li>Remove duplicates from string</li>
+                                                                    <li>Check if string contains only digits</li>
+                                                                    <li>Find longest common prefix</li>
+                                                                    <li>Reverse words in a sentence</li>
+                                                                    <li>Check if one string is rotation of another</li>
+                                                                </ol>
+                                                            </div>
+                                                        </div>
+                                                </div>
+
+                                                <script>
+                                                    function showSection(sectionId) {
+                                                        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                                                        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+                                                        document.getElementById(sectionId).classList.add('active');
+                                                        event.target.classList.add('active');
+                                                    }
+
+                                                    function visualizeString() {
+                                                        const input = document.getElementById('stringInput').value;
+                                                        const container = document.getElementById('visualString');
+                                                        container.innerHTML = '';
+
+                                                        for (let i = 0; i < input.length; i++) {
+                                                            const cell = document.createElement('div');
+                                                            cell.className = 'char-cell';
+                                                            cell.innerHTML = `
+                    <div class="char-value">${input[i] === ' ' ? '␣' : input[i]}</div>
+                    <div class="char-index">[${i}]</div>
+                `;
+                                                            container.appendChild(cell);
+                                                        }
+
+                                                        displayOutput(`String visualized! Length: ${input.length}`);
+                                                    }
+
+                                                    function displayOutput(msg) {
+                                                        document.getElementById('output').innerHTML = `<strong>${msg}</strong>`;
+                                                    }
+
+                                                    function reverseString() {
+                                                        const input = document.getElementById('stringInput').value;
+                                                        const reversed = input.split('').reverse().join('');
+                                                        document.getElementById('stringInput').value = reversed;
+                                                        visualizeString();
+                                                        displayOutput(`✅ String reversed: "${reversed}"`);
+                                                    }
+
+                                                    function upperCase() {
+                                                        const input = document.getElementById('stringInput').value;
+                                                        const upper = input.toUpperCase();
+                                                        document.getElementById('stringInput').value = upper;
+                                                        visualizeString();
+                                                        displayOutput(`✅ Converted to uppercase: "${upper}"`);
+                                                    }
+
+                                                    function lowerCase() {
+                                                        const input = document.getElementById('stringInput').value;
+                                                        const lower = input.toLowerCase();
+                                                        document.getElementById('stringInput').value = lower;
+                                                        visualizeString();
+                                                        displayOutput(`✅ Converted to lowercase: "${lower}"`);
+                                                    }
+
+                                                    function checkPalindrome() {
+                                                        const input = document.getElementById('stringInput').value;
+                                                        const reversed = input.split('').reverse().join('');
+                                                        const isPalindrome = input === reversed;
+
+                                                        if (isPalindrome) {
+                                                            displayOutput(`✅ "${input}" IS a palindrome!`);
+                                                        } else {
+                                                            displayOutput(`❌ "${input}" is NOT a palindrome. Reversed: "${reversed}"`);
+                                                        }
+                                                    }
+
+                                                    function countChars() {
+                                                        const input = document.getElementById('stringInput').value;
+                                                        const freq = {};
+
+                                                        for (let char of input) {
+                                                            freq[char] = (freq[char] || 0) + 1;
+                                                        }
+
+                                                        let result = '<strong>Character Frequency:</strong><br>';
+                                                        for (let char in freq) {
+                                                            const display = char === ' ' ? '(space)' : char;
+                                                            result += `${display}: ${freq[char]}<br>`;
+                                                        }
+
+                                                        displayOutput(result);
+                                                    }
+
+                                                    function removeDuplicates() {
+                                                        const input = document.getElementById('stringInput').value;
+                                                        const seen = new Set();
+                                                        let result = '';
+
+                                                        for (let char of input) {
+                                                            if (!seen.has(char)) {
+                                                                seen.add(char);
+                                                                result += char;
+                                                            }
+                                                        }
+
+                                                        document.getElementById('stringInput').value = result;
+                                                        visualizeString();
+                                                        displayOutput(`✅ Duplicates removed: "${result}"`);
+                                                    }
+
+                                                    // Initialize
+                                                    visualizeString();
+                                                </script>
+</body>
+
+</html>

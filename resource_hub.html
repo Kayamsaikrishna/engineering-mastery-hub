@@ -266,6 +266,34 @@
             grid-column: 1 / -1;
             display: none;
         }
+
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 10px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--accent-gradient);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
     </style>
 </head>
 
@@ -297,6 +325,15 @@
                     Sai Krishna</a>
             </div>
         </div>
+        </div>
+
+        <div class="filter-container">
+            <button class="filter-btn active" onclick="setLanguage('all')">All Languages</button>
+            <button class="filter-btn" onclick="setLanguage('Python')">Python</button>
+            <button class="filter-btn" onclick="setLanguage('Java')">Java</button>
+            <button class="filter-btn" onclick="setLanguage('C++')">C++</button>
+            <button class="filter-btn" onclick="setLanguage('C')">C</button>
+        </div>
 
         <div id="content">
             <!-- Sections will be injected here -->
@@ -309,52 +346,93 @@
     </main>
 
     <script>
+        let currentLanguage = 'all';
+
         const resources = [
             {
                 category: "Interview Mastery",
                 icon: "🏆",
                 items: [
-                    { title: "AI/ML DSA Interview Bank", desc: "230+ engineering-grade application questions for AI/ML systems.", path: "dsa_ai_interview_questions.html", type: "HTML" },
-                    { title: "DSA Preparation Checklist", desc: "Comprehensive checklist to track your coding interview journey.", path: "dsa_checklist.html", type: "HTML" }
+                    { title: "AI/ML DSA Interview Bank", desc: "230+ engineering-grade application questions for AI/ML systems.", path: "interview/dsa_ai_interview_questions.html", type: "HTML", lang: "Python" },
+                    { title: "DSA Preparation Checklist", desc: "Comprehensive checklist to track your coding interview journey.", path: "interview/dsa_checklist.html", type: "HTML", lang: "Python" }
                 ]
             },
             {
                 category: "DSA Fundamentals",
                 icon: "🧩",
                 items: [
-                    { title: "Array Fundamentals", desc: "Master memory layouts, striding, and multi-dimensional processing.", path: "array_fundamentals.html", type: "HTML" },
-                    { title: "String Fundamentals", desc: "Pattern matching, token streams, and efficient text manipulation.", path: "string_fundamentals.html", type: "HTML" },
-                    { title: "Bit Manipulation", desc: "Optimization tricks, bloom filters, and feature encoding.", path: "bit_manipulation_fundamentals.html", type: "HTML" },
-                    { title: "HashMaps & Sets", desc: "O(1) lookups, collision strategies, and frequency tracking.", path: "hashmap_fundamentals.html", type: "HTML" },
-                    { title: "Searching Algorithms", desc: "Binary search variations and advanced search strategies.", path: "searching_fundamentals.html", type: "HTML" },
-                    { title: "Sorting Algorithms", desc: "Stable vs Unstable, in-place sorting, and complexity analysis.", path: "sorting_fundamentals.html", type: "HTML" },
-                    { title: "Linked Lists", desc: "Pointers, memory management, and dynamic data structures.", path: "linked_list_fundamentals.html", type: "HTML" },
-                    { title: "Stacks & Queues", desc: "Monotonic stacks, deques, and buffer management.", path: "queue_fundamentals.html", type: "HTML" },
-                    { title: "Recursion & Backtracking", desc: "State space search and recursive problem-solving.", path: "recursion_backtracking_fundamentals.html", type: "HTML" },
-                    { title: "Trees & Hierarchies", desc: "Binary trees, BSTs, and spatial indexing structures.", path: "tree_data_structures_fundamentals.html", type: "HTML" },
-                    { title: "Graphs & Networks", desc: "Traversals, connectivity, and shortest path logic.", path: "graph_algorithms_fundamentals.html", type: "HTML" },
-                    { title: "Dynamic Programming", desc: "Optimization, state transitions, and space-saving tricks.", path: "dynamic_programming_fundamentals.html", type: "HTML" }
+                    // Array Fundamentals (Multi-Language)
+                    { title: "Array Fundamentals (Python)", desc: "Master memory layouts, striding, and multi-dimensional processing in Python.", path: "python/array_fundamentals.html", type: "HTML", lang: "Python" },
+                    { title: "Array Fundamentals (Java)", desc: "Master memory layouts, striding, and multi-dimensional processing in Java.", path: "java/array_fundamentals.html", type: "HTML", lang: "Java" },
+                    { title: "Array Fundamentals (C++)", desc: "Master memory layouts, striding, and multi-dimensional processing in C++.", path: "cpp/array_fundamentals.html", type: "HTML", lang: "C++" },
+                    { title: "Array Fundamentals (C)", desc: "Master memory layouts, striding, and multi-dimensional processing in C.", path: "c/array_fundamentals.html", type: "HTML", lang: "C" },
+
+                    // String Fundamentals (Multi-Language)
+                    { title: "String Fundamentals (Python)", desc: "Pattern matching, token streams, and efficient text manipulation in Python.", path: "python/string_fundamentals.html", type: "HTML", lang: "Python" },
+                    { title: "String Fundamentals (Java)", desc: "Pattern matching, token streams, and efficient text manipulation in Java.", path: "java/string_fundamentals.html", type: "HTML", lang: "Java" },
+                    { title: "String Fundamentals (C++)", desc: "Pattern matching, token streams, and efficient text manipulation in C++.", path: "cpp/string_fundamentals.html", type: "HTML", lang: "C++" },
+                    { title: "String Fundamentals (C)", desc: "Pattern matching, token streams, and efficient text manipulation in C.", path: "c/string_fundamentals.html", type: "HTML", lang: "C" },
+                    { title: "Bit Manipulation (Python)", desc: "Optimization tricks, bloom filters, and feature encoding.", path: "python/bit_manipulation_fundamentals.html", type: "HTML", lang: "Python" },
+    { title: "Bit Manipulation (Java)", desc: "Masks, Shifts (>>>), and Integer.bitCount.", path: "java/bit_manipulation_fundamentals.html", type: "HTML", lang: "Java" },
+    { title: "Bit Manipulation (C++)", desc: "std::bitset, unsigned ops, and hardware optimization.", path: "cpp/bit_manipulation_fundamentals.html", type: "HTML", lang: "C++" },
+    { title: "Bit Manipulation (C)", desc: "Register-level control, macros, and embedded concepts.", path: "c/bit_manipulation_fundamentals.html", type: "HTML", lang: "C" },
+                    { title: "HashMaps & Sets", desc: "O(1) lookups, collision strategies, and frequency tracking.", path: "python/hashmap_fundamentals.html", type: "HTML", lang: "Python" },
+    { title: "HashMaps & Sets (Java)", desc: "Key-Value Stores, Collisions, and Hashing in Java.", path: "java/hashmap_fundamentals.html", type: "HTML", lang: "Java" },
+    { title: "HashMaps & Sets (C++)", desc: "Key-Value Stores, Collisions, and Hashing in C++.", path: "cpp/hashmap_fundamentals.html", type: "HTML", lang: "C++" },
+    { title: "HashMaps & Sets (C)", desc: "Key-Value Stores, Collisions, and Hashing in C.", path: "c/hashmap_fundamentals.html", type: "HTML", lang: "C" },
+                    { title: "Searching Algorithms", desc: "Binary search variations and advanced search strategies.", path: "python/searching_fundamentals.html", type: "HTML", lang: "Python" },
+    { title: "Searching Algorithms (Java)", desc: "Binary Search, Two Pointers, and Optimization in Java.", path: "java/searching_fundamentals.html", type: "HTML", lang: "Java" },
+    { title: "Searching Algorithms (C++)", desc: "Binary Search, Two Pointers, and Optimization in C++.", path: "cpp/searching_fundamentals.html", type: "HTML", lang: "C++" },
+    { title: "Searching Algorithms (C)", desc: "Binary Search, Two Pointers, and Optimization in C.", path: "c/searching_fundamentals.html", type: "HTML", lang: "C" },
+                    { title: "Sorting Algorithms", desc: "Stable vs Unstable, in-place sorting, and complexity analysis.", path: "python/sorting_fundamentals.html", type: "HTML", lang: "Python" },
+    { title: "Sorting Algorithms (Java)", desc: "Merge Sort, Quick Sort, and Stability in Java.", path: "java/sorting_fundamentals.html", type: "HTML", lang: "Java" },
+    { title: "Sorting Algorithms (C++)", desc: "Merge Sort, Quick Sort, and Stability in C++.", path: "cpp/sorting_fundamentals.html", type: "HTML", lang: "C++" },
+    { title: "Sorting Algorithms (C)", desc: "Merge Sort, Quick Sort, and Stability in C.", path: "c/sorting_fundamentals.html", type: "HTML", lang: "C" },
+                    { title: "Linked Lists", desc: "Pointers, memory management, and dynamic data structures.", path: "python/linked_list_fundamentals.html", type: "HTML", lang: "Python" },
+    { title: "Linked Lists (Java)", desc: "Nodes, Pointers, and Dynamic Memory in Java.", path: "java/linked_list_fundamentals.html", type: "HTML", lang: "Java" },
+    { title: "Linked Lists (C++)", desc: "Nodes, Pointers, and Dynamic Memory in C++.", path: "cpp/linked_list_fundamentals.html", type: "HTML", lang: "C++" },
+    { title: "Linked Lists (C)", desc: "Nodes, Pointers, and Dynamic Memory in C.", path: "c/linked_list_fundamentals.html", type: "HTML", lang: "C" },
+                    { title: "Stacks & Queues", desc: "Monotonic stacks, deques, and buffer management.", path: "python/queue_fundamentals.html", type: "HTML", lang: "Python" },
+    { title: "Queues & Stacks (Java)", desc: "FIFO, LIFO, and Buffer Management in Java.", path: "java/queue_fundamentals.html", type: "HTML", lang: "Java" },
+    { title: "Queues & Stacks (C++)", desc: "FIFO, LIFO, and Buffer Management in C++.", path: "cpp/queue_fundamentals.html", type: "HTML", lang: "C++" },
+    { title: "Queues & Stacks (C)", desc: "FIFO, LIFO, and Buffer Management in C.", path: "c/queue_fundamentals.html", type: "HTML", lang: "C" },
+                    { title: "Recursion & Backtracking", desc: "State space search and recursive problem-solving.", path: "python/recursion_backtracking_fundamentals.html", type: "HTML", lang: "Python" },
+    { title: "Recursion & Backtracking (Java)", desc: "Base Cases, State Space Trees, and Pruning in Java.", path: "java/recursion_backtracking_fundamentals.html", type: "HTML", lang: "Java" },
+    { title: "Recursion & Backtracking (C++)", desc: "Base Cases, State Space Trees, and Pruning in C++.", path: "cpp/recursion_backtracking_fundamentals.html", type: "HTML", lang: "C++" },
+    { title: "Recursion & Backtracking (C)", desc: "Base Cases, State Space Trees, and Pruning in C.", path: "c/recursion_backtracking_fundamentals.html", type: "HTML", lang: "C" },
+                    { title: "Trees & Hierarchies", desc: "Binary trees, BSTs, and spatial indexing structures.", path: "python/tree_data_structures_fundamentals.html", type: "HTML", lang: "Python" },
+    { title: "Trees & BSTs (Java)", desc: "Hierarchical Data, Traversals, and Balance in Java.", path: "java/tree_data_structures_fundamentals.html", type: "HTML", lang: "Java" },
+    { title: "Trees & BSTs (C++)", desc: "Hierarchical Data, Traversals, and Balance in C++.", path: "cpp/tree_data_structures_fundamentals.html", type: "HTML", lang: "C++" },
+    { title: "Trees & BSTs (C)", desc: "Hierarchical Data, Traversals, and Balance in C.", path: "c/tree_data_structures_fundamentals.html", type: "HTML", lang: "C" },
+                    { title: "Graphs & Networks", desc: "Traversals, connectivity, and shortest path logic.", path: "python/graph_algorithms_fundamentals.html", type: "HTML", lang: "Python" },
+    { title: "Graph Algorithms (Java)", desc: "BFS, DFS, Shortest Paths, and Networks in Java.", path: "java/graph_algorithms_fundamentals.html", type: "HTML", lang: "Java" },
+    { title: "Graph Algorithms (C++)", desc: "BFS, DFS, Shortest Paths, and Networks in C++.", path: "cpp/graph_algorithms_fundamentals.html", type: "HTML", lang: "C++" },
+    { title: "Graph Algorithms (C)", desc: "BFS, DFS, Shortest Paths, and Networks in C.", path: "c/graph_algorithms_fundamentals.html", type: "HTML", lang: "C" },
+                    { title: "Dynamic Programming", desc: "Optimization, state transitions, and space-saving tricks.", path: "python/dynamic_programming_fundamentals.html", type: "HTML", lang: "Python" },
+    { title: "Dynamic Programming (Java)", desc: "Memoization, Tabulation, and Subproblems in Java.", path: "java/dynamic_programming_fundamentals.html", type: "HTML", lang: "Java" },
+    { title: "Dynamic Programming (C++)", desc: "Memoization, Tabulation, and Subproblems in C++.", path: "cpp/dynamic_programming_fundamentals.html", type: "HTML", lang: "C++" },
+    { title: "Dynamic Programming (C)", desc: "Memoization, Tabulation, and Subproblems in C.", path: "c/dynamic_programming_fundamentals.html", type: "HTML", lang: "C" }
                 ]
             },
             {
                 category: "Tech Foundations",
                 icon: "🏗️",
                 items: [
-                    { title: "SQL & Data Modeling", desc: "Advanced queries, normalization, and relational logic.", path: "sql_fundamentals.html", type: "HTML" },
-                    { title: "Web Dev Core", desc: "Full-stack foundations and modern web architecture.", path: "web_dev_fundamentals.html", type: "HTML" }
+                    { title: "SQL & Data Modeling", desc: "Advanced queries, normalization, and relational logic.", path: "sql/sql_fundamentals.html", type: "HTML", lang: "sql" },
+                    { title: "Web Dev Core", desc: "Full-stack foundations and modern web architecture.", path: "web/web_dev_fundamentals.html", type: "HTML", lang: "web" }
                 ]
             },
             {
                 category: "Visual Roadmaps",
                 icon: "🗺️",
                 items: [
-                    { title: "Python DSA Thinking", desc: "Visual guide to problem-solving patterns in Python.", path: "roadmaps/Python DSA Thinking Roadmap.pdf", type: "PDF" },
-                    { title: "Full Python Roadmap", desc: "End-to-end guide to mastering Python for engineering.", path: "roadmaps/Python Roadmap Diagram .pdf", type: "PDF" },
-                    { title: "AI/Data Scientist Path", desc: "Comprehensive career roadmap for AI professionals.", path: "roadmaps/ai-data-scientist.pdf", type: "PDF" },
-                    { title: "Backend Mastery", desc: "From beginner to senior backend engineer roadmap.", path: "roadmaps/backend.pdf", type: "PDF" },
-                    { title: "Backend Beginner", desc: "Step-by-step entry guide for aspiring backend developers.", path: "roadmaps/backend-beginner.pdf", type: "PDF" },
-                    { title: "DevOps Foundations", desc: "Essential roadmap for modern cloud and DevOps.", path: "roadmaps/devops-beginner.pdf", type: "PDF" },
-                    { title: "Docker Containerization", desc: "Mastering container lifecycles and orchestration.", path: "roadmaps/docker.pdf", type: "PDF" }
+                    { title: "Python DSA Thinking", desc: "Visual guide to problem-solving patterns in Python.", path: "roadmaps/Python DSA Thinking Roadmap.pdf", type: "PDF", lang: "Python" },
+                    { title: "Full Python Roadmap", desc: "End-to-end guide to mastering Python for engineering.", path: "roadmaps/Python Roadmap Diagram .pdf", type: "PDF", lang: "Python" },
+                    { title: "AI/Data Scientist Path", desc: "Comprehensive career roadmap for AI professionals.", path: "roadmaps/ai-data-scientist.pdf", type: "PDF", lang: "Python" },
+                    { title: "Backend Mastery", desc: "From beginner to senior backend engineer roadmap.", path: "roadmaps/backend.pdf", type: "PDF", lang: "Java" },
+                    { title: "Backend Beginner", desc: "Step-by-step entry guide for aspiring backend developers.", path: "roadmaps/backend-beginner.pdf", type: "PDF", lang: "web" },
+                    { title: "DevOps Foundations", desc: "Essential roadmap for modern cloud and DevOps.", path: "roadmaps/devops-beginner.pdf", type: "PDF", lang: "web" },
+                    { title: "Docker Containerization", desc: "Mastering container lifecycles and orchestration.", path: "roadmaps/docker.pdf", type: "PDF", lang: "web" }
                 ]
             }
         ];
@@ -364,16 +442,30 @@
         const emptySearch = document.getElementById('emptySearch');
         const themeToggle = document.getElementById('themeToggle');
 
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.includes(lang === 'all' ? 'All' : lang));
+            });
+            renderHub(searchInput.value);
+        }
+
         function renderHub(filter = "") {
             let html = "";
             let totalFound = 0;
 
             resources.forEach(section => {
-                const filteredItems = section.items.filter(item =>
-                    item.title.toLowerCase().includes(filter.toLowerCase()) ||
-                    item.desc.toLowerCase().includes(filter.toLowerCase()) ||
-                    section.category.toLowerCase().includes(filter.toLowerCase())
-                );
+                const filteredItems = section.items.filter(item => {
+                    const matchesSearch = item.title.toLowerCase().includes(filter.toLowerCase()) ||
+                        item.desc.toLowerCase().includes(filter.toLowerCase()) ||
+                        section.category.toLowerCase().includes(filter.toLowerCase());
+
+                    const matchesLang = currentLanguage === 'all' ||
+                        item.lang === currentLanguage ||
+                        (currentLanguage === 'all' && !item.lang);
+
+                    return matchesSearch && matchesLang;
+                });
 
                 if (filteredItems.length > 0) {
                     totalFound += filteredItems.length;
@@ -387,7 +479,7 @@
                                         <h3>${item.title}</h3>
                                         <p>${item.desc}</p>
                                         <div class="card-footer">
-                                            <span class="file-type">${item.type}</span>
+                                            <span class="file-type" style="background: ${getLangColor(item.lang)}20; color: ${getLangColor(item.lang)}">${item.lang || item.type}</span>
                                             <span class="learn-more">Open Material</span>
                                         </div>
                                     </a>
@@ -400,6 +492,17 @@
 
             contentEl.innerHTML = html;
             emptySearch.style.display = totalFound === 0 ? 'block' : 'none';
+        }
+
+        function getLangColor(lang) {
+            switch (lang) {
+                case 'Python': return '#306998';
+                case 'Java': return '#b07219';
+                case 'C++': return '#00599C';
+                case 'C': return '#555555';
+                case 'sql': return '#e38c00';
+                default: return '#818cf8';
+            }
         }
 
         // Theme Toggle

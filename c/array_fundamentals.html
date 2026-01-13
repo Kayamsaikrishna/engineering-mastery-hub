@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array Fundamentals - Complete Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn.active {
+            background: #764ba2;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .concept-box {
+            background: #f8f9ff;
+            padding: 20px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .key-point {
+            background: #fff4e6;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .code-label {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .pseudocode {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 5px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .visual-array {
+            display: flex;
+            gap: 5px;
+            margin: 20px 0;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .array-cell {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #667eea;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        .array-cell:hover {
+            background: #f8f9ff;
+            transform: scale(1.1);
+        }
+
+        .cell-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .cell-index {
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9ff;
+        }
+
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .demo-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .memory-tip {
+            background: #fff3e0;
+            padding: 15px;
+            border-left: 5px solid #ff9800;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        ul,
+        ol {
+            margin-left: 30px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        strong {
+            color: #667eea;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        #demoArray {
+            margin: 20px 0;
+        }
+
+        #output {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Array Fundamentals Masterclass</h1>
+            <p class="subtitle">Build Unshakeable Foundation for DSA Success</p>
+            <div class="nav-buttons">
+                <a href="../resource_hub.html" class="nav-btn"
+                    style="text-decoration: none; display: flex; align-items: center; gap: 8px;">🏠 Hub</a>
+                <button class="nav-btn active" onclick="showSection('intro')">Introduction</button>
+                <button class="nav-btn" onclick="showSection('basics')">Basics & Creation</button>
+                <button class="nav-btn" onclick="showSection('operations')">Core Operations</button>
+                <button class="nav-btn" onclick="showSection('advanced')">Advanced Concepts</button>
+                <button class="nav-btn" onclick="showSection('patterns')">Common Patterns</button>
+                <button class="nav-btn" onclick="showSection('practice')">Interactive Practice</button>
+            </div>
+        </header>
+
+        <div id="intro" class="section active">
+            <h2>🚀 What is an Array?</h2>
+
+            <div class="concept-box">
+                <h3>Definition</h3>
+                <p>An <strong>array</strong> is a collection of elements stored at contiguous (continuous) memory
+                    locations. Think of it as numbered boxes in a row, where each box holds one item.</p>
+            </div>
+
+            <div class="visual-array">
+                <div class="array-cell">
+                    <div class="cell-value">10</div>
+                    <div class="cell-index">arr[0]</div>
+                </div>
+                <div class="array-cell">
+                    <div class="cell-value">20</div>
+                    <div class="cell-index">arr[1]</div>
+                </div>
+                <div class="array-cell">
+                    <div class="cell-value">30</div>
+                    <div class="cell-index">arr[2]</div>
+                </div>
+                <div class="array-cell">
+                    <div class="cell-value">40</div>
+                    <div class="cell-index">arr[3]</div>
+                </div>
+                <div class="array-cell">
+                    <div class="cell-value">50</div>
+                    <div class="cell-index">arr[4]</div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>🔑 Critical Insight:</strong> Arrays use <span class="highlight">ZERO-BASED INDEXING</span>.
+                First element = index 0, Last element = index (length - 1)
+            </div>
+
+            <h3>Why Master Arrays?</h3>
+            <ul>
+                <li><strong>Foundation:</strong> 90% of DSA concepts build on arrays</li>
+                <li><strong>Interview Essential:</strong> Appears in 70%+ coding interviews</li>
+                <li><strong>Real-World:</strong> Used everywhere - databases, images, audio, machine learning</li>
+                <li><strong>Pattern Recognition:</strong> Most algorithms start with array manipulation</li>
+            </ul>
+
+            <div class="memory-tip">
+                <strong>💡 Lifetime Memory Trick:</strong> Array = Apartment Building
+                <ul>
+                    <li>Each apartment = element</li>
+                    <li>Apartment number = index</li>
+                    <li>All apartments in ONE building = contiguous memory</li>
+                    <li>Building address = base memory address</li>
+                </ul>
+            </div>
+
+            <h3>Array Properties at a Glance</h3>
+            <table class="comparison-table">
+                <tr>
+                    <th>Property</th>
+                    <th>Description</th>
+                    <th>Impact</th>
+                </tr>
+                <tr>
+                    <td><strong>Fixed Size</strong></td>
+                    <td>Size defined at creation (in most languages)</td>
+                    <td>Fast, but inflexible</td>
+                </tr>
+                <tr>
+                    <td><strong>Contiguous Memory</strong></td>
+                    <td>Elements stored next to each other</td>
+                    <td>O(1) access, cache-friendly</td>
+                </tr>
+                <tr>
+                    <td><strong>Index-Based</strong></td>
+                    <td>Access via numeric position</td>
+                    <td>Direct access in O(1)</td>
+                </tr>
+                <tr>
+                    <td><strong>Homogeneous*</strong></td>
+                    <td>Usually same data type</td>
+                    <td>Memory efficient (*Python allows mixed)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="basics" class="section">
+            <h2>📚 Array Basics in C</h2>
+
+            <h3>1. Creating Arrays (Lists)</h3>
+
+            <div class="concept-box">
+                <p>C strings are arrays of characters. Arrays in C are static (fixed size) blocks of memory.</p>
+            </div>
+
+            <div class="code-label">C - Ways to Create Arrays</div>
+            <div class="code-block">
+                #include &lt;stdio.h&gt;
+
+                // Method 1: Initialization
+                int arr[] = {10, 20, 30, 40, 50};
+
+                // Method 2: Fixed Size (Garbage Values)
+                int arr2[5];
+
+                // Method 3: Zero Initialization
+                int arr3[5] = {0};
+
+                // Method 4: Dynamic (Heap)
+                int* ptr = (int*)malloc(5 * sizeof(int));
+                ptr[0] = 10;
+                free(ptr); // Must free memory!
+
+                // Method 5: User Input
+                int n;
+                scanf("%d", &n);
+                int inputArr[n]; // VLA (Variable Length Array) - C99
+                for(int i=0; i&lt;n; i++) {
+                scanf("%d", &inputArr[i]);
+                }
+            </div>
+
+            <div class="pseudocode">
+                PSEUDOCODE: Creating Array
+
+                DECLARE array arr
+                SET arr = [element1, element2, ..., elementN]
+                SET size = LENGTH(arr)
+            </div>
+
+            <h3>2. Accessing Elements</h3>
+
+            <div class="code-label">C - Access Operations</div>
+            <div class="code-block">
+                int arr[] = {10, 20, 30, 40, 50};
+
+                // Access Elements
+                printf("%d\n", arr[0]); // 10
+                printf("%d\n", arr[4]); // 50
+
+                // Get Size (Bytes / Element Size)
+                int size = sizeof(arr) / sizeof(arr[0]);
+
+                // No Bounds Checking in C!
+                // arr[10] = 99; // Dangerous! Undefined Behavior.
+            </div>
+
+            <div class="pseudocode">
+                PSEUDOCODE: Access Element
+
+                FUNCTION access(arr, index):
+                IF index >= 0 AND index < LENGTH(arr): RETURN arr[index] ELSE: RETURN "Index out of bounds" END IF END
+                    FUNCTION Time Complexity: O(1) - Direct access Space Complexity: O(1) - No extra space </div>
+
+                    <div class="key-point">
+                        <strong>⚠️ Golden Rule:</strong> Valid indices are 0 to (length - 1). Accessing outside
+                        causes IndexError!
+                    </div>
+
+                    <h3>3. Modifying Elements</h3>
+
+                    <div class="code-label">Python - Modification</div>
+                    <div class="code-block">
+                        arr = [10, 20, 30, 40, 50]
+
+                        # Update single element
+                        arr[0] = 100 # [100, 20, 30, 40, 50]
+                        arr[-1] = 500 # [100, 20, 30, 40, 500]
+
+                        # Update multiple elements
+                        arr[1:3] = [200, 300] # [100, 200, 300, 40, 500]
+
+                        # Swap two elements
+                        arr[0], arr[4] = arr[4], arr[0] # [500, 200, 300, 40, 100]
+                    </div>
+
+                    <h3>4. Array Slicing</h3>
+
+                    <div class="concept-box">
+                        <p><strong>Syntax:</strong> arr[start:end:step]</p>
+                        <ul>
+                            <li><strong>start:</strong> Begin index (inclusive)</li>
+                            <li><strong>end:</strong> End index (exclusive)</li>
+                            <li><strong>step:</strong> Increment (default 1)</li>
+                        </ul>
+                    </div>
+
+                    <div class="code-label">Python - Slicing Examples</div>
+                    <div class="code-block">
+                        arr = [10, 20, 30, 40, 50, 60, 70]
+
+                        # Basic slicing
+                        print(arr[1:4]) # [20, 30, 40]
+                        print(arr[2:6]) # [30, 40, 50, 60]
+
+                        # From start
+                        print(arr[:3]) # [10, 20, 30]
+
+                        # To end
+                        print(arr[3:]) # [40, 50, 60, 70]
+
+                        # With step
+                        print(arr[::2]) # [10, 30, 50, 70] (every 2nd)
+                        print(arr[1::2]) # [20, 40, 60] (every 2nd from index 1)
+
+                        # Reverse
+                        print(arr[::-1]) # [70, 60, 50, 40, 30, 20, 10]
+
+                        # Copy array
+                        copy = arr[:] # Creates new array
+                    </div>
+
+                    <div class="memory-tip">
+                        <strong>💡 Slicing Memory Trick:</strong> Think of "up to but not including"
+                        <br>arr[1:4] = indices 1, 2, 3 (stops BEFORE 4)
+                    </div>
+            </div>
+
+            <div id="operations" class="section">
+                <h2>⚙️ Core Array Operations</h2>
+
+                <h3>1. Traversal (Looping)</h3>
+
+                <div class="code-label">C - Traversal Methods</div>
+                <div class="code-block">
+                    int arr[] = {10, 20, 30, 40, 50};
+                    int n = 5;
+
+                    // Method 1: Standard Loop
+                    for(int i=0; i&lt;n; i++) {
+                    printf("%d\n", arr[i]);
+                    }
+
+                    // Method 2: Pointer Arithmetic
+                    int *ptr = arr;
+                    for(int i=0; i&lt;n; i++) {
+                    printf("%d\n", *(ptr + i));
+                    }
+                </div>
+
+                <div class="pseudocode">
+                    PSEUDOCODE: Array Traversal
+
+                    FUNCTION traverse(arr):
+                    FOR i = 0 TO LENGTH(arr) - 1:
+                    PROCESS arr[i]
+                    END FOR
+                    END FUNCTION
+
+                    Time Complexity: O(n)
+                    Space Complexity: O(1)
+                </div>
+
+                <h3>2. Insertion</h3>
+
+                <div class="code-label">C - Insert Operations</div>
+                <div class="code-block">
+                    int arr[10] = {10, 20, 30, 40, 50}; // Capacity 10, Size 5
+                    int n = 5;
+                    int capacity = 10;
+
+                    // Insert at End
+                    if (n < capacity) { arr[n]=60; n++; } // Insert at Index (Shift Right) int index=2, value=25; if (n
+                        < capacity) { for(int i=n; i> index; i--) {
+                        arr[i] = arr[i-1];
+                        }
+                        arr[index] = value;
+                        n++;
+                        }
+                </div>
+
+                <div class="pseudocode">
+                    PSEUDOCODE: Insert at Index
+
+                    FUNCTION insertAt(arr, index, value):
+                    // Shift elements right
+                    FOR i = LENGTH(arr) - 1 DOWN TO index:
+                    arr[i + 1] = arr[i]
+                    END FOR
+                    arr[index] = value
+                    END FUNCTION
+
+                    Complexity:
+                    - At end: O(1)
+                    - At beginning/middle: O(n)
+                </div>
+
+                <h3>3. Deletion</h3>
+
+                <div class="code-label">C - Delete Operations</div>
+                <div class="code-block">
+                    int arr[10] = {10, 20, 30, 40, 50};
+                    int n = 5;
+
+                    // Delete at Index (Shift Left)
+                    int index = 2; // Remove 30
+                    for(int i = index; i < n - 1; i++) { arr[i]=arr[i+1]; } n--; // Reduce size // arr is now {10, 20,
+                        40, 50} </div>
+
+                        <div class="pseudocode">
+                            PSEUDOCODE: Delete at Index
+
+                            FUNCTION deleteAt(arr, index):
+                            // Shift elements left
+                            FOR i = index TO LENGTH(arr) - 2:
+                            arr[i] = arr[i + 1]
+                            END FOR
+                            REDUCE LENGTH by 1
+                            END FUNCTION
+
+                            Complexity:
+                            - From end: O(1)
+                            - From beginning/middle: O(n)
+                        </div>
+
+                        <h3>4. Searching</h3>
+
+                        <div class="code-label">C - Linear Search</div>
+                        <div class="code-block">
+                            int linearSearch(int arr[], int n, int target) {
+                            for(int i=0; i&lt;n; i++) {
+                            if(arr[i] == target) {
+                            return i; // Found
+                            }
+                            }
+                            return -1; // Not Found
+                            }
+                        </div>
+
+                        <div class="pseudocode">
+                            PSEUDOCODE: Linear Search
+
+                            FUNCTION linearSearch(arr, target):
+                            FOR i = 0 TO LENGTH(arr) - 1:
+                            IF arr[i] == target:
+                            RETURN i
+                            END IF
+                            END FOR
+                            RETURN -1 // Not found
+                            END FUNCTION
+
+                            Time Complexity: O(n) - worst case
+                            Space Complexity: O(1)
+                        </div>
+
+                        <h3>5. Sorting</h3>
+
+                        <div class="code-label">C - Sorting (Manual Bubble Sort)</div>
+                        <div class="code-block">
+                            void bubbleSort(int arr[], int n) {
+                            for(int i = 0; i < n-1; i++) { for(int j=0; j < n-i-1; j++) { if(arr[j]> arr[j+1]) {
+                                int temp = arr[j];
+                                arr[j] = arr[j+1];
+                                arr[j+1] = temp;
+                                }
+                                }
+                                }
+                                }
+                                // Using qsort (Built-in)
+                                // int compare(const void * a, const void * b) {
+                                // return ( *(int*)a - *(int*)b );
+                                // }
+                                // qsort(arr, n, sizeof(int), compare);
+                        </div>
+
+                        <h3>6. Reversing</h3>
+
+                        <div class="code-label">C - Reversing</div>
+                        <div class="code-block">
+                            void reverse(int arr[], int n) {
+                            int start = 0;
+                            int end = n - 1;
+                            while (start < end) { int temp=arr[start]; arr[start]=arr[end]; arr[end]=temp; start++;
+                                end--; } } </div>
+
+                                <div class="pseudocode">
+                                    PSEUDOCODE: Reverse Array (Two Pointer)
+
+                                    FUNCTION reverse(arr):
+                                    left = 0
+                                    right = LENGTH(arr) - 1
+
+                                    WHILE left < right: SWAP arr[left] AND arr[right] left=left + 1 right=right - 1 END
+                                        WHILE END FUNCTION Time Complexity: O(n) Space Complexity: O(1) </div>
+                                </div>
+
+                                <div id="advanced" class="section">
+                                    <h2>🧠 Advanced Concepts</h2>
+
+                                    <h3>1. Memory & Indexing</h3>
+
+                                    <div class="concept-box">
+                                        <p><strong>Why Arrays are Fast:</strong> Contiguous memory allows O(1)
+                                            access using this formula:</p>
+                                        <code>address = base_address + (index × element_size)</code>
+                                    </div>
+
+                                    <div class="pseudocode">
+                                        EXAMPLE: Memory Address Calculation
+
+                                        Base address = 1000
+                                        Element size = 4 bytes (integer)
+                                        To access arr[3]:
+
+                                        address = 1000 + (3 × 4) = 1012
+
+                                        CPU jumps directly to address 1012!
+                                    </div>
+
+                                    <h3>2. 2D Arrays (Matrix)</h3>
+
+                                    <div class="code-label">C - 2D Arrays</div>
+                                    <div class="code-block">
+                                        // Initialize
+                                        int matrix[3][4] = {
+                                        {1, 2, 3, 4},
+                                        {5, 6, 7, 8},
+                                        {9, 10, 11, 12}
+                                        };
+
+                                        // Access
+                                        printf("%d\n", matrix[1][2]); // 7
+
+                                        // Traverse
+                                        for(int i=0; i<3; i++) { for(int j=0; j<4; j++) { printf("%d ", matrix[i][j]);
+}
+printf(" \n"); } </div>
+
+                                            <div class="pseudocode">
+                                                PSEUDOCODE: 2D Array Traversal
+
+                                                FUNCTION traverse2D(matrix):
+                                                rows = LENGTH(matrix)
+                                                cols = LENGTH(matrix[0])
+
+                                                FOR i = 0 TO rows - 1:
+                                                FOR j = 0 TO cols - 1:
+                                                PROCESS matrix[i][j]
+                                                END FOR
+                                                END FOR
+                                                END FUNCTION
+
+                                                Time Complexity: O(rows × cols)
+                                                Space Complexity: O(1)
+                                            </div>
+
+                                            <h3>3. Common Array Algorithms</h3>
+
+                                            <div class="code-label">C - Find Maximum</div>
+                                            <div class="code-block">
+                                                int findMax(int arr[], int n) {
+                                                if(n == 0) return -1;
+
+                                                int maxVal = arr[0];
+                                                for(int i=1; i&lt;n; i++) {
+                                                if(arr[i] > maxVal) maxVal = arr[i];
+                                                }
+                                                return maxVal;
+                                                }
+                                            </div>
+
+                                            <div class="code-label">C - Find Second Largest</div>
+                                            <div class="code-block">
+                                                int secondLargest(int arr[], int n) {
+                                                if (n < 2) return -1; int first=-2147483648; // INT_MIN int
+                                                    second=-2147483648; for(int i=0; i&lt;n; i++) { if (arr[i]> first) {
+                                                    second = first;
+                                                    first = arr[i];
+                                                    } else if (arr[i] > second && arr[i] != first) {
+                                                    second = arr[i];
+                                                    }
+                                                    }
+                                                    return (second == -2147483648) ? -1 : second;
+                                                    }
+                                            </div>
+
+                                            <div class="code-label">C - Rotate Array</div>
+                                            <div class="code-block">
+                                                void reverse(int arr[], int start, int end) {
+                                                while(start < end) { int temp=arr[start]; arr[start]=arr[end];
+                                                    arr[end]=temp; start++; end--; } } void rotate(int arr[], int n, int
+                                                    k) { k=k % n; reverse(arr, 0, n-1); reverse(arr, 0, k-1);
+                                                    reverse(arr, k, n-1); } </div>
+
+                                                    <h3>4. Time Complexity Summary</h3>
+
+                                                    <table class="comparison-table">
+                                                        <tr>
+                                                            <th>Operation</th>
+                                                            <th>Time Complexity</th>
+                                                            <th>Explanation</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Access</td>
+                                                            <td>O(1)</td>
+                                                            <td>Direct index calculation</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Search</td>
+                                                            <td>O(n)</td>
+                                                            <td>May need to check all elements</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Insert at end</td>
+                                                            <td>O(1)</td>
+                                                            <td>Just add to end</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Insert at start/middle</td>
+                                                            <td>O(n)</td>
+                                                            <td>Must shift elements</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Delete from end</td>
+                                                            <td>O(1)</td>
+                                                            <td>Just remove last</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Delete from start/middle</td>
+                                                            <td>O(n)</td>
+                                                            <td>Must shift elements</td>
+                                                        </tr>
+                                                    </table>
+                                            </div>
+
+                                            <div id="patterns" class="section">
+                                                <h2>🎨 Common Array Patterns</h2>
+
+                                                <h3>Pattern 1: Two Pointer Technique</h3>
+
+                                                <div class="concept-box">
+                                                    <p>Use two pointers moving toward each other or in same direction to
+                                                        solve problems efficiently.</p>
+                                                </div>
+
+                                                <div class="code-label">Example: Reverse Array</div>
+                                                <div class="code-block">
+                                                    def reverse_two_pointer(arr):
+                                                    left, right = 0, len(arr) - 1
+
+                                                    while left < right: arr[left], arr[right]=arr[right], arr[left] left
+                                                        +=1 right -=1 return arr </div>
+
+                                                        <div class="code-label">Example: Check Palindrome</div>
+                                                        <div class="code-block">
+                                                            def is_palindrome(arr):
+                                                            left, right = 0, len(arr) - 1
+
+                                                            while left < right: if arr[left] !=arr[right]: return False
+                                                                left +=1 right -=1 return True </div>
+
+                                                                <h3>Pattern 2: Sliding Window</h3>
+
+                                                                <div class="concept-box">
+                                                                    <p>Maintain a window of elements and slide it to
+                                                                        find
+                                                                        patterns or calculate values.</p>
+                                                                </div>
+
+                                                                <div class="code-label">Example: Maximum Sum Subarray of
+                                                                    Size K</div>
+                                                                <div class="code-block">
+                                                                    def max_sum_subarray(arr, k):
+                                                                    if len(arr) < k: return None # Calculate sum of
+                                                                        first window window_sum=sum(arr[:k])
+                                                                        max_sum=window_sum # Slide the window for i in
+                                                                        range(k, len(arr)): window_sum=window_sum -
+                                                                        arr[i-k] + arr[i] max_sum=max(max_sum,
+                                                                        window_sum) return max_sum arr=[1, 4, 2, 10, 23,
+                                                                        3, 1, 0, 20] print(max_sum_subarray(arr, 4)) #
+                                                                        39 </div>
+
+                                                                        <h3>Pattern 3: Prefix Sum</h3>
+
+                                                                        <div class="code-label">Example: Range Sum Query
+                                                                        </div>
+                                                                        <div class="code-block">
+                                                                            def
+                                                                            create_prefix_sum(arr):
+                                                                            prefix = [0] * len(arr)
+                                                                            prefix[0] = arr[0]
+
+                                                                            for i in range(1, len(arr)):
+                                                                            prefix[i] = prefix[i-1] + arr[i]
+
+                                                                            return prefix
+
+                                                                            def range_sum(prefix, left, right):
+                                                                            if left == 0:
+                                                                            return prefix[right]
+                                                                            return prefix[right] - prefix[left-1]
+
+                                                                            arr = [1, 2, 3, 4, 5]
+                                                                            prefix = create_prefix_sum(arr)
+                                                                            print(range_sum(prefix, 1, 3)) # 9 (2+3+4)
+                                                                        </div>
+
+                                                                        <h3>Pattern 4: Frequency Count</h3>
+
+                                                                        <div class="code-label">Example: Find Duplicates
+                                                                        </div>
+                                                                        <div class="code-block">
+                                                                            from collections import
+                                                                            Counter
+
+                                                                            def find_duplicates(arr):
+                                                                            freq = {}
+                                                                            duplicates = []
+
+                                                                            for num in arr:
+                                                                            freq[num] = freq.get(num, 0) + 1
+
+                                                                            for num, count in freq.items():
+                                                                            if count > 1:
+                                                                            duplicates.append(num)
+
+                                                                            return duplicates
+
+                                                                            # Or using Counter
+                                                                            def find_duplicates_v2(arr):
+                                                                            freq = Counter(arr)
+                                                                            return [num for num, count in freq.items()
+                                                                            if
+                                                                            count > 1]
+                                                                        </div>
+
+                                                                        <div class="memory-tip">
+                                                                            <strong>💡 Pattern Recognition
+                                                                                Tips:</strong>
+                                                                            <ul>
+                                                                                <li><strong>Two Pointers:</strong>
+                                                                                    Reversing, palindrome, pair sum
+                                                                                    problems
+                                                                                </li>
+                                                                                <li><strong>Sliding Window:</strong>
+                                                                                    Subarray sum, max/min in window</li>
+                                                                                <li><strong>Prefix Sum:</strong> Range
+                                                                                    queries, subarray sums</li>
+                                                                                <li><strong>Frequency:</strong>
+                                                                                    Duplicates,
+                                                                                    most common elements</li>
+                                                                            </ul>
+                                                                        </div>
+                                                                </div>
+
+                                                                <div id="practice" class="section">
+                                                                    <h2>🎮 Interactive Practice</h2>
+
+                                                                    <div class="interactive-demo">
+                                                                        <h3>Array Visualizer</h3>
+                                                                        <div id="demoArray" class="visual-array"></div>
+
+                                                                        <div class="demo-controls">
+                                                                            <input type="number" id="valueInput"
+                                                                                placeholder="Value" value="10">
+                                                                            <input type="number" id="indexInput"
+                                                                                placeholder="Index" value="0">
+                                                                            <button class="demo-btn"
+                                                                                onclick="addElement()">Add
+                                                                                Element</button>
+                                                                            <button class="demo-btn"
+                                                                                onclick="insertAt()">Insert
+                                                                                at
+                                                                                Index</button>
+                                                                            <button class="demo-btn"
+                                                                                onclick="removeAt()">Remove
+                                                                                at
+                                                                                Index</button>
+                                                                            <button class="demo-btn"
+                                                                                onclick="searchElement()">Search
+                                                                                Value</button>
+                                                                            <button class="demo-btn"
+                                                                                onclick="reverseArr()">Reverse</button>
+                                                                            <button class="demo-btn"
+                                                                                onclick="sortArr()">Sort</button>
+                                                                            <button class="demo-btn"
+                                                                                onclick="clearArr()">Clear</button>
+                                                                        </div>
+
+                                                                        <div id="output"></div>
+                                                                    </div>
+
+                                                                    <h3>🏋️ Practice Problems for Beginners</h3>
+
+                                                                    <div class="key-point">
+                                                                        <strong>Problem 1: Find Sum of Array</strong>
+                                                                        <div class="pseudocode">
+                                                                            FUNCTION sumArray(arr):
+                                                                            sum = 0
+                                                                            FOR each element IN arr:
+                                                                            sum = sum + element
+                                                                            END FOR
+                                                                            RETURN sum
+                                                                            END FUNCTION
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="key-point">
+                                                                        <strong>Problem 2: Count Even Numbers</strong>
+                                                                        <div class="pseudocode">
+                                                                            FUNCTION countEven(arr):
+                                                                            count = 0
+                                                                            FOR each element IN arr:
+                                                                            IF element % 2 == 0:
+                                                                            count = count + 1
+                                                                            END IF
+                                                                            END FOR
+                                                                            RETURN count
+                                                                            END FUNCTION
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="key-point">
+                                                                        <strong>Problem 3: Find Minimum Element</strong>
+                                                                        <div class="pseudocode">
+                                                                            FUNCTION findMin(arr):
+                                                                            IF arr is empty:
+                                                                            RETURN null
+                                                                            END IF
+
+                                                                            min = arr[0]
+                                                                            FOR i = 1 TO LENGTH(arr) - 1:
+                                                                            IF arr[i] < min: min=arr[i] END IF END FOR
+                                                                                RETURN min END FUNCTION </div>
+                                                                        </div>
+
+                                                                        <h3>🎯 Key Takeaways to Remember Forever</h3>
+
+                                                                        <div class="memory-tip">
+                                                                            <strong>The 7 Commandments of
+                                                                                Arrays:</strong>
+                                                                            <ol>
+                                                                                <li><strong>Zero-indexed:</strong> First
+                                                                                    =
+                                                                                    0, Last = length - 1</li>
+                                                                                <li><strong>Contiguous memory:</strong>
+                                                                                    Elements stored next to each other
+                                                                                </li>
+                                                                                <li><strong>O(1) access:</strong> Direct
+                                                                                    index calculation</li>
+                                                                                <li><strong>Check bounds:</strong>
+                                                                                    Always
+                                                                                    validate 0 ≤ index < length</li>
+                                                                                <li><strong>Shifting cost:</strong>
+                                                                                    Insert/delete at start = O(n)</li>
+                                                                                <li><strong>Slicing is
+                                                                                        exclusive:</strong>
+                                                                                    arr[1:4] = indices 1, 2, 3</li>
+                                                                                <li><strong>Practice patterns:</strong>
+                                                                                    Two
+                                                                                    pointers, sliding window, prefix sum
+                                                                                </li>
+                                                                            </ol>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <script>
+                                                                    let demoArr = [10, 20, 30, 40, 50];
+
+                                                                    function showSection(sectionId) {
+                                                                        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                                                                        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+                                                                        document.getElementById(sectionId).classList.add('active');
+                                                                        event.target.classList.add('active');
+                                                                    }
+
+                                                                    function renderArray() {
+                                                                        const container = document.getElementById('demoArray');
+                                                                        container.innerHTML = '';
+
+                                                                        demoArr.forEach((val, idx) => {
+                                                                            const cell = document.createElement('div');
+                                                                            cell.className = 'array-cell';
+                                                                            cell.innerHTML = `
+                    <div class="cell-value">${val}</div>
+                    <div class="cell-index">[${idx}]</div>
+                `;
+                                                                            container.appendChild(cell);
+                                                                        });
+
+                                                                        displayOutput(`Array: [${demoArr.join(', ')}]`);
+                                                                    }
+
+                                                                    function displayOutput(msg) {
+                                                                        document.getElementById('output').innerHTML = `<strong>${msg}</strong>`;
+                                                                    }
+
+                                                                    function addElement() {
+                                                                        const val = parseInt(document.getElementById('valueInput').value) || 0;
+                                                                        demoArr.push(val);
+                                                                        renderArray();
+                                                                        displayOutput(`Added ${val} at end. Length: ${demoArr.length}`);
+                                                                    }
+
+                                                                    function insertAt() {
+                                                                        const val = parseInt(document.getElementById('valueInput').value) || 0;
+                                                                        const idx = parseInt(document.getElementById('indexInput').value) || 0;
+
+                                                                        if (idx < 0 || idx > demoArr.length) {
+                                                                            displayOutput(`❌ Invalid index! Must be 0-${demoArr.length}`);
+                                                                            return;
+                                                                        }
+
+                                                                        demoArr.splice(idx, 0, val);
+                                                                        renderArray();
+                                                                        displayOutput(`✅ Inserted ${val} at index ${idx}`);
+                                                                    }
+
+                                                                    function removeAt() {
+                                                                        const idx = parseInt(document.getElementById('indexInput').value) || 0;
+
+                                                                        if (idx < 0 || idx >= demoArr.length) {
+                                                                            displayOutput(`❌ Invalid index! Must be 0-${demoArr.length - 1}`);
+                                                                            return;
+                                                                        }
+
+                                                                        const removed = demoArr.splice(idx, 1)[0];
+                                                                        renderArray();
+                                                                        displayOutput(`✅ Removed ${removed} from index ${idx}`);
+                                                                    }
+
+                                                                    function searchElement() {
+                                                                        const val = parseInt(document.getElementById('valueInput').value) || 0;
+                                                                        const idx = demoArr.indexOf(val);
+
+                                                                        if (idx === -1) {
+                                                                            displayOutput(`❌ ${val} not found in array`);
+                                                                        } else {
+                                                                            displayOutput(`✅ Found ${val} at index ${idx}`);
+                                                                        }
+                                                                    }
+
+                                                                    function reverseArr() {
+                                                                        demoArr.reverse();
+                                                                        renderArray();
+                                                                        displayOutput(`✅ Array reversed`);
+                                                                    }
+
+                                                                    function sortArr() {
+                                                                        demoArr.sort((a, b) => a - b);
+                                                                        renderArray();
+                                                                        displayOutput(`✅ Array sorted`);
+                                                                    }
+
+                                                                    function clearArr() {
+                                                                        demoArr = [];
+                                                                        renderArray();
+                                                                        displayOutput(`✅ Array cleared`);
+                                                                    }
+
+                                                                    // Initialize
+                                                                    renderArray();
+                                                                </script>
+</body>
+
+</html>
